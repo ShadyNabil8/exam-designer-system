@@ -82,4 +82,45 @@ const deleteCourse = [
   }),
 ];
 
-module.exports = { addCourse, getCourses, getCourse, deleteCourse };
+const updateCourse = [
+  param("id", "Invalid course ID").isMongoId(),
+  body("name")
+    .isLength({ min: 1 })
+    .trim()
+    .escape()
+    .withMessage("Course name is required!"),
+  body("numberOfChapters")
+    .isInt({ min: 1 }) // Ensure it's a positive integer
+    .withMessage(
+      "Number of Chapters is required and must be a valid positive integer!"
+    )
+    .toInt(),
+  asyncHandler(async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      console.log(errors.array());
+
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const courseId = req.params.id;
+
+    const updatedCourse = await database.updateCourse(courseId, req.body);
+
+    if (!updatedCourse) {
+      return res.status(404).json({ message: "Course not found" });
+    }
+
+    res
+      .status(200)
+      .json({ message: "Course updated successfully", data: updatedCourse });
+  }),
+];
+
+module.exports = {
+  addCourse,
+  getCourses,
+  getCourse,
+  deleteCourse,
+  updateCourse,
+};

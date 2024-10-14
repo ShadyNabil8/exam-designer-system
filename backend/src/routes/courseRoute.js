@@ -205,8 +205,104 @@ courseRouter.get("/:id", courseController.getCourse);
 // DELETE a single course by ID
 courseRouter.delete("/:id", courseController.deleteCourse);
 
-// // UPDATE a single course by ID
-// courseRouter.put("/:id", courseController.updateCourse);
+/**
+ * @swagger
+ * /api/courses/{id}:
+ *   put:
+ *     summary: Update a course by its ID
+ *     tags: [Courses]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The MongoDB ObjectId of the course
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 description: The name of the course
+ *                 example: "CS50"
+ *               numberOfChapters:
+ *                 type: integer
+ *                 description: The number of chapters in the course (must be a positive integer)
+ *                 example: 5
+ *     responses:
+ *       200:
+ *         description: The course was successfully updated
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Course updated successfully"
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: string
+ *                       description: The unique identifier of the course
+ *                       example: "60d21b4667d0d8992e610c85"
+ *                     name:
+ *                       type: string
+ *                       description: The name of the course
+ *                       example: "CS50"
+ *                     numberOfChapters:
+ *                       type: integer
+ *                       description: The number of chapters in the course
+ *                       example: 5
+ *       400:
+ *         description: Invalid course ID or validation error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 errors:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       msg:
+ *                         type: string
+ *                         example: "Course name is required!"
+ *                       param:
+ *                         type: string
+ *                         example: "name"
+ *                       location:
+ *                         type: string
+ *                         example: "body"
+ *       404:
+ *         description: Course not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Course not found"
+ *       500:
+ *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Internal Server Error"
+ */
+// UPDATE a single course by ID
+courseRouter.put("/:id", courseController.updateCourse);
 
 /**
  * @swagger

@@ -35,4 +35,19 @@ async function deleteCourse(id) {
   return course;
 }
 
-module.exports = { dbConnect, addCourse, getCourses, getCourse, deleteCourse };
+async function updateCourse(id, updatedData) {
+  const updatedCourse = await courseModel.findByIdAndUpdate(id, updatedData, {
+    new: true,
+    runValidators: false,
+  });
+  return updatedCourse;
+}
+
+module.exports = {
+  dbConnect,
+  addCourse,
+  getCourses,
+  getCourse,
+  deleteCourse,
+  updateCourse,
+};

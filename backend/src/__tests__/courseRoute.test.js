@@ -123,6 +123,8 @@ describe("GET /api/courses/:id", () => {
     const response = await request(app).get(`/api/courses/${invalidId}`);
 
     expect(response.statusCode).toBe(400);
+    expect(Array.isArray(response.body.errors)).toBe(true);
+    expect(response.body.errors.length).toBeGreaterThan(0);
     expect(response.body.errors[0].msg).toBe("Invalid course ID");
   });
 
@@ -174,9 +176,11 @@ describe("DELETE /api/courses/:id", () => {
   it("should return 400 for an invalid course id", async () => {
     const invalidId = "invalid-id";
 
-    const response = await request(app).get(`/api/courses/${invalidId}`);
+    const response = await request(app).delete(`/api/courses/${invalidId}`);
 
     expect(response.statusCode).toBe(400);
+    expect(Array.isArray(response.body.errors)).toBe(true);
+    expect(response.body.errors.length).toBeGreaterThan(0);
     expect(response.body.errors[0].msg).toBe("Invalid course ID");
   });
 
@@ -184,9 +188,9 @@ describe("DELETE /api/courses/:id", () => {
   it("should return 404 if the course is not found", async () => {
     const validId = "60d21b4667d0d8992e610c85"; // Use a valid MongoDB ObjectId
 
-    database.getCourse.mockResolvedValue(null); // Mock no course found
+    database.deleteCourse.mockResolvedValue(null); // Mock no course found
 
-    const response = await request(app).get(`/api/courses/${validId}`);
+    const response = await request(app).delete(`/api/courses/${validId}`);
 
     expect(response.statusCode).toBe(404);
     expect(response.body).toEqual({
@@ -196,10 +200,102 @@ describe("DELETE /api/courses/:id", () => {
 
   it("should handle errors from the database", async () => {
     const mockError = new Error("Database error");
-    database.getCourse.mockRejectedValue(mockError);
+    database.deleteCourse.mockRejectedValue(mockError);
 
     const validId = "60d21b4667d0d8992e610c85"; // Use a valid MongoDB ObjectId
-    const response = await request(app).get(`/api/courses/${validId}`);
+    const response = await request(app).delete(`/api/courses/${validId}`);
+
+    expect(response.statusCode).toBe(500);
+    expect(response.body.message).toBe("Database error");
+  });
+});
+
+describe("PUT /api/courses/:id", () => {
+  it("should return 200 and the updated course object for a valid id", async () => {
+    const mockUpdatedCourse = {
+      id: "60d21b4667d0d8992e610c85",
+      name: "CS50",
+      numberOfChapters: 5,
+    };
+
+    database.updateCourse.mockResolvedValue(mockUpdatedCourse);
+
+    const response = await request(app)
+      .put(`/api/courses/${mockUpdatedCourse.id}`)
+      .send({ name: "CS50", numberOfChapters: 5 });
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toEqual({
+      message: "Course updated successfully",
+      data: mockUpdatedCourse,
+    });
+  });
+
+  it("should return 400 for an invalid course id", async () => {
+    const invalidId = "invalid-id";
+
+    const response = await request(app).put(`/api/courses/${invalidId}`);
+
+    expect(response.statusCode).toBe(400);
+    expect(Array.isArray(response.body.errors)).toBe(true);
+    expect(response.body.errors.length).toBeGreaterThan(0);
+    expect(response.body.errors[0].msg).toBe("Invalid course ID");
+  });
+
+  it("should return 400 if the name of the course is empty", async () => {
+    const validId = "60d21b4667d0d8992e610c85"; // Use a valid MongoDB ObjectId
+
+    const response = await request(app).put(`/api/courses/${validId}`).send({
+      name: "",
+      numberOfChapters: 5,
+    });
+
+    expect(response.statusCode).toBe(400);
+    expect(Array.isArray(response.body.errors)).toBe(true);
+    expect(response.body.errors.length).toBeGreaterThan(0);
+    expect(response.body.errors[0].msg).toEqual("Course name is required!");
+  });
+
+  it("should return 400 if the number of courses isn't positive integer", async () => {
+    const validId = "60d21b4667d0d8992e610c85"; // Use a valid MongoDB ObjectId
+
+    const response = await request(app).put(`/api/courses/${validId}`).send({
+      name: "CS50",
+      numberOfChapters: "n",
+    });
+
+    expect(response.statusCode).toBe(400);
+    expect(Array.isArray(response.body.errors)).toBe(true);
+    expect(response.body.errors.length).toBeGreaterThan(0);
+    expect(response.body.errors[0].msg).toEqual(
+      "Number of Chapters is required and must be a valid positive integer!"
+    );
+  });
+
+  // Test case: Course not found in database
+  it("should return 404 if the course is not found", async () => {
+    const validId = "60d21b4667d0d8992e610c85"; // Use a valid MongoDB ObjectId
+
+    database.updateCourse.mockResolvedValue(null); // Mock no course found
+
+    const response = await request(app)
+      .put(`/api/courses/${validId}`)
+      .send({ name: "CS50", numberOfChapters: 5 });
+
+    expect(response.statusCode).toBe(404);
+    expect(response.body).toEqual({
+      message: "Course not found",
+    });
+  });
+
+  it("should handle errors from the database", async () => {
+    const mockError = new Error("Database error");
+    database.updateCourse.mockRejectedValue(mockError);
+
+    const validId = "60d21b4667d0d8992e610c85"; // Use a valid MongoDB ObjectId
+    const response = await request(app)
+      .put(`/api/courses/${validId}`)
+      .send({ name: "CS50", numberOfChapters: 5 });
 
     expect(response.statusCode).toBe(500);
     expect(response.body.message).toBe("Database error");
