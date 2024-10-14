@@ -2,8 +2,51 @@ const express = require("express");
 const courseRouter = express.Router();
 const courseController = require("../controllers/courseController");
 
-// // GET all courses
-// courseRouter.get("/", courseController.getCourses);
+/**
+ * @swagger
+ * /api/courses:
+ *   get:
+ *     summary: Retrieve a list of courses
+ *     tags: [Courses]
+ *     responses:
+ *       200:
+ *         description: A list of courses
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: string
+ *                         description: The unique identifier of the course
+ *                         example: "64f7a9e1b3f8ae23f82c7db1"
+ *                       name:
+ *                         type: string
+ *                         description: The name of the course
+ *                         example: "CS50"
+ *                       numberOfChapters:
+ *                         type: integer
+ *                         description: The number of chapters in the course
+ *                         example: 5
+ *       500:
+ *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Database error"
+ */
+
+// GET all courses
+courseRouter.get("/", courseController.getCourses);
 
 // // GET a single course by ID
 // courseRouter.get("/:id", courseController.getCourse);

@@ -71,3 +71,29 @@ describe("POST /courses", () => {
     expect(response.body.message).toBe("Database error");
   });
 });
+
+describe("GET /api/courses", () => {
+  it("should return a list of courses", async () => {
+    const mockCourses = [
+      { id: "1", name: "CS50", numberOfChapters: 5 },
+      { id: "2", name: "Math 101", numberOfChapters: 3 },
+    ];
+
+    database.getCourses.mockResolvedValue(mockCourses);
+
+    const response = await request(app).get("/api/courses");
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toEqual({ data: mockCourses });
+  });
+
+  it("should handle errors from the database", async () => {
+    const mockError = new Error("Database error");
+    database.getCourses.mockRejectedValue(mockError);
+
+    const response = await request(app).get("/api/courses");
+
+    expect(response.statusCode).toBe(500);
+    expect(response.body.message).toBe("Database error");
+  });
+});

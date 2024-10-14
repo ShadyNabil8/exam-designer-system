@@ -25,13 +25,17 @@ const addCourse = [
 
     const addedCourse = await database.addCourse(name, numberOfChapters);
 
-    res
-      .status(200)
-      .json({
-        message: "The course was successfully added.",
-        addedCourse: addedCourse,
-      });
+    res.status(200).json({
+      message: "The course was successfully added.",
+      addedCourse: addedCourse,
+    });
   }),
 ];
 
-module.exports = { addCourse };
+const getCourses = asyncHandler(async (req, res) => {
+  const courses = await database.getCourses();
+
+  res.status(200).json({ data: courses });
+});
+
+module.exports = { addCourse, getCourses };

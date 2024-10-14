@@ -20,4 +20,9 @@ async function addCourse(name, numberOfChapters) {
   return addedCourse;
 }
 
-module.exports = { dbConnect, addCourse };
+async function getCourses() {
+  const courses = await courseModel.find({});
+  return courses;
+}
+
+module.exports = { dbConnect, addCourse, getCourses };
