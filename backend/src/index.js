@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const dbConnect = require("./database");
+const { dbConnect } = require("./database");
 const {
   errorHandlerMiddleware,
 } = require("./middlewares/errorHandlerMiddleware");
@@ -12,6 +12,9 @@ const app = express();
 app.use(cors());
 app.use(logger("dev"));
 app.use(express.json());
+
+const courseRouter = require("./routes/courseRoute");
+app.use("/api/courses", courseRouter);
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 

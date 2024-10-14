@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const courseModel = require("./models/courseModel");
 require("dotenv").config();
 
 const dbConnect = async () => {
@@ -11,4 +12,12 @@ const dbConnect = async () => {
   }
 };
 
-module.exports = dbConnect;
+async function addCourse(name, numberOfChapters) {
+  const addedCourse = await courseModel.create({
+    name,
+    numberOfChapters,
+  });
+  return addedCourse;
+}
+
+module.exports = { dbConnect, addCourse };
