@@ -126,8 +126,84 @@ courseRouter.get("/", courseController.getCourses);
 // GET a single course by ID
 courseRouter.get("/:id", courseController.getCourse);
 
-// // DELETE a single course by ID
-// courseRouter.delete("/:id", courseController.deleteCourse);
+/**
+ * @swagger
+ * /api/courses/{id}:
+ *   delete:
+ *     summary: Delete a course by its ID
+ *     tags: [Courses]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The MongoDB ObjectId of the course
+ *     responses:
+ *       200:
+ *         description: The course was successfully deleted
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "The course was successfully deleted."
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     _id:
+ *                       type: string
+ *                       description: The unique identifier of the course
+ *                       example: "60d21b4667d0d8992e610c85"
+ *                     name:
+ *                       type: string
+ *                       description: The name of the course
+ *                       example: "CS50"
+ *                     numberOfChapters:
+ *                       type: integer
+ *                       description: The number of chapters in the course
+ *                       example: 5
+ *       400:
+ *         description: Invalid course ID
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 errors:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       msg:
+ *                         type: string
+ *                         example: "Invalid course ID"
+ *       404:
+ *         description: Course not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Course not found"
+ *       500:
+ *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Internal Server Error"
+ */
+
+// DELETE a single course by ID
+courseRouter.delete("/:id", courseController.deleteCourse);
 
 // // UPDATE a single course by ID
 // courseRouter.put("/:id", courseController.updateCourse);

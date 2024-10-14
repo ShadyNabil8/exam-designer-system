@@ -30,4 +30,9 @@ async function getCourse(id) {
   return course;
 }
 
-module.exports = { dbConnect, addCourse, getCourses, getCourse };
+async function deleteCourse(id) {
+  const course = await courseModel.findByIdAndDelete(id);
+  return course;
+}
+
+module.exports = { dbConnect, addCourse, getCourses, getCourse, deleteCourse };
