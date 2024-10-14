@@ -1,5 +1,5 @@
 const asyncHandler = require("express-async-handler");
-const { body, validationResult } = require("express-validator");
+const { body, param, validationResult } = require("express-validator");
 const database = require("../database");
 
 const addCourse = [
@@ -38,4 +38,26 @@ const getCourses = asyncHandler(async (req, res) => {
   res.status(200).json({ data: courses });
 });
 
-module.exports = { addCourse, getCourses };
+const getCourse = [
+  param("id", "Invalid course ID").isMongoId(),
+  asyncHandler(async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const courseId = req.params.id;
+
+    const course = await database.getCourse(courseId);
+
+    if (!course) {
+      return res.status(404).json({ message: "Course not found" });
+    }
+
+    res
+      .status(200)
+      .json({ message: "The course was successfully fetched.", data: course });
+  }),
+];
+
+module.exports = { addCourse, getCourses, getCourse };
