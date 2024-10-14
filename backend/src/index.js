@@ -16,6 +16,9 @@ app.use(express.json());
 const courseRouter = require("./routes/courseRoute");
 app.use("/api/courses", courseRouter);
 
+const chapterRouter = require("./routes/chapterRoute");
+app.use("/api/chapters", chapterRouter);
+
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use(errorHandlerMiddleware);

@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const courseModel = require("./models/courseModel");
+const chapterModel = require("./models/chapterModel");
 require("dotenv").config();
 
 const dbConnect = async () => {
@@ -43,6 +44,20 @@ async function updateCourse(id, updatedData) {
   return updatedCourse;
 }
 
+async function addChapter(name, number, courseId) {
+  const addedChapter = await chapterModel.create({
+    name,
+    number,
+    courseId,
+  });
+  return addedChapter;
+}
+
+async function getChapters() {
+  const chapters = await chapterModel.find({});
+  return chapters;
+}
+
 module.exports = {
   dbConnect,
   addCourse,
@@ -50,4 +65,6 @@ module.exports = {
   getCourse,
   deleteCourse,
   updateCourse,
+  addChapter,
+  getChapters,
 };
