@@ -198,3 +198,62 @@ describe("GET /api/chapters/:id", () => {
     expect(response.body.message).toBe("Database error");
   });
 });
+
+describe("DELETE /api/chapters/:id", () => {
+  it("should return 200 and the deleted chapter object for a valid id", async () => {
+    const mockDeletedChapter = {
+      id: "60d21b4667d0d8992e610c85",
+      name: "Dynamic Programming",
+      number: 5,
+      courseId: "60d21b4667d0d8992e610c85",
+    };
+
+    database.deleteChapter.mockResolvedValue(mockDeletedChapter);
+
+    const response = await request(app).delete(
+      `/api/chapters/${mockDeletedChapter.id}`
+    );
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toEqual({
+      message: "The chapter was successfully deleted.",
+      data: mockDeletedChapter,
+    });
+  });
+
+  it("should return 400 for an invalid chapter id", async () => {
+    const invalidId = "invalid-id";
+
+    const response = await request(app).delete(`/api/chapters/${invalidId}`);
+
+    expect(response.statusCode).toBe(400);
+    expect(Array.isArray(response.body.errors)).toBe(true);
+    expect(response.body.errors.length).toBeGreaterThan(0);
+    expect(response.body.errors[0].msg).toBe("Invalid chapter ID");
+  });
+
+  // Test case: Course not found in database
+  it("should return 404 if the course is not found", async () => {
+    const validId = "60d21b4667d0d8992e610c85"; // Use a valid MongoDB ObjectId
+
+    database.deleteChapter.mockResolvedValue(null); // Mock no course found
+
+    const response = await request(app).delete(`/api/chapters/${validId}`);
+
+    expect(response.statusCode).toBe(404);
+    expect(response.body).toEqual({
+      message: "Chapter not found",
+    });
+  });
+
+  it("should handle errors from the database", async () => {
+    const mockError = new Error("Database error");
+    database.deleteChapter.mockRejectedValue(mockError);
+
+    const validId = "60d21b4667d0d8992e610c85"; // Use a valid MongoDB ObjectId
+    const response = await request(app).delete(`/api/chapters/${validId}`);
+
+    expect(response.statusCode).toBe(500);
+    expect(response.body.message).toBe("Database error");
+  });
+});

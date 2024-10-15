@@ -67,4 +67,29 @@ const getChapter = [
     });
   }),
 ];
-module.exports = { addChapter, getChapters, getChapter };
+
+const deleteChapter = [
+  param("id", "Invalid chapter ID").isMongoId(),
+  asyncHandler(async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const chapterId = req.params.id;
+
+    const deletedChapter = await database.deleteChapter(chapterId);
+
+    if (!deletedChapter) {
+      return res.status(404).json({ message: "Chapter not found" });
+    }
+
+    res
+      .status(200)
+      .json({
+        message: "The chapter was successfully deleted.",
+        data: deletedChapter,
+      });
+  }),
+];
+module.exports = { addChapter, getChapters, getChapter, deleteChapter };

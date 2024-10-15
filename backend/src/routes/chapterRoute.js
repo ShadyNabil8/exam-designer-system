@@ -150,8 +150,97 @@ chapterRouter.get("/", chapterController.getChapters);
 // GET a single chapter by ID
 chapterRouter.get("/:id", chapterController.getChapter);
 
-// // DELETE a single chapter by ID
-// chapterRouter.delete("/:id", chapterController.deleteChapter);
+/**
+ * @swagger
+ * /api/chapters/{id}:
+ *   delete:
+ *     summary: Delete a chapter by its ID
+ *     tags: [Chapters]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The MongoDB ObjectId of the chapter to delete
+ *     responses:
+ *       200:
+ *         description: The chapter was successfully deleted
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "The chapter was successfully deleted."
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     _id:
+ *                       type: string
+ *                       description: The unique identifier of the deleted chapter
+ *                       example: "60d21b4667d0d8992e610c90"
+ *                     name:
+ *                       type: string
+ *                       description: The name of the chapter
+ *                       example: "Chapter C"
+ *                     number:
+ *                       type: integer
+ *                       description: The chapter number
+ *                       example: 3
+ *                     courseId:
+ *                       type: string
+ *                       description: The MongoDB ObjectId of the course to which the chapter belonged
+ *                       example: "60d21b4667d0d8992e610c85"
+ *                     __v:
+ *                       type: integer
+ *                       description: The version key of the chapter document
+ *                       example: 0
+ *       400:
+ *         description: Invalid chapter ID
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 errors:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       msg:
+ *                         type: string
+ *                         example: "Invalid chapter ID"
+ *                       param:
+ *                         type: string
+ *                         example: "id"
+ *                       path:
+ *                         type: string
+ *                         example: "params"
+ *       404:
+ *         description: Chapter not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Chapter not found"
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Internal Server Error"
+ */
+// DELETE a single chapter by ID
+chapterRouter.delete("/:id", chapterController.deleteChapter);
 
 // // UPDATE a single chapter by ID
 // chapterRouter.put("/:id", chapterController.updateChapter);

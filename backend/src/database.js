@@ -54,13 +54,18 @@ async function addChapter(name, number, courseId) {
 }
 
 async function getChapters() {
-  const chapters = (await chapterModel.find({})).lean();
+  const chapters = await chapterModel.find({}).lean();
   return chapters;
 }
 
 async function getChapter(id) {
   const chapter = await chapterModel.findById(id).populate("course").lean();
   return chapter;
+}
+
+async function deleteChapter(id) {
+  const deletedChapter = await chapterModel.findByIdAndDelete(id);
+  return deletedChapter;
 }
 
 module.exports = {
@@ -73,4 +78,5 @@ module.exports = {
   addChapter,
   getChapters,
   getChapter,
+  deleteChapter,
 };
