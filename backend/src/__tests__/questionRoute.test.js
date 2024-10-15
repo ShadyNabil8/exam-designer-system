@@ -202,3 +202,75 @@ describe("GET /api/questions", () => {
     expect(response.body.message).toEqual("Database error"); // Standard error message for server errors
   });
 });
+
+describe("GET /api/questions/:id", () => {
+  it("should return 200 and the question object for a valid id", async () => {
+    const mockQuestion = {
+      _id: "670e7caf911a126cb71ea37d",
+      chapterId: "670e790b7ba09c93577312ae",
+      text: "What is the capital of France?",
+      choices: ["Paris", "London", "Berlin"],
+      correctAnswer: "Paris",
+      difficulty: "simple",
+      objective: "reminding",
+      chapter: {
+        _id: "670e790b7ba09c93577312ae",
+        courseId: "670e78f77ba09c93577312a9",
+        name: "Introduction to CS50",
+        number: 1,
+        course: {
+          _id: "670e78f77ba09c93577312a9",
+          name: "CS50",
+          numberOfChapters: 1,
+        },
+      },
+    };
+
+    database.getQuestion.mockResolvedValue(mockQuestion);
+
+    const response = await request(app).get(
+      `/api/questions/${mockQuestion._id}`
+    );
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toEqual({
+      message: "The question was successfully fetched.",
+      data: mockQuestion,
+    });
+  });
+
+  it("should return 400 for an invalid question id", async () => {
+    const invalidId = "invalid-id";
+
+    const response = await request(app).get(`/api/questions/${invalidId}`);
+
+    expect(response.statusCode).toBe(400);
+    expect(Array.isArray(response.body.errors)).toBe(true);
+    expect(response.body.errors.length).toBeGreaterThan(0);
+    expect(response.body.errors[0].msg).toBe("Invalid question ID");
+  });
+
+  it("should return 404 if the question is not found", async () => {
+    const validId = "60d21b4667d0d8992e610c85"; // Use a valid MongoDB ObjectId
+
+    database.getQuestion.mockResolvedValue(null); // Mock no chapter found
+
+    const response = await request(app).get(`/api/questions/${validId}`);
+
+    expect(response.statusCode).toBe(404);
+    expect(response.body).toEqual({
+      message: "Question not found",
+    });
+  });
+
+  it("should handle errors from the database", async () => {
+    const mockError = new Error("Database error");
+    database.getQuestion.mockRejectedValue(mockError);
+
+    const validId = "60d21b4667d0d8992e610c85"; // Use a valid MongoDB ObjectId
+    const response = await request(app).get(`/api/questions/${validId}`);
+
+    expect(response.statusCode).toBe(500);
+    expect(response.body.message).toBe("Database error");
+  });
+});

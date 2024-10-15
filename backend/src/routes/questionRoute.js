@@ -67,6 +67,141 @@ const questionController = require("../controllers/questionController");
 // GET all questions
 questionRouter.get("/", questionController.getQuestions);
 
+/**
+ * @swagger
+ * /api/questions/{id}:
+ *   get:
+ *     summary: Retrieve a question by its ID
+ *     tags: [Questions]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The MongoDB ObjectId of the question
+ *     responses:
+ *       200:
+ *         description: The question was successfully fetched
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "The question was successfully fetched."
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     _id:
+ *                       type: string
+ *                       description: The unique identifier of the question
+ *                       example: "670e7caf911a126cb71ea37d"
+ *                     text:
+ *                       type: string
+ *                       description: The question text
+ *                       example: "What is the capital of France?"
+ *                     choices:
+ *                       type: array
+ *                       description: The possible answers for the question
+ *                       items:
+ *                         type: string
+ *                       example: ["Paris", "London", "Berlin"]
+ *                     correctAnswer:
+ *                       type: string
+ *                       description: The correct answer
+ *                       example: "Paris"
+ *                     difficulty:
+ *                       type: string
+ *                       description: The difficulty level of the question
+ *                       enum: ["simple", "difficult"]
+ *                       example: "simple"
+ *                     objective:
+ *                       type: string
+ *                       description: The objective the question is targeting
+ *                       enum: ["reminding", "understanding", "creativity"]
+ *                       example: "reminding"
+ *                     chapterId:
+ *                       type: string
+ *                       description: The MongoDB ObjectId of the chapter the question belongs to
+ *                       example: "670e790b7ba09c93577312ae"
+ *                     chapter:
+ *                       type: object
+ *                       properties:
+ *                         _id:
+ *                           type: string
+ *                           description: The unique identifier of the chapter
+ *                           example: "670e790b7ba09c93577312ae"
+ *                         courseId:
+ *                           type: string
+ *                           description: The MongoDB ObjectId of the course to which the chapter belongs
+ *                           example: "670e78f77ba09c93577312a9"
+ *                         name:
+ *                           type: string
+ *                           description: The name of the chapter
+ *                           example: "Introduction to CS50"
+ *                         number:
+ *                           type: integer
+ *                           description: The chapter number
+ *                           example: 1
+ *                         course:
+ *                           type: object
+ *                           properties:
+ *                             _id:
+ *                               type: string
+ *                               description: The unique identifier of the course
+ *                               example: "670e78f77ba09c93577312a9"
+ *                             name:
+ *                               type: string
+ *                               description: The name of the course
+ *                               example: "CS50"
+ *                             numberOfChapters:
+ *                               type: integer
+ *                               description: The number of chapters in the course
+ *                               example: 1
+ *       400:
+ *         description: Invalid question ID
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 errors:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       msg:
+ *                         type: string
+ *                         example: "Invalid question ID"
+ *                       param:
+ *                         type: string
+ *                         example: "id"
+ *                       location:
+ *                         type: string
+ *                         example: "params"
+ *       404:
+ *         description: Question not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Question not found"
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Internal Server Error"
+ */
 // GET a single question by ID
 questionRouter.get("/:id", questionController.getQuestion);
 
