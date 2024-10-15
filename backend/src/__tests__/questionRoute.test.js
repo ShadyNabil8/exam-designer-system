@@ -151,3 +151,54 @@ describe("POST /api/questions", () => {
   });
 });
 
+describe("GET /api/questions", () => {
+  it("should return 200 and a list of questions", async () => {
+    const mockQuestions = [
+      {
+        _id: "60d21b4667d0d8992e610c90",
+        text: "What is the capital of France?",
+        choices: ["Paris", "London", "Berlin"],
+        correctAnswer: "Paris",
+        difficulty: "simple",
+        objective: "reminding",
+        chapterId: "60d21b4667d0d8992e610c85",
+      },
+      {
+        _id: "60d21b4667d0d8992e610c91",
+        text: "What is 2 + 2?",
+        choices: ["3", "4", "5"],
+        correctAnswer: "4",
+        difficulty: "simple",
+        objective: "understanding",
+        chapterId: "60d21b4667d0d8992e610c86",
+      },
+    ];
+
+    database.getQuestions.mockResolvedValue(mockQuestions);
+
+    const response = await request(app).get("/api/questions");
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body.data).toEqual(mockQuestions);
+    expect(response.body.data.length).toBe(2); // Ensure the length is 2
+  });
+
+  it("should return 200 with an empty list when no questions exist", async () => {
+    database.getQuestions.mockResolvedValue([]);
+
+    const response = await request(app).get("/api/questions");
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body.data).toEqual([]);
+    expect(response.body.data.length).toBe(0);
+  });
+
+  it("should return 500 if there is a server error", async () => {
+    database.getQuestions.mockRejectedValue(new Error("Database error"));
+
+    const response = await request(app).get("/api/questions");
+
+    expect(response.statusCode).toBe(500);
+    expect(response.body.message).toEqual("Database error"); // Standard error message for server errors
+  });
+});

@@ -30,7 +30,7 @@ chapterSchema.set("toJSON", { virtuals: true });
 
 chapterSchema.pre("save", async function (next) {
   try {
-    // Use mongoose.model() to reference the Course model dynamically to solve circular dependency
+    // I used mongoose.model() to reference the Course model dynamically to solve circular dependency
     const courseModel = mongoose.model("Course");
     await courseModel.findByIdAndUpdate(this.courseId, {
       $inc: { numberOfChapters: 1 }, // NOTE: $inc operator is atomic

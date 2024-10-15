@@ -2,6 +2,68 @@ const express = require("express");
 const questionRouter = express.Router();
 const questionController = require("../controllers/questionController");
 
+/**
+ * @swagger
+ * /api/questions:
+ *   get:
+ *     summary: Retrieve a list of all questions
+ *     tags: [Questions]
+ *     responses:
+ *       200:
+ *         description: A list of questions
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       _id:
+ *                         type: string
+ *                         description: The unique identifier of the question
+ *                         example: "60d21b4667d0d8992e610c90"
+ *                       text:
+ *                         type: string
+ *                         description: The text of the question
+ *                         example: "What is the capital of France?"
+ *                       choices:
+ *                         type: array
+ *                         description: The possible answers for the question
+ *                         items:
+ *                           type: string
+ *                         example: ["Paris", "London", "Berlin"]
+ *                       correctAnswer:
+ *                         type: string
+ *                         description: The correct answer
+ *                         example: "Paris"
+ *                       difficulty:
+ *                         type: string
+ *                         description: The difficulty level of the question
+ *                         enum: ["simple", "difficult"]
+ *                         example: "simple"
+ *                       objective:
+ *                         type: string
+ *                         description: The objective the question is targeting
+ *                         enum: ["reminding", "understanding", "creativity"]
+ *                         example: "reminding"
+ *                       chapterId:
+ *                         type: string
+ *                         description: The MongoDB ObjectId of the chapter the question belongs to
+ *                         example: "60d21b4667d0d8992e610c85"
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Internal Server Error"
+ */
 // GET all questions
 questionRouter.get("/", questionController.getQuestions);
 
