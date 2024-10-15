@@ -6,7 +6,12 @@ const addQuestion = [
   body("chapterId", "Invalid chapter ID").isMongoId(),
   body("text").isLength({ min: 1 }).withMessage("Question text is required!"),
   body("choices")
-    .isArray({ min: 3 })
+    .custom((value) => {
+      if (value.length !== 3) {
+        throw new Error("Choices must contain exactly 3 items.");
+      }
+      return true;
+    })
     .withMessage("Choices must be an array with at least 3 items."),
   body("correctAnswer")
     .isString()
@@ -126,7 +131,12 @@ const updateQuestion = [
   body("chapterId", "Invalid chapter ID").isMongoId(),
   body("text").isLength({ min: 1 }).withMessage("Question text is required!"),
   body("choices")
-    .isArray({ min: 3 })
+    .custom((value) => {
+      if (value.length !== 3) {
+        throw new Error("Choices must contain exactly 3 items.");
+      }
+      return true;
+    })
     .withMessage("Choices must be an array with at least 3 items."),
   body("correctAnswer")
     .isString()
