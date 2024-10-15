@@ -70,8 +70,14 @@ async function getChapter(id) {
   return chapter;
 }
 
-async function isChapterExists(number, courseId) {
-  const chapterExists = await chapterModel.exists({ courseId, number });
+async function isChapterExists(number, courseId, chapterId = null) {
+  const query = { courseId, number };
+
+  if (chapterId) {
+    query._id = { $ne: chapterId };
+  }
+
+  const chapterExists = await chapterModel.exists(query);
   return chapterExists;
 }
 
