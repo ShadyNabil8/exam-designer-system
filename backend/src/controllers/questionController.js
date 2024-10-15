@@ -40,11 +40,18 @@ const addQuestion = [
     const { chapterId, text, choices, correctAnswer, difficulty, objective } =
       req.body;
 
-    // Ensure that this chapter hasn't reached the limit of the allowed number of questions.
-    const questionCount = await database.getNumberOfQuestion(chapterId);
+    const [chapterExists, questionCount] = await Promise.all([
+      database.isChapterExistsById(chapterId),
+      // Ensure that this chapter hasn't reached the limit of the allowed number of questions.
+      database.getNumberOfQuestion(chapterId),
+    ]);
+
+    if (!chapterExists) {
+      return res.status(404).json({ message: "Chapter not found!" });
+    }
 
     if (questionCount >= MAX_NUMBER_OF_QUESTION) {
-      res.status(400).json({
+      return res.status(400).json({
         message: "This chapter reached the limit for the number of questions",
       });
     }

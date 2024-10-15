@@ -69,6 +69,11 @@ async function isChapterExists(number, courseId) {
   return chapterExists;
 }
 
+async function isChapterExistsById(chapterId) {
+  const chapterExists = await chapterModel.exists({ _id: chapterId });
+  return chapterExists;
+}
+
 async function deleteChapter(id) {
   const deletedChapter = await chapterModel.findByIdAndDelete(id);
   return deletedChapter;
@@ -118,6 +123,7 @@ module.exports = {
   getChapters,
   getChapter,
   isChapterExists,
+  isChapterExistsById,
   deleteChapter,
   updateChapter,
   addQuestion,

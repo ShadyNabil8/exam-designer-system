@@ -96,6 +96,7 @@ describe("POST /api/questions", () => {
 
   it("should return 400 if the chapter reached the limit of questions", async () => {
     database.getNumberOfQuestion.mockResolvedValue(13);
+    database.isChapterExistsById.mockResolvedValue(true);
 
     const response = await request(app)
       .post("/api/questions")
@@ -107,8 +108,22 @@ describe("POST /api/questions", () => {
     );
   });
 
+  it("should return 404 if the chapter not found", async () => {
+    database.getNumberOfQuestion.mockResolvedValue(1);
+    database.isChapterExistsById.mockResolvedValue(false);
+
+    const response = await request(app)
+      .post("/api/questions")
+      .send(validQuestion);
+
+    expect(response.statusCode).toBe(404);
+    expect(response.body.message).toEqual("Chapter not found!");
+  });
+
   it("should return 201 and create a new question if valid data is provided", async () => {
     database.getNumberOfQuestion.mockResolvedValue(2); // Below the limit
+    database.isChapterExistsById.mockResolvedValue(true);
+
     database.addQuestion.mockResolvedValue({
       _id: "60d21b4667d0d8992e610c90",
       ...validQuestion,
@@ -121,5 +136,17 @@ describe("POST /api/questions", () => {
     expect(response.statusCode).toBe(201);
     expect(response.body.message).toEqual("Question added successfully.");
     expect(response.body.data.text).toEqual(validQuestion.text);
+  });
+
+  it("should handle errors from the database", async () => {
+    const mockError = new Error("Database error");
+    database.addQuestion.mockRejectedValue(mockError);
+
+    const response = await request(app)
+      .post("/api/questions")
+      .send(validQuestion);
+
+    expect(response.statusCode).toBe(500);
+    expect(response.body.message).toBe("Database error");
   });
 });
