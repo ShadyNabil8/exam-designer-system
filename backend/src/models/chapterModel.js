@@ -28,4 +28,32 @@ chapterSchema.virtual("course", {
 chapterSchema.set("toObject", { virtuals: true });
 chapterSchema.set("toJSON", { virtuals: true });
 
+chapterSchema.pre("save", async function (next) {
+  try {
+    // Use mongoose.model() to reference the Course model dynamically to solve circular dependency
+    const courseModel = mongoose.model("Course");
+    await courseModel.findByIdAndUpdate(this.courseId, {
+      $inc: { numberOfChapters: 1 }, // NOTE: $inc operator is atomic
+    });
+    next();
+  } catch (error) {
+    next(error);
+  }
+});
+
+chapterSchema.pre("findOneAndDelete", async function (next) {
+  try {
+    const chapter = await this.model.findOne(this.getQuery());
+    if (chapter) {
+      const courseModel = mongoose.model("Course");
+      await courseModel.findByIdAndUpdate(chapter.courseId, {
+        $inc: { numberOfChapters: -1 },
+      });
+    }
+    next();
+  } catch (error) {
+    next(error);
+  }
+});
+
 module.exports = mongoose.model("Chapter", chapterSchema);

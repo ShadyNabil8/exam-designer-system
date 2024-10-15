@@ -12,7 +12,6 @@ describe("POST /courses", () => {
   it("should return 400 if the name of the course is empty", async () => {
     const response = await request(app).post("/api/courses").send({
       name: "",
-      numberOfChapters: 5,
     });
 
     expect(response.statusCode).toBe(400);
@@ -21,33 +20,18 @@ describe("POST /courses", () => {
     expect(response.body.errors[0].msg).toEqual("Course name is required!");
   });
 
-  it("should return 400 if the number of courses isn't positive integer", async () => {
-    const response = await request(app).post("/api/courses").send({
-      name: "CS50",
-      numberOfChapters: "n",
-    });
-
-    expect(response.statusCode).toBe(400);
-    expect(Array.isArray(response.body.errors)).toBe(true);
-    expect(response.body.errors.length).toBeGreaterThan(0);
-    expect(response.body.errors[0].msg).toEqual(
-      "Number of Chapters is required and must be a valid positive integer!"
-    );
-  });
-
   it("should return 200 course is successfully added", async () => {
     // Mocking the addedCourse object
     const mockCourse = {
       id: "mockId",
       name: "CS50",
-      numberOfChapters: 5,
+      numberOfChapters: 0,
     };
 
     database.addCourse.mockResolvedValue(mockCourse);
 
     const response = await request(app).post("/api/courses").send({
       name: "CS50",
-      numberOfChapters: 5,
     });
 
     expect(response.statusCode).toBe(200);
@@ -64,7 +48,6 @@ describe("POST /courses", () => {
 
     const response = await request(app).post("/api/courses").send({
       name: "CS50",
-      numberOfChapters: 5,
     });
 
     expect(response.statusCode).toBe(500);
@@ -75,8 +58,8 @@ describe("POST /courses", () => {
 describe("GET /api/courses", () => {
   it("should return a list of courses", async () => {
     const mockCourses = [
-      { id: "1", name: "CS50", numberOfChapters: 5 },
-      { id: "2", name: "Math 101", numberOfChapters: 3 },
+      { id: "1", name: "CS50", numberOfChapters: 0 },
+      { id: "2", name: "Math 101", numberOfChapters: 0 },
     ];
 
     database.getCourses.mockResolvedValue(mockCourses);
@@ -222,7 +205,7 @@ describe("PUT /api/courses/:id", () => {
 
     const response = await request(app)
       .put(`/api/courses/${mockUpdatedCourse.id}`)
-      .send({ name: "CS50", numberOfChapters: 5 });
+      .send({ name: "CS50" });
 
     expect(response.statusCode).toBe(200);
     expect(response.body).toEqual({
@@ -247,29 +230,12 @@ describe("PUT /api/courses/:id", () => {
 
     const response = await request(app).put(`/api/courses/${validId}`).send({
       name: "",
-      numberOfChapters: 5,
     });
 
     expect(response.statusCode).toBe(400);
     expect(Array.isArray(response.body.errors)).toBe(true);
     expect(response.body.errors.length).toBeGreaterThan(0);
     expect(response.body.errors[0].msg).toEqual("Course name is required!");
-  });
-
-  it("should return 400 if the number of courses isn't positive integer", async () => {
-    const validId = "60d21b4667d0d8992e610c85"; // Use a valid MongoDB ObjectId
-
-    const response = await request(app).put(`/api/courses/${validId}`).send({
-      name: "CS50",
-      numberOfChapters: "n",
-    });
-
-    expect(response.statusCode).toBe(400);
-    expect(Array.isArray(response.body.errors)).toBe(true);
-    expect(response.body.errors.length).toBeGreaterThan(0);
-    expect(response.body.errors[0].msg).toEqual(
-      "Number of Chapters is required and must be a valid positive integer!"
-    );
   });
 
   // Test case: Course not found in database
@@ -280,7 +246,7 @@ describe("PUT /api/courses/:id", () => {
 
     const response = await request(app)
       .put(`/api/courses/${validId}`)
-      .send({ name: "CS50", numberOfChapters: 5 });
+      .send({ name: "CS50" });
 
     expect(response.statusCode).toBe(404);
     expect(response.body).toEqual({
@@ -295,7 +261,7 @@ describe("PUT /api/courses/:id", () => {
     const validId = "60d21b4667d0d8992e610c85"; // Use a valid MongoDB ObjectId
     const response = await request(app)
       .put(`/api/courses/${validId}`)
-      .send({ name: "CS50", numberOfChapters: 5 });
+      .send({ name: "CS50" });
 
     expect(response.statusCode).toBe(500);
     expect(response.body.message).toBe("Database error");

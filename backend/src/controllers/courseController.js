@@ -8,12 +8,6 @@ const addCourse = [
     .trim()
     .escape()
     .withMessage("Course name is required!"),
-  body("numberOfChapters")
-    .isInt({ min: 1 }) // Ensure it's a positive integer
-    .withMessage(
-      "Number of Chapters is required and must be a valid positive integer!"
-    )
-    .toInt(),
   asyncHandler(async (req, res) => {
     const errors = validationResult(req);
 
@@ -89,12 +83,6 @@ const updateCourse = [
     .trim()
     .escape()
     .withMessage("Course name is required!"),
-  body("numberOfChapters")
-    .isInt({ min: 1 }) // Ensure it's a positive integer
-    .withMessage(
-      "Number of Chapters is required and must be a valid positive integer!"
-    )
-    .toInt(),
   asyncHandler(async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {

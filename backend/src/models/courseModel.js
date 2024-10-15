@@ -8,7 +8,7 @@ const courseSchema = new mongoose.Schema({
   },
   numberOfChapters: {
     type: Number,
-    required: true,
+    default: 0,
   },
 });
 

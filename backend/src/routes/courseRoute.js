@@ -229,10 +229,6 @@ courseRouter.delete("/:id", courseController.deleteCourse);
  *                 type: string
  *                 description: The name of the course
  *                 example: "CS50"
- *               numberOfChapters:
- *                 type: integer
- *                 description: The number of chapters in the course (must be a positive integer)
- *                 example: 5
  *     responses:
  *       200:
  *         description: The course was successfully updated
@@ -321,10 +317,6 @@ courseRouter.put("/:id", courseController.updateCourse);
  *                 type: string
  *                 description: The name of the course
  *                 example: "CS50"
- *               numberOfChapters:
- *                 type: integer
- *                 description: The number of chapters in the course (must be a positive integer)
- *                 example: 5
  *     responses:
  *       200:
  *         description: The course was successfully added
