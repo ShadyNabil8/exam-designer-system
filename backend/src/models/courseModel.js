@@ -15,9 +15,22 @@ const courseSchema = new mongoose.Schema({
 // Query middleware for findOneAndDelete (e.g., courseModel.findOneAndDelete)
 courseSchema.pre("findOneAndDelete", async function (next) {
   try {
-    const courseId = this.getQuery()._id; // Get the course ID from the query
+    const courseId = this.getQuery()._id;
 
-    await chapterModel.deleteMany({ courseId });
+    const chapters = await mongoose.model("Chapter").find({ courseId }).lean();
+
+    if (chapters.length > 0) {
+      // Collect all chapter IDs
+      const chapterIds = chapters.map((chapter) => chapter._id);
+
+      // Execute all deletions in parallel: delete chapters and associated questions
+      await Promise.all([
+        mongoose.model("Chapter").deleteMany({ courseId }),
+        mongoose
+          .model("Question")
+          .deleteMany({ chapterId: { $in: chapterIds } }),
+      ]);
+    }
 
     next();
   } catch (error) {
