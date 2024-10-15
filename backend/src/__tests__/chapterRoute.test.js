@@ -137,3 +137,64 @@ describe("GET /api/chapters", () => {
     expect(response.body.message).toBe("Database error");
   });
 });
+
+describe("GET /api/chapters/:id", () => {
+  it("should return 200 and the chapter object for a valid id", async () => {
+    const mockChapter = {
+      id: "60d21b4667d0d8992e610c85",
+      name: "CS50",
+      numberOfChapters: 5,
+      course: {
+        id: "670d2c7249825f9c3cd678bc",
+        name: "CS50",
+        numberOfChapters: 5,
+      },
+    };
+
+    database.getChapter.mockResolvedValue(mockChapter);
+
+    const response = await request(app).get(`/api/chapters/${mockChapter.id}`);
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toEqual({
+      message: "The chapter was successfully fetched.",
+      data: mockChapter,
+    });
+  });
+
+  it("should return 400 for an invalid chapter id", async () => {
+    const invalidId = "invalid-id";
+
+    const response = await request(app).get(`/api/chapters/${invalidId}`);
+
+    expect(response.statusCode).toBe(400);
+    expect(Array.isArray(response.body.errors)).toBe(true);
+    expect(response.body.errors.length).toBeGreaterThan(0);
+    expect(response.body.errors[0].msg).toBe("Invalid chapter ID");
+  });
+
+  // Test case: Chapter not found in database
+  it("should return 404 if the chapter is not found", async () => {
+    const validId = "60d21b4667d0d8992e610c85"; // Use a valid MongoDB ObjectId
+
+    database.getChapter.mockResolvedValue(null); // Mock no chapter found
+
+    const response = await request(app).get(`/api/chapters/${validId}`);
+
+    expect(response.statusCode).toBe(404);
+    expect(response.body).toEqual({
+      message: "Chapter not found",
+    });
+  });
+
+  it("should handle errors from the database", async () => {
+    const mockError = new Error("Database error");
+    database.getChapter.mockRejectedValue(mockError);
+
+    const validId = "60d21b4667d0d8992e610c85"; // Use a valid MongoDB ObjectId
+    const response = await request(app).get(`/api/chapters/${validId}`);
+
+    expect(response.statusCode).toBe(500);
+    expect(response.body.message).toBe("Database error");
+  });
+});

@@ -22,12 +22,12 @@ async function addCourse(name, numberOfChapters) {
 }
 
 async function getCourses() {
-  const courses = await courseModel.find({});
+  const courses = await courseModel.find({}).lean();
   return courses;
 }
 
 async function getCourse(id) {
-  const course = await courseModel.findById(id);
+  const course = await courseModel.findById(id).lean();
   return course;
 }
 
@@ -54,8 +54,13 @@ async function addChapter(name, number, courseId) {
 }
 
 async function getChapters() {
-  const chapters = await chapterModel.find({});
+  const chapters = (await chapterModel.find({})).lean();
   return chapters;
+}
+
+async function getChapter(id) {
+  const chapter = await chapterModel.findById(id).populate("course").lean();
+  return chapter;
 }
 
 module.exports = {
@@ -67,4 +72,5 @@ module.exports = {
   updateCourse,
   addChapter,
   getChapters,
+  getChapter,
 };

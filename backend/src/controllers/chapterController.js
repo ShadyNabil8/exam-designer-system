@@ -44,4 +44,27 @@ const getChapters = asyncHandler(async (req, res) => {
 
   res.status(200).json({ data: chapters });
 });
-module.exports = { addChapter, getChapters };
+
+const getChapter = [
+  param("id", "Invalid chapter ID").isMongoId(),
+  asyncHandler(async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const chapterId = req.params.id;
+
+    const chapter = await database.getChapter(chapterId);
+
+    if (!chapter) {
+      return res.status(404).json({ message: "Chapter not found" });
+    }
+
+    res.status(200).json({
+      message: "The chapter was successfully fetched.",
+      data: chapter,
+    });
+  }),
+];
+module.exports = { addChapter, getChapters, getChapter };

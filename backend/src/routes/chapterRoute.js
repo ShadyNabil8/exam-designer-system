@@ -51,8 +51,104 @@ const chapterController = require("../controllers/chapterController");
 // GET all chapters
 chapterRouter.get("/", chapterController.getChapters);
 
-// // GET a single chapter by ID
-// chapterRouter.get("/:id", chapterController.getChapter);
+/**
+ * @swagger
+ * /api/chapters/{id}:
+ *   get:
+ *     summary: Retrieve a chapter by its ID
+ *     tags: [Chapters]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The MongoDB ObjectId of the chapter
+ *     responses:
+ *       200:
+ *         description: The chapter was successfully fetched
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "The chapter was successfully fetched."
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     _id:
+ *                       type: string
+ *                       description: The unique identifier of the chapter
+ *                       example: "670d79a9ae472f7c22fcc7ba"
+ *                     name:
+ *                       type: string
+ *                       description: The name of the chapter
+ *                       example: "chapter C"
+ *                     number:
+ *                       type: integer
+ *                       description: The chapter number
+ *                       example: 5
+ *                     course:
+ *                       type: object
+ *                       properties:
+ *                         _id:
+ *                           type: string
+ *                           description: The unique identifier of the course
+ *                           example: "670d2c7249825f9c3cd678bc"
+ *                         name:
+ *                           type: string
+ *                           description: The name of the course
+ *                           example: "CS50_NEW"
+ *                         numberOfChapters:
+ *                           type: integer
+ *                           description: The number of chapters in the course
+ *                           example: 5
+ *       400:
+ *         description: Invalid chapter ID
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 errors:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       msg:
+ *                         type: string
+ *                         example: "Invalid chapter ID"
+ *                       param:
+ *                         type: string
+ *                         example: "id"
+ *                       path:
+ *                         type: string
+ *                         example: "params"
+ *       404:
+ *         description: Chapter not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Chapter not found"
+ *       500:
+ *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Internal Server Error"
+ */
+// GET a single chapter by ID
+chapterRouter.get("/:id", chapterController.getChapter);
 
 // // DELETE a single chapter by ID
 // chapterRouter.delete("/:id", chapterController.deleteChapter);
