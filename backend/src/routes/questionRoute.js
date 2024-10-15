@@ -205,6 +205,107 @@ questionRouter.get("/", questionController.getQuestions);
 // GET a single question by ID
 questionRouter.get("/:id", questionController.getQuestion);
 
+/**
+ * @swagger
+ * /api/questions/{id}:
+ *   delete:
+ *     summary: Delete a question by its ID
+ *     tags: [Questions]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The MongoDB ObjectId of the question to delete
+ *     responses:
+ *       200:
+ *         description: The question was successfully deleted
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "The question was successfully deleted."
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     _id:
+ *                       type: string
+ *                       description: The unique identifier of the deleted question
+ *                       example: "60d21b4667d0d8992e610c85"
+ *                     text:
+ *                       type: string
+ *                       description: The text of the question
+ *                       example: "What is the capital of France?"
+ *                     choices:
+ *                       type: array
+ *                       items:
+ *                         type: string
+ *                       description: The possible answers for the question
+ *                       example: ["Paris", "London", "Berlin"]
+ *                     correctAnswer:
+ *                       type: string
+ *                       description: The correct answer
+ *                       example: "Paris"
+ *                     difficulty:
+ *                       type: string
+ *                       description: The difficulty level of the question
+ *                       enum: ["simple", "difficult"]
+ *                       example: "simple"
+ *                     objective:
+ *                       type: string
+ *                       description: The objective of the question
+ *                       enum: ["reminding", "understanding", "creativity"]
+ *                       example: "reminding"
+ *                     chapterId:
+ *                       type: string
+ *                       description: The MongoDB ObjectId of the chapter the question belongs to
+ *                       example: "60d21b4667d0d8992e610c80"
+ *       400:
+ *         description: Invalid question ID
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 errors:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       msg:
+ *                         type: string
+ *                         example: "Invalid question ID"
+ *                       param:
+ *                         type: string
+ *                         example: "id"
+ *                       location:
+ *                         type: string
+ *                         example: "params"
+ *       404:
+ *         description: Question not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Question not found"
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Internal Server Error"
+ */
 // DELETE a single question by ID
 questionRouter.delete("/:id", questionController.deleteQuestion);
 

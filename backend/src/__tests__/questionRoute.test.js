@@ -284,3 +284,60 @@ describe("GET /api/questions/:id", () => {
     expect(response.body.message).toBe("Database error");
   });
 });
+
+describe("DELETE /api/questions/:id", () => {
+  it("should return 400 if question ID is invalid", async () => {
+    const response = await request(app)
+      .delete("/api/questions/invalid-id") // Invalid MongoDB ObjectId
+      .send();
+
+    expect(response.statusCode).toBe(400);
+    expect(response.body.errors[0].msg).toEqual("Invalid question ID");
+  });
+
+  it("should return 404 if question is not found", async () => {
+    database.deleteQuestion.mockResolvedValue(null);
+
+    const response = await request(app)
+      .delete("/api/questions/60d21b4667d0d8992e610c85")
+      .send();
+
+    expect(response.statusCode).toBe(404);
+    expect(response.body.message).toEqual("Question not found");
+  });
+
+  it("should return 200 and delete the question successfully", async () => {
+    const mockDeletedQuestion = {
+      _id: "60d21b4667d0d8992e610c85",
+      text: "What is the capital of France?",
+      choices: ["Paris", "London", "Berlin"],
+      correctAnswer: "Paris",
+      difficulty: "simple",
+      objective: "reminding",
+      chapterId: "60d21b4667d0d8992e610c80",
+    };
+
+    database.deleteQuestion.mockResolvedValue(mockDeletedQuestion);
+
+    const response = await request(app)
+      .delete("/api/questions/60d21b4667d0d8992e610c85")
+      .send();
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body.message).toEqual(
+      "The question was successfully deleted."
+    );
+    expect(response.body.data).toEqual(mockDeletedQuestion);
+  });
+
+  it("should return 500 if there is a server error", async () => {
+    database.deleteQuestion.mockRejectedValue(new Error("Database error"));
+
+    const response = await request(app)
+      .delete("/api/questions/60d21b4667d0d8992e610c85")
+      .send();
+
+    expect(response.statusCode).toBe(500);
+    expect(response.body.message).toEqual("Database error");
+  });
+});
