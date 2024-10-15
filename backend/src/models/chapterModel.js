@@ -14,6 +14,10 @@ const chapterSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  maxNumberOfQuestions: {
+    type: Number,
+    required: true,
+  },
 });
 
 // Virtual to alias courseId as course when populated

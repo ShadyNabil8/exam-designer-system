@@ -2,9 +2,6 @@ const asyncHandler = require("express-async-handler");
 const { body, param, validationResult } = require("express-validator");
 const database = require("../database");
 
-// Max number of question per chapter.
-const MAX_NUMBER_OF_QUESTION = 12;
-
 const addQuestion = [
   body("chapterId", "Invalid chapter ID").isMongoId(),
   body("text").isLength({ min: 1 }).withMessage("Question text is required!"),
@@ -40,17 +37,17 @@ const addQuestion = [
     const { chapterId, text, choices, correctAnswer, difficulty, objective } =
       req.body;
 
-    const [chapterExists, questionCount] = await Promise.all([
-      database.isChapterExistsById(chapterId),
+    const [chapter, questionCount] = await Promise.all([
+      database.getChapter(chapterId),
       // Ensure that this chapter hasn't reached the limit of the allowed number of questions.
       database.getNumberOfQuestion(chapterId),
     ]);
 
-    if (!chapterExists) {
+    if (!chapter) {
       return res.status(404).json({ message: "Chapter not found!" });
     }
 
-    if (questionCount >= MAX_NUMBER_OF_QUESTION) {
+    if (questionCount >= chapter.maxNumberOfQuestions) {
       return res.status(400).json({
         message: "This chapter reached the limit for the number of questions",
       });

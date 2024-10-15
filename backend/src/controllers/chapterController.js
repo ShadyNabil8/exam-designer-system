@@ -14,6 +14,12 @@ const addChapter = [
       "Chapter number is required and must be a valid positive integer!"
     )
     .toInt(),
+  body("maxNumberOfQuestions")
+    .isInt({ min: 1 }) // Ensure it's a positive integer
+    .withMessage(
+      "Maximum number of questions is required and must be a valid positive integer!"
+    )
+    .toInt(),
   body("courseId").isMongoId().withMessage("Invalid course ID"),
   asyncHandler(async (req, res) => {
     const errors = validationResult(req);
@@ -22,7 +28,7 @@ const addChapter = [
       res.status(400).json({ errors: errors.array() });
     }
 
-    const { name, number, courseId } = req.body;
+    const { name, number, maxNumberOfQuestions, courseId } = req.body;
 
     const [courseExists, chapterExists] = await Promise.all([
       database.isCourseExistsById(courseId),
@@ -39,7 +45,12 @@ const addChapter = [
         .json({ message: "Chapter With the same number exists!" });
     }
 
-    const addedChapter = await database.addChapter(name, number, courseId);
+    const addedChapter = await database.addChapter(
+      name,
+      number,
+      maxNumberOfQuestions,
+      courseId
+    );
 
     res.status(200).json({
       message: "The chapter was successfully added.",
@@ -113,6 +124,12 @@ const updateChapter = [
       "Chapter number is required and must be a valid positive integer!"
     )
     .toInt(),
+  body("maxNumberOfQuestions")
+    .isInt({ min: 1 }) // Ensure it's a positive integer
+    .withMessage(
+      "Maximum number of questions is required and must be a valid positive integer!"
+    )
+    .toInt(),
   body("courseId").isMongoId().withMessage("Invalid course ID"),
   asyncHandler(async (req, res) => {
     const errors = validationResult(req);
@@ -121,19 +138,21 @@ const updateChapter = [
     }
 
     const chapterId = req.params.id;
-    const { number, courseId } = req.body;
+    const { number, maxNumberOfQuestions, courseId } = req.body;
 
-    const [chapterExists, updatedChapter] = await Promise.all([
-      database.isChapterExists(number, courseId),
-      database.updateChapter(chapterId, req.body),
-    ]);
-
+    const chapterExists = await database.isChapterExists(number, courseId);
     if (chapterExists) {
       return res
         .status(400)
         .json({ message: "Chapter With the same number exists!" });
     }
 
+    const updatedChapter = await database.updateChapter(
+      chapterId,
+      number,
+      maxNumberOfQuestions,
+      courseId
+    );
     if (!updatedChapter) {
       return res.status(404).json({ message: "Chapter not found" });
     }

@@ -13,6 +13,15 @@ describe("POST /api/questions", () => {
     difficulty: "simple",
     objective: "reminding",
   };
+  const validCourseId = "670e7206be802b686601b307";
+  const validChapterId = "60d21b4667d0d8992e610c85";
+  const validChapter = {
+    id: validChapterId,
+    name: "Dynamic Programming",
+    number: 5,
+    maxNumberOfQuestions: 5,
+    courseId: validCourseId,
+  };
 
   it("should return 400 if chapterId is invalid", async () => {
     const response = await request(app)
@@ -94,9 +103,9 @@ describe("POST /api/questions", () => {
     );
   });
 
-  it("should return 400 if the chapter reached the limit of questions", async () => {
-    database.getNumberOfQuestion.mockResolvedValue(13);
-    database.isChapterExistsById.mockResolvedValue(true);
+  it("should return 400 if the chapter exceed the limit of questions", async () => {
+    database.getNumberOfQuestion.mockResolvedValue(6); // Above the limit
+    database.getChapter.mockResolvedValue(validChapter);
 
     const response = await request(app)
       .post("/api/questions")
@@ -109,8 +118,8 @@ describe("POST /api/questions", () => {
   });
 
   it("should return 404 if the chapter not found", async () => {
-    database.getNumberOfQuestion.mockResolvedValue(1);
-    database.isChapterExistsById.mockResolvedValue(false);
+    database.getNumberOfQuestion.mockResolvedValue(1); // Below the limit
+    database.getChapter.mockResolvedValue(null);
 
     const response = await request(app)
       .post("/api/questions")
@@ -121,8 +130,8 @@ describe("POST /api/questions", () => {
   });
 
   it("should return 201 and create a new question if valid data is provided", async () => {
-    database.getNumberOfQuestion.mockResolvedValue(2); // Below the limit
-    database.isChapterExistsById.mockResolvedValue(true);
+    database.getNumberOfQuestion.mockResolvedValue(4); // Below the limit
+    database.getChapter.mockResolvedValue(validChapter);
 
     database.addQuestion.mockResolvedValue({
       _id: "60d21b4667d0d8992e610c90",
@@ -218,6 +227,7 @@ describe("GET /api/questions/:id", () => {
         courseId: "670e78f77ba09c93577312a9",
         name: "Introduction to CS50",
         number: 1,
+        maxNumberOfQuestions: 5,
         course: {
           _id: "670e78f77ba09c93577312a9",
           name: "CS50",

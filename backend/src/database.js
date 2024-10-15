@@ -50,10 +50,11 @@ async function isCourseExistsById(courseId) {
   return courseExists;
 }
 
-async function addChapter(name, number, courseId) {
+async function addChapter(name, number, maxNumberOfQuestions, courseId) {
   const addedChapter = await chapterModel.create({
     name,
     number,
+    maxNumberOfQuestions,
     courseId,
   });
   return addedChapter;
@@ -84,11 +85,17 @@ async function deleteChapter(id) {
   return deletedChapter;
 }
 
-async function updateChapter(id, updatedData) {
-  const updatedChapter = await chapterModel.findByIdAndUpdate(id, updatedData, {
-    new: true,
-    runValidators: false,
-  });
+async function updateChapter(id, number, maxNumberOfQuestions, courseId) {
+  const updatedChapter = await chapterModel.findByIdAndUpdate(
+    id,
+    number,
+    maxNumberOfQuestions,
+    courseId,
+    {
+      new: true,
+      runValidators: false,
+    }
+  );
   return updatedChapter;
 }
 
