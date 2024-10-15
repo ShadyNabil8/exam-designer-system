@@ -19,6 +19,9 @@ app.use("/api/courses", courseRouter);
 const chapterRouter = require("./routes/chapterRoute");
 app.use("/api/chapters", chapterRouter);
 
+const questionRouter = require("./routes/questionRoute");
+app.use("/api/questions", questionRouter);
+
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use(errorHandlerMiddleware);

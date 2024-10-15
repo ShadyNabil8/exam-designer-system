@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const courseModel = require("./models/courseModel");
 const chapterModel = require("./models/chapterModel");
+const questionModel = require("./models/questionModel");
 require("dotenv").config();
 
 const dbConnect = async () => {
@@ -80,6 +81,32 @@ async function updateChapter(id, updatedData) {
   });
   return updatedChapter;
 }
+
+async function addQuestion(
+  chapterId,
+  text,
+  choices,
+  correctAnswer,
+  difficulty,
+  objective
+) {
+  const addedQuestion = await questionModel.create({
+    chapterId,
+    text,
+    choices,
+    correctAnswer,
+    difficulty,
+    objective,
+  });
+  return addedQuestion;
+}
+
+// Get the number of questions in a certain chapter.
+async function getNumberOfQuestion(chapterId) {
+  const questionCount = await questionModel.countDocuments({ chapterId });
+  return questionCount;
+}
+
 module.exports = {
   dbConnect,
   addCourse,
@@ -93,4 +120,6 @@ module.exports = {
   isChapterExists,
   deleteChapter,
   updateChapter,
+  addQuestion,
+  getNumberOfQuestion,
 };
