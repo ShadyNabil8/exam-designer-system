@@ -85,12 +85,15 @@ async function deleteChapter(id) {
   return deletedChapter;
 }
 
-async function updateChapter(id, number, maxNumberOfQuestions, courseId) {
+async function updateChapter(id, name, number, maxNumberOfQuestions, courseId) {
   const updatedChapter = await chapterModel.findByIdAndUpdate(
     id,
-    number,
-    maxNumberOfQuestions,
-    courseId,
+    {
+      name,
+      number,
+      maxNumberOfQuestions,
+      courseId,
+    },
     {
       new: true,
       runValidators: false,

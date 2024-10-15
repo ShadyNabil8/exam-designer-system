@@ -138,7 +138,7 @@ const updateChapter = [
     }
 
     const chapterId = req.params.id;
-    const { number, maxNumberOfQuestions, courseId } = req.body;
+    const { name, number, maxNumberOfQuestions, courseId } = req.body;
 
     const chapterExists = await database.isChapterExists(number, courseId);
     if (chapterExists) {
@@ -149,6 +149,7 @@ const updateChapter = [
 
     const updatedChapter = await database.updateChapter(
       chapterId,
+      name,
       number,
       maxNumberOfQuestions,
       courseId

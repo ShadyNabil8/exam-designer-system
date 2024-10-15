@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const questionModel = require("./questionModel");
 
 const chapterSchema = new mongoose.Schema({
   courseId: {
@@ -47,13 +48,23 @@ chapterSchema.pre("save", async function (next) {
 
 chapterSchema.pre("findOneAndDelete", async function (next) {
   try {
-    const chapter = await this.model.findOne(this.getQuery());
-    if (chapter) {
-      const courseModel = mongoose.model("Course");
-      await courseModel.findByIdAndUpdate(chapter.courseId, {
-        $inc: { numberOfChapters: -1 },
-      });
+    const chapter = await this.model.findOne(this.getQuery()).lean();
+
+    if (!chapter) {
+      return next();
     }
+
+    // I used mongoose.model() to reference the Course model dynamically to solve circular dependency
+    const courseModel = mongoose.model("Course");
+
+    // Execute the operations in parallel: update the course and delete the questions
+    await Promise.all([
+      courseModel.findByIdAndUpdate(chapter.courseId, {
+        $inc: { numberOfChapters: -1 },
+      }),
+      questionModel.deleteMany({ chapterId: chapter._id }), // Delete questions for the chapter
+    ]);
+    
     next();
   } catch (error) {
     next(error);
