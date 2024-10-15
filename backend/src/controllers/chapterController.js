@@ -84,12 +84,60 @@ const deleteChapter = [
       return res.status(404).json({ message: "Chapter not found" });
     }
 
-    res
-      .status(200)
-      .json({
-        message: "The chapter was successfully deleted.",
-        data: deletedChapter,
-      });
+    res.status(200).json({
+      message: "The chapter was successfully deleted.",
+      data: deletedChapter,
+    });
   }),
 ];
-module.exports = { addChapter, getChapters, getChapter, deleteChapter };
+
+const updateChapter = [
+  param("id", "Invalid chapter ID").isMongoId(),
+  body("name")
+    .isLength({ min: 1 })
+    .trim()
+    .escape()
+    .withMessage("Chapter name is required!"),
+  body("number")
+    .isInt({ min: 1 }) // Ensure it's a positive integer
+    .withMessage(
+      "Chapter number is required and must be a valid positive integer!"
+    )
+    .toInt(),
+  body("courseId").isMongoId().withMessage("Invalid course ID"),
+  asyncHandler(async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const chapterId = req.params.id;
+    const { number, courseId } = req.body;
+
+    const chapterExists = await database.isChapterExists(number, courseId);
+
+    if (chapterExists) {
+      return res
+        .status(400)
+        .json({ message: "Chapter With the same number exists!" });
+    }
+
+    const updatedChapter = await database.updateChapter(chapterId, req.body);
+
+    if (!updatedChapter) {
+      return res.status(404).json({ message: "Chapter not found" });
+    }
+
+    res
+      .status(200)
+      .json({ message: "Chapter updated successfully", data: updatedChapter });
+  }),
+];
+
+module.exports = {
+  addChapter,
+  getChapters,
+  getChapter,
+  deleteChapter,
+  updateChapter,
+};

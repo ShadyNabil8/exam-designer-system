@@ -257,3 +257,147 @@ describe("DELETE /api/chapters/:id", () => {
     expect(response.body.message).toBe("Database error");
   });
 });
+
+describe("PUT /api/chapters/:id", () => {
+  it("should return 200 and the updated chapter object for a valid id", async () => {
+    const mockUpdatedChapter = {
+      id: "60d21b4667d0d8992e610c85",
+      name: "New CS50",
+      numberOfChapters: 10,
+      courseId: "60d21b4667d0d8992e610c85",
+    };
+
+    database.isChapterExists.mockResolvedValue(false);
+    database.updateChapter.mockResolvedValue(mockUpdatedChapter);
+
+    const response = await request(app)
+      .put(`/api/chapters/${mockUpdatedChapter.id}`)
+      .send({
+        id: "60d21b4667d0d8992e610c85",
+        name: "New CS50",
+        number: 10,
+        courseId: "60d21b4667d0d8992e610c85",
+      });
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toEqual({
+      message: "Chapter updated successfully",
+      data: mockUpdatedChapter,
+    });
+  });
+
+  it("should return 400 for an invalid chapter id", async () => {
+    const invalidId = "invalid-id";
+
+    const response = await request(app).put(`/api/chapters/${invalidId}`).send({
+      name: "Dynamic Programming",
+      number: 10,
+      courseId: "60d21b4667d0d8992e610c85",
+    });
+
+    expect(response.statusCode).toBe(400);
+    expect(Array.isArray(response.body.errors)).toBe(true);
+    expect(response.body.errors.length).toBeGreaterThan(0);
+    expect(response.body.errors[0].msg).toBe("Invalid chapter ID");
+  });
+
+  it("should return 400 if the name of the chapter is empty", async () => {
+    const validId = "60d21b4667d0d8992e610c85"; // Use a valid MongoDB ObjectId
+
+    const response = await request(app).put(`/api/chapters/${validId}`).send({
+      name: "",
+      number: 10,
+      courseId: "60d21b4667d0d8992e610c85",
+    });
+
+    expect(response.statusCode).toBe(400);
+    expect(Array.isArray(response.body.errors)).toBe(true);
+    expect(response.body.errors.length).toBeGreaterThan(0);
+    expect(response.body.errors[0].msg).toEqual("Chapter name is required!");
+  });
+
+  it("should return 400 if the number of the chapter is not positive intiger", async () => {
+    const validId = "60d21b4667d0d8992e610c85"; // Use a valid MongoDB ObjectId
+
+    const response = await request(app).put(`/api/chapters/${validId}`).send({
+      name: "Dynamic Programming",
+      number: "n",
+      courseId: "60d21b4667d0d8992e610c85",
+    });
+
+    expect(response.statusCode).toBe(400);
+    expect(Array.isArray(response.body.errors)).toBe(true);
+    expect(response.body.errors.length).toBeGreaterThan(0);
+    expect(response.body.errors[0].msg).toEqual(
+      "Chapter number is required and must be a valid positive integer!"
+    );
+  });
+
+  it("should return 400 if the number of the courseId is not valid id", async () => {
+    const validId = "60d21b4667d0d8992e610c85"; // Use a valid MongoDB ObjectId
+
+    const response = await request(app).put(`/api/chapters/${validId}`).send({
+      name: "Dynamic Programming",
+      number: 10,
+      courseId: "invalid-id",
+    });
+
+    expect(response.statusCode).toBe(400);
+    expect(Array.isArray(response.body.errors)).toBe(true);
+    expect(response.body.errors.length).toBeGreaterThan(0);
+    expect(response.body.errors[0].msg).toEqual("Invalid course ID");
+  });
+
+  it("should return 400 if the course that this chapter belongs to has another chapter with the same number", async () => {
+    const validId = "60d21b4667d0d8992e610c85"; // Use a valid MongoDB ObjectId
+
+    database.isChapterExists.mockResolvedValue(true);
+
+    const response = await request(app).put(`/api/chapters/${validId}`).send({
+      name: "Dynamic Programming",
+      number: 10,
+      courseId: "60d21b4667d0d8992e610c85",
+    });
+
+    expect(response.statusCode).toBe(400);
+    expect(response.body.message).toEqual(
+      "Chapter With the same number exists!"
+    );
+  });
+
+  // Test case: Course not found in database
+  it("should return 404 if the chapter is not found", async () => {
+    const validId = "60d21b4667d0d8992e610c85"; // Use a valid MongoDB ObjectId
+
+    database.isChapterExists.mockResolvedValue(false);
+    database.updateChapter.mockResolvedValue(null); // Mock no course found
+
+    const response = await request(app).put(`/api/chapters/${validId}`).send({
+      name: "Dynamic Programming",
+      number: 10,
+      courseId: "60d21b4667d0d8992e610c85",
+    });
+
+    expect(response.statusCode).toBe(404);
+    expect(response.body).toEqual({
+      message: "Chapter not found",
+    });
+  });
+
+  it("should handle errors from the database", async () => {
+    const mockError = new Error("Database error");
+
+    database.isChapterExists.mockResolvedValue(false);
+    database.updateChapter.mockRejectedValue(mockError);
+
+    const validId = "60d21b4667d0d8992e610c85"; // Use a valid MongoDB ObjectId
+    const response = await request(app).put(`/api/chapters/${validId}`).send({
+      name: "Dynamic Programming",
+      number: 10,
+      courseId: "60d21b4667d0d8992e610c85",
+    });
+
+    expect(response.statusCode).toBe(500);
+    expect(response.body.message).toBe("Database error");
+  });
+});

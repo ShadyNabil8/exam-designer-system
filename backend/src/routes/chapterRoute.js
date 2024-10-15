@@ -242,8 +242,116 @@ chapterRouter.get("/:id", chapterController.getChapter);
 // DELETE a single chapter by ID
 chapterRouter.delete("/:id", chapterController.deleteChapter);
 
-// // UPDATE a single chapter by ID
-// chapterRouter.put("/:id", chapterController.updateChapter);
+/**
+ * @swagger
+ * /api/chapters/{id}:
+ *   put:
+ *     summary: Update a chapter by its ID
+ *     tags: [Chapters]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The MongoDB ObjectId of the chapter
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 description: The name of the chapter
+ *                 example: "Chapter A"
+ *               number:
+ *                 type: integer
+ *                 description: The chapter number (must be a positive integer)
+ *                 example: 1
+ *               courseId:
+ *                 type: string
+ *                 description: The MongoDB ObjectId of the course the chapter belongs to
+ *                 example: "60d21b4667d0d8992e610c85"
+ *     responses:
+ *       200:
+ *         description: Chapter updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Chapter updated successfully"
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     _id:
+ *                       type: string
+ *                       description: The unique identifier of the chapter
+ *                       example: "60d21b4667d0d8992e610c90"
+ *                     name:
+ *                       type: string
+ *                       description: The name of the chapter
+ *                       example: "Chapter A"
+ *                     number:
+ *                       type: integer
+ *                       description: The chapter number
+ *                       example: 1
+ *                     courseId:
+ *                       type: string
+ *                       description: The MongoDB ObjectId of the course
+ *                       example: "60d21b4667d0d8992e610c85"
+ *                     __v:
+ *                       type: integer
+ *                       description: The version key of the chapter document
+ *                       example: 0
+ *       400:
+ *         description: Invalid input or validation errors
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 errors:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       msg:
+ *                         type: string
+ *                         example: "Chapter name is required!"
+ *                       param:
+ *                         type: string
+ *                         example: "name"
+ *                       path:
+ *                         type: string
+ *                         example: "body"
+ *       404:
+ *         description: Chapter not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Chapter not found"
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Internal Server Error"
+ */
+// UPDATE a single chapter by ID
+chapterRouter.put("/:id", chapterController.updateChapter);
 
 /**
  * @swagger

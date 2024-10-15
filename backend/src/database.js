@@ -63,11 +63,23 @@ async function getChapter(id) {
   return chapter;
 }
 
+async function isChapterExists(number, courseId) {
+  const chapterExists = await chapterModel.exists({ courseId, number });
+  return chapterExists;
+}
+
 async function deleteChapter(id) {
   const deletedChapter = await chapterModel.findByIdAndDelete(id);
   return deletedChapter;
 }
 
+async function updateChapter(id, updatedData) {
+  const updatedChapter = await chapterModel.findByIdAndUpdate(id, updatedData, {
+    new: true,
+    runValidators: false,
+  });
+  return updatedChapter;
+}
 module.exports = {
   dbConnect,
   addCourse,
@@ -78,5 +90,7 @@ module.exports = {
   addChapter,
   getChapters,
   getChapter,
+  isChapterExists,
   deleteChapter,
+  updateChapter,
 };
