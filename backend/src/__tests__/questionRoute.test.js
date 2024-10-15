@@ -150,3 +150,4 @@ describe("POST /api/questions", () => {
     expect(response.body.message).toBe("Database error");
   });
 });
+

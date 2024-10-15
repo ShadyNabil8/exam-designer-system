@@ -45,6 +45,11 @@ async function updateCourse(id, updatedData) {
   return updatedCourse;
 }
 
+async function isCourseExistsById(courseId) {
+  const courseExists = await courseModel.exists({ _id: courseId });
+  return courseExists;
+}
+
 async function addChapter(name, number, courseId) {
   const addedChapter = await chapterModel.create({
     name,
@@ -112,6 +117,55 @@ async function getNumberOfQuestion(chapterId) {
   return questionCount;
 }
 
+async function getQuestions() {
+  const questions = await questionModel.find({}).lean();
+  return questions;
+}
+
+async function getQuestion(id) {
+  const question = await questionModel
+    .findById(id)
+    .populate({
+      path: "chapter",
+      populate: {
+        path: "course", // Populate the course inside the chapter
+      },
+    })
+    .lean();
+  return question;
+}
+
+async function deleteQuestion(id) {
+  const deletedQuestion = await questionModel.findByIdAndDelete(id);
+  return deletedQuestion;
+}
+
+async function updateQuestion(
+  questionId,
+  chapterId,
+  text,
+  choices,
+  correctAnswer,
+  difficulty,
+  objective
+) {
+  const updatedQuestion = await questionModel.findByIdAndUpdate(
+    questionId,
+    {
+      chapterId,
+      text,
+      choices,
+      correctAnswer,
+      difficulty,
+      objective,
+    },
+    {
+      new: true,
+      runValidators: false,
+    }
+  );
+  return updatedQuestion;
+}
 module.exports = {
   dbConnect,
   addCourse,
@@ -119,6 +173,7 @@ module.exports = {
   getCourse,
   deleteCourse,
   updateCourse,
+  isCourseExistsById,
   addChapter,
   getChapters,
   getChapter,
@@ -128,4 +183,8 @@ module.exports = {
   updateChapter,
   addQuestion,
   getNumberOfQuestion,
+  getQuestions,
+  getQuestion,
+  deleteQuestion,
+  updateQuestion,
 };

@@ -36,4 +36,17 @@ function arrayLimit(val) {
   return val.length === 3;
 }
 
+// Virtual to alias chapterId as chapter when populated
+questionSchema.virtual("chapter", {
+  ref: "Chapter",
+  localField: "chapterId",
+  foreignField: "_id",
+  justOne: true, // Since chapterId is an ObjectId, just populate one document
+});
+
+
+// Enable virtuals in toJSON and toObject
+questionSchema.set("toObject", { virtuals: true });
+questionSchema.set("toJSON", { virtuals: true });
+
 module.exports = mongoose.model("Question", questionSchema);

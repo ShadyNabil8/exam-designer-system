@@ -408,6 +408,21 @@ chapterRouter.put("/:id", chapterController.updateChapter);
  *                       type: string
  *                       description: The course ID to which the chapter belongs
  *                       example: "60d21b4667d0d8992e610c85"
+ *                     course:
+ *                       type: object
+ *                       properties:
+ *                         _id:
+ *                           type: string
+ *                           description: The unique identifier of the course
+ *                           example: "64f7a9e1b3f8ae23f82c7db1"
+ *                         name:
+ *                           type: string
+ *                           description: The name of the course
+ *                           example: "CS50"
+ *                         numberOfChapters:
+ *                           type: integer
+ *                           description: The number of chapters
+ *                           example: 5
  *       400:
  *         description: Invalid input data (validation errors)
  *         content:

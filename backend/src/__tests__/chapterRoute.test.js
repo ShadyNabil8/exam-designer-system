@@ -56,21 +56,40 @@ describe("POST /api/chapters", () => {
     expect(response.body.errors[0].msg).toEqual("Invalid course ID");
   });
 
-  it("should return 200 course is successfully added", async () => {
+  it("should return 400 if the course that this chapter belongs to has another chapter with the same number", async () => {
+    const validId = "60d21b4667d0d8992e610c85"; // Use a valid MongoDB ObjectId
+
+    database.isChapterExists.mockResolvedValue(true);
+    database.isCourseExistsById.mockResolvedValue(true);
+
+    const response = await request(app).put(`/api/chapters/${validId}`).send({
+      name: "Dynamic Programming",
+      number: 10,
+      courseId: "60d21b4667d0d8992e610c85",
+    });
+
+    expect(response.statusCode).toBe(400);
+    expect(response.body.message).toEqual(
+      "Chapter With the same number exists!"
+    );
+  });
+
+  it("should return 200 chapter is successfully added", async () => {
     const mockChapter = {
+      _id: "60d21b4667d0d8992e610c85",
       courseId: "60d21b4667d0d8992e610c85",
       name: "Intro to CS50",
       number: 5,
+      course: {
+        _id: "670e7206be802b686601b307",
+        name: "CS50",
+        numberOfChapters: 2,
+      },
     };
 
-    const mockCourse = {
-      id: "60d21b4667d0d8992e610c85",
-      name: "CS50",
-      numberOfChapters: 5,
-    };
-
+    database.isChapterExists.mockResolvedValue(false);
+    database.isCourseExistsById.mockResolvedValue(true);
     database.addChapter.mockResolvedValue(mockChapter);
-    database.getCourse.mockResolvedValue(mockCourse);
 
     const response = await request(app).post("/api/chapters").send({
       courseId: "60d21b4667d0d8992e610c85",
@@ -90,7 +109,8 @@ describe("POST /api/chapters", () => {
     // Simulate an error in `database.addCourse`.
     const mockError = new Error("Database error");
     database.addChapter.mockRejectedValue(mockError);
-
+    database.isChapterExists.mockResolvedValue(false);
+    database.isCourseExistsById.mockResolvedValue(true);
     const response = await request(app).post("/api/chapters").send({
       courseId: "60d21b4667d0d8992e610c85",
       name: "Intro to CS50",

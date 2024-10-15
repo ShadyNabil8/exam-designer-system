@@ -24,10 +24,19 @@ const addChapter = [
 
     const { name, number, courseId } = req.body;
 
-    const selectedCourse = await database.getCourse(courseId);
+    const [courseExists, chapterExists] = await Promise.all([
+      database.isCourseExistsById(courseId),
+      database.isChapterExists(number, courseId),
+    ]);
 
-    if (!selectedCourse) {
+    if (!courseExists) {
       return res.status(404).json({ message: "Course not found" });
+    }
+
+    if (chapterExists) {
+      return res
+        .status(400)
+        .json({ message: "Chapter With the same number exists!" });
     }
 
     const addedChapter = await database.addChapter(name, number, courseId);
@@ -114,15 +123,16 @@ const updateChapter = [
     const chapterId = req.params.id;
     const { number, courseId } = req.body;
 
-    const chapterExists = await database.isChapterExists(number, courseId);
+    const [chapterExists, updatedChapter] = await Promise.all([
+      database.isChapterExists(number, courseId),
+      database.updateChapter(chapterId, req.body),
+    ]);
 
     if (chapterExists) {
       return res
         .status(400)
         .json({ message: "Chapter With the same number exists!" });
     }
-
-    const updatedChapter = await database.updateChapter(chapterId, req.body);
 
     if (!updatedChapter) {
       return res.status(404).json({ message: "Chapter not found" });
