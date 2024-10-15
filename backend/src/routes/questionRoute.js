@@ -309,6 +309,142 @@ questionRouter.get("/:id", questionController.getQuestion);
 // DELETE a single question by ID
 questionRouter.delete("/:id", questionController.deleteQuestion);
 
+/**
+ * @swagger
+ * /api/questions/{id}:
+ *   put:
+ *     summary: Update a question by its ID
+ *     tags: [Questions]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The MongoDB ObjectId of the question to update
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               chapterId:
+ *                 type: string
+ *                 description: The MongoDB ObjectId of the chapter the question belongs to
+ *                 example: "60d21b4667d0d8992e610c85"
+ *               text:
+ *                 type: string
+ *                 description: The text of the question
+ *                 example: "What is the capital of France?"
+ *               choices:
+ *                 type: array
+ *                 description: The possible answers for the question (must contain exactly 3 items)
+ *                 items:
+ *                   type: string
+ *                 example: ["Paris", "London", "Berlin"]
+ *               correctAnswer:
+ *                 type: string
+ *                 description: The correct answer for the question
+ *                 example: "Paris"
+ *               difficulty:
+ *                 type: string
+ *                 description: The difficulty level of the question (either 'simple' or 'difficult')
+ *                 enum: ["simple", "difficult"]
+ *                 example: "simple"
+ *               objective:
+ *                 type: string
+ *                 description: The objective the question is targeting (either 'reminding', 'understanding', or 'creativity')
+ *                 enum: ["reminding", "understanding", "creativity"]
+ *                 example: "reminding"
+ *     responses:
+ *       200:
+ *         description: The question was successfully updated
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Chapter updated successfully"
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     _id:
+ *                       type: string
+ *                       description: The unique identifier of the updated question
+ *                       example: "60d21b4667d0d8992e610c85"
+ *                     chapterId:
+ *                       type: string
+ *                       description: The MongoDB ObjectId of the chapter the question belongs to
+ *                       example: "60d21b4667d0d8992e610c85"
+ *                     text:
+ *                       type: string
+ *                       description: The text of the question
+ *                       example: "What is the capital of France?"
+ *                     choices:
+ *                       type: array
+ *                       description: The possible answers for the question
+ *                       items:
+ *                         type: string
+ *                       example: ["Paris", "London", "Berlin"]
+ *                     correctAnswer:
+ *                       type: string
+ *                       description: The correct answer
+ *                       example: "Paris"
+ *                     difficulty:
+ *                       type: string
+ *                       description: The difficulty level of the question
+ *                       enum: ["simple", "difficult"]
+ *                       example: "simple"
+ *                     objective:
+ *                       type: string
+ *                       description: The objective of the question
+ *                       enum: ["reminding", "understanding", "creativity"]
+ *                       example: "reminding"
+ *       400:
+ *         description: Invalid input data
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 errors:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       msg:
+ *                         type: string
+ *                         example: "Invalid question ID"
+ *                       param:
+ *                         type: string
+ *                         example: "id"
+ *                       location:
+ *                         type: string
+ *                         example: "params"
+ *       404:
+ *         description: Question not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Question not found"
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Internal Server Error"
+ */
 // UPDATE a single question by ID
 questionRouter.put("/:id", questionController.updateQuestion);
 

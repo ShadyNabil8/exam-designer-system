@@ -341,3 +341,124 @@ describe("DELETE /api/questions/:id", () => {
     expect(response.body.message).toEqual("Database error");
   });
 });
+
+describe("PUT /api/questions/:id", () => {
+  const validQuestion = {
+    chapterId: "60d21b4667d0d8992e610c85",
+    text: "What is the capital of France?",
+    choices: ["Paris", "London", "Berlin"],
+    correctAnswer: "Paris",
+    difficulty: "simple",
+    objective: "reminding",
+  };
+
+  it("should return 400 if question ID is invalid", async () => {
+    const response = await request(app)
+      .put("/api/questions/invalid-id")
+      .send(validQuestion);
+
+    expect(response.statusCode).toBe(400);
+    expect(response.body.errors[0].msg).toEqual("Invalid question ID");
+  });
+
+  it("should return 400 if chapterId is invalid", async () => {
+    const response = await request(app)
+      .put("/api/questions/60d21b4667d0d8992e610c85")
+      .send({ ...validQuestion, chapterId: "invalid-id" });
+
+    expect(response.statusCode).toBe(400);
+    expect(response.body.errors[0].msg).toEqual("Invalid chapter ID");
+  });
+
+  it("should return 400 if text is missing", async () => {
+    const response = await request(app)
+      .put("/api/questions/60d21b4667d0d8992e610c85")
+      .send({ ...validQuestion, text: "" });
+
+    expect(response.statusCode).toBe(400);
+    expect(response.body.errors[0].msg).toEqual("Question text is required!");
+  });
+
+  it("should return 400 if choices do not contain exactly 3 items", async () => {
+    const response = await request(app)
+      .put("/api/questions/60d21b4667d0d8992e610c85")
+      .send({ ...validQuestion, choices: ["Paris", "London"] });
+
+    expect(response.statusCode).toBe(400);
+    expect(response.body.errors[0].msg).toEqual(
+      "Choices must be an array with at least 3 items."
+    );
+  });
+
+  it("should return 400 if correctAnswer is not one of the choices", async () => {
+    const response = await request(app)
+      .put("/api/questions/60d21b4667d0d8992e610c85")
+      .send({ ...validQuestion, correctAnswer: "Madrid" });
+
+    expect(response.statusCode).toBe(400);
+    expect(response.body.errors[0].msg).toEqual(
+      "Correct answer must be one of the provided choices"
+    );
+  });
+
+  it("should return 400 if difficulty is not valid", async () => {
+    const response = await request(app)
+      .put("/api/questions/60d21b4667d0d8992e610c85")
+      .send({ ...validQuestion, difficulty: "hard" });
+
+    expect(response.statusCode).toBe(400);
+    expect(response.body.errors[0].msg).toEqual(
+      "Difficulty must be either 'simple' or 'difficult'."
+    );
+  });
+
+  it("should return 400 if objective is not valid", async () => {
+    const response = await request(app)
+      .put("/api/questions/60d21b4667d0d8992e610c85")
+      .send({ ...validQuestion, objective: "analysis" });
+
+    expect(response.statusCode).toBe(400);
+    expect(response.body.errors[0].msg).toEqual(
+      "Objective must be one of 'reminding', 'understanding', or 'creativity'."
+    );
+  });
+
+  it("should return 404 if the question is not found", async () => {
+    database.updateQuestion.mockResolvedValue(null);
+
+    const response = await request(app)
+      .put("/api/questions/60d21b4667d0d8992e610c85")
+      .send(validQuestion);
+
+    expect(response.statusCode).toBe(404);
+    expect(response.body.message).toEqual("Question not found");
+  });
+
+  it("should return 200 and update the question successfully", async () => {
+    const mockUpdatedQuestion = {
+      ...validQuestion,
+      _id: "60d21b4667d0d8992e610c85",
+    };
+
+    database.updateQuestion.mockResolvedValue(mockUpdatedQuestion);
+
+    const response = await request(app)
+      .put("/api/questions/60d21b4667d0d8992e610c85")
+      .send(validQuestion);
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body.message).toEqual("Chapter updated successfully");
+    expect(response.body.data).toEqual(mockUpdatedQuestion);
+  });
+
+  it("should return 500 if there is a server error", async () => {
+    database.updateQuestion.mockRejectedValue(new Error("Database error"));
+
+    const response = await request(app)
+      .put("/api/questions/60d21b4667d0d8992e610c85") // Valid question ID
+      .send(validQuestion);
+
+    expect(response.statusCode).toBe(500);
+    expect(response.body.message).toEqual("Database error");
+  });
+});
