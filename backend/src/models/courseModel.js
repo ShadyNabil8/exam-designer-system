@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const mongooseLeanVirtuals = require("mongoose-lean-virtuals");
 const chapterModel = require("./chapterModel");
 
 const courseSchema = new mongoose.Schema({
@@ -11,6 +12,8 @@ const courseSchema = new mongoose.Schema({
     default: 0,
   },
 });
+
+courseSchema.plugin(mongooseLeanVirtuals);
 
 // Query middleware for findOneAndDelete (e.g., courseModel.findOneAndDelete)
 courseSchema.pre("findOneAndDelete", async function (next) {

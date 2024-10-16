@@ -58,6 +58,38 @@ const addQuestion = [
       });
     }
 
+    [questionDifficultyDistribution, questionObkectiveDistribution] =
+      await Promise.all([
+        database.getQuestionDifficultyDistribution(chapterId),
+        database.getQuestionObjectiveDistribution(chapterId),
+      ]);
+    console.log(questionObkectiveDistribution);
+    console.log(`Current objective number: ${questionObkectiveDistribution[objective]}`);
+    console.log(`Max allowes objective: ${chapter.maxNumberOfEachObjective}`);
+
+    console.log(questionDifficultyDistribution);
+    console.log(`Current difficult number: ${questionDifficultyDistribution[difficulty]}`);
+    console.log(`Max allowes difficults: ${chapter.maxNumberOfEachDifficulty}`);
+    if (
+      questionObkectiveDistribution[objective] >=
+      chapter.maxNumberOfEachObjective
+    ) {
+      return res.status(400).json({
+        message:
+          "Failed adding a question with this objective because there will be no balance",
+      });
+    }
+
+    if (
+      questionDifficultyDistribution[difficulty] >=
+      chapter.maxNumberOfEachDifficulty
+    ) {
+      return res.status(400).json({
+        message:
+          "Failed adding a question with this difficuly because there will be no balance",
+      });
+    }
+
     const newQuestion = await database.addQuestion(
       chapterId,
       text,

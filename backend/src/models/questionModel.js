@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const mongooseLeanVirtuals = require("mongoose-lean-virtuals");
 
 const questionSchema = new mongoose.Schema({
   chapterId: {
@@ -31,6 +32,8 @@ const questionSchema = new mongoose.Schema({
   },
 });
 
+questionSchema.plugin(mongooseLeanVirtuals);
+
 // Custom validation function to ensure exactly 3 choices
 function arrayLimit(val) {
   return val.length === 3;
@@ -43,7 +46,6 @@ questionSchema.virtual("chapter", {
   foreignField: "_id",
   justOne: true, // Since chapterId is an ObjectId, just populate one document
 });
-
 
 // Enable virtuals in toJSON and toObject
 questionSchema.set("toObject", { virtuals: true });

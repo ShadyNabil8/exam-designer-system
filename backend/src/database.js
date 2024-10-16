@@ -28,7 +28,7 @@ async function getCourses() {
 }
 
 async function getCourse(id) {
-  const course = await courseModel.findById(id).lean();
+  const course = await courseModel.findById(id).lean({ virtuals: true });
   return course;
 }
 
@@ -66,7 +66,10 @@ async function getChapters() {
 }
 
 async function getChapter(id) {
-  const chapter = await chapterModel.findById(id).populate("course").lean();
+  const chapter = await chapterModel
+    .findById(id)
+    .populate("course")
+    .lean({ virtuals: true });
   return chapter;
 }
 
@@ -147,7 +150,7 @@ async function getQuestion(id) {
         path: "course", // Populate the course inside the chapter
       },
     })
-    .lean();
+    .lean({ virtuals: true });
   return question;
 }
 
@@ -182,6 +185,73 @@ async function updateQuestion(
   );
   return updatedQuestion;
 }
+
+function getQuestionDifficultyEnum() {
+  const difficultyEnum = Object.values(
+    questionModel.schema.path("difficulty")
+  )[0];
+  return difficultyEnum;
+}
+
+function getQuestionObjectiveEnum() {
+  const objectiveEnum = Object.values(
+    questionModel.schema.path("objective")
+  )[0];
+  return objectiveEnum;
+}
+
+async function getQuestionDifficultyDistribution(chapterId) {
+  const questionDifficultyEnum = getQuestionDifficultyEnum();
+
+  // Convert chapterId to ObjectId if it is not already an ObjectId
+  const objectId = new mongoose.Types.ObjectId(chapterId);
+
+  // Use aggregation to count questions for each difficulty level in one query
+  // counts for example will be :[ { _id: 'simple', count: 4 }, { _id: 'difficult', count: 10 } ]
+  const counts = await questionModel.aggregate([
+    { $match: { chapterId: objectId } },
+    { $group: { _id: "$difficulty", count: { $sum: 1 } } },
+  ]);
+
+  // Initialize the result object with default 0 counts
+  const distributionObj = questionDifficultyEnum.reduce((acc, difficulty) => {
+    acc[difficulty] = 0;
+    return acc;
+  }, {});
+
+  counts.forEach((item) => {
+    distributionObj[item._id] = item.count;
+  });
+
+  return distributionObj;
+}
+
+async function getQuestionObjectiveDistribution(chapterId) {
+  const questionObjectiveEnum = getQuestionObjectiveEnum();
+
+  // Convert chapterId to ObjectId if it is not already an ObjectId
+  const objectId = new mongoose.Types.ObjectId(chapterId);
+
+  // Use aggregation to count questions for each objective in one query
+  // counts for example will be :[ { _id: 'reminding', count: 4 }, { _id: 'understanding', count: 10 }, { _id: 'creativity', count: 10 } ]
+  const counts = await questionModel.aggregate([
+    { $match: { chapterId: objectId } },
+    { $group: { _id: "$objective", count: { $sum: 1 } } },
+  ]);
+
+  // Initialize the result object with default 0 counts
+  const distributionObj = questionObjectiveEnum.reduce((acc, objective) => {
+    acc[objective] = 0;
+    return acc;
+  }, {});
+
+  counts.forEach((item) => {
+    distributionObj[item._id] = item.count;
+  });
+
+  return distributionObj;
+}
+
 module.exports = {
   dbConnect,
   addCourse,
@@ -203,4 +273,8 @@ module.exports = {
   getQuestion,
   deleteQuestion,
   updateQuestion,
+  getQuestionDifficultyEnum,
+  getQuestionObjectiveEnum,
+  getQuestionDifficultyDistribution,
+  getQuestionObjectiveDistribution,
 };
