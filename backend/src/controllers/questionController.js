@@ -63,13 +63,7 @@ const addQuestion = [
         database.getQuestionDifficultyDistribution(chapterId),
         database.getQuestionObjectiveDistribution(chapterId),
       ]);
-    console.log(questionObkectiveDistribution);
-    console.log(`Current objective number: ${questionObkectiveDistribution[objective]}`);
-    console.log(`Max allowes objective: ${chapter.maxNumberOfEachObjective}`);
 
-    console.log(questionDifficultyDistribution);
-    console.log(`Current difficult number: ${questionDifficultyDistribution[difficulty]}`);
-    console.log(`Max allowes difficults: ${chapter.maxNumberOfEachDifficulty}`);
     if (
       questionObkectiveDistribution[objective] >=
       chapter.maxNumberOfEachObjective

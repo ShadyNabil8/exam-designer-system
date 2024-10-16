@@ -5,6 +5,10 @@ const database = require("../database");
 jest.mock("../database");
 
 describe("POST /api/questions", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   const validQuestion = {
     chapterId: "60d21b4667d0d8992e610c85",
     text: "What is the capital of France?",
@@ -19,8 +23,10 @@ describe("POST /api/questions", () => {
     id: validChapterId,
     name: "Dynamic Programming",
     number: 5,
-    maxNumberOfQuestions: 5,
+    maxNumberOfQuestions: 12,
     courseId: validCourseId,
+    maxNumberOfEachObjective: 4,
+    maxNumberOfEachDifficulty: 6,
   };
 
   it("should return 400 if chapterId is invalid", async () => {
@@ -104,7 +110,7 @@ describe("POST /api/questions", () => {
   });
 
   it("should return 400 if the chapter exceed the limit of questions", async () => {
-    database.getNumberOfQuestion.mockResolvedValue(6); // Above the limit
+    database.getNumberOfQuestion.mockResolvedValue(13); // Above the limit
     database.getChapter.mockResolvedValue(validChapter);
 
     const response = await request(app)
@@ -132,6 +138,15 @@ describe("POST /api/questions", () => {
   it("should return 201 and create a new question if valid data is provided", async () => {
     database.getNumberOfQuestion.mockResolvedValue(4); // Below the limit
     database.getChapter.mockResolvedValue(validChapter);
+    database.getQuestionDifficultyDistribution.mockResolvedValue({
+      simple: 2,
+      difficult: 6,
+    });
+    database.getQuestionObjectiveDistribution.mockResolvedValue({
+      reminding: 0,
+      understanding: 4,
+      creativity: 4,
+    });
 
     database.addQuestion.mockResolvedValue({
       _id: "60d21b4667d0d8992e610c90",
@@ -161,6 +176,10 @@ describe("POST /api/questions", () => {
 });
 
 describe("GET /api/questions", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   it("should return 200 and a list of questions", async () => {
     const mockQuestions = [
       {
@@ -213,6 +232,10 @@ describe("GET /api/questions", () => {
 });
 
 describe("GET /api/questions/:id", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   it("should return 200 and the question object for a valid id", async () => {
     const mockQuestion = {
       _id: "670e7caf911a126cb71ea37d",
@@ -286,6 +309,10 @@ describe("GET /api/questions/:id", () => {
 });
 
 describe("DELETE /api/questions/:id", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   it("should return 400 if question ID is invalid", async () => {
     const response = await request(app)
       .delete("/api/questions/invalid-id") // Invalid MongoDB ObjectId
@@ -343,6 +370,10 @@ describe("DELETE /api/questions/:id", () => {
 });
 
 describe("PUT /api/questions/:id", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   const validQuestion = {
     chapterId: "60d21b4667d0d8992e610c85",
     text: "What is the capital of France?",
