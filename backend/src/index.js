@@ -22,6 +22,9 @@ app.use("/api/chapters", chapterRouter);
 const questionRouter = require("./routes/questionRoute");
 app.use("/api/questions", questionRouter);
 
+const examRouter = require("./routes/examRoute");
+app.use("/api/exams", examRouter);
+
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use(errorHandlerMiddleware);
