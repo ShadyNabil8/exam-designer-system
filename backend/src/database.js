@@ -252,6 +252,14 @@ async function getQuestionObjectiveDistribution(chapterId) {
   return distributionObj;
 }
 
+async function getQuestionsByChapterIds(chapterIds) {
+  const questions = await questionModel.find({
+    chapterId: { $in: chapterIds },
+  });
+
+  return questions;
+}
+
 module.exports = {
   dbConnect,
   addCourse,
@@ -277,4 +285,5 @@ module.exports = {
   getQuestionObjectiveEnum,
   getQuestionDifficultyDistribution,
   getQuestionObjectiveDistribution,
+  getQuestionsByChapterIds,
 };

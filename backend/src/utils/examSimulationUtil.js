@@ -73,7 +73,7 @@ const findOptimumExam = async (
     let maxFitness = 0;
 
     function onCalculateFitness(state) {
-      if (state.top.fitness > maxFitness) {
+      if (state.top.fitness >= maxFitness) {
         bestChoise = state.top.getDna(0);
         maxFitness = state.top.fitness;
         // console.log(`New max fitness: ${maxFitness}`);

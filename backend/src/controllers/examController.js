@@ -24,9 +24,16 @@ const generateExam = [
       },
       0
     );
-    console.log(numberOfQuestions);
-    console.log(chapters);
-    
+
+    const chapterIds = Object.keys(chapters);
+    const questionPool = await database.getQuestionsByChapterIds(chapterIds);
+
+    if (questionPool.length === 0) {
+      return res
+        .status(400)
+        .json({ message: "There is no any question to make an exam! " });
+    }
+
     const optimumExam = await findOptimumExam(
       questionPool,
       numberOfQuestions,
@@ -36,7 +43,7 @@ const generateExam = [
     );
 
     res.status(201).json({
-      message: "TEST",
+      message: "Exam successfully found",
       data: optimumExam,
     });
   }),
