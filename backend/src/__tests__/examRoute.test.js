@@ -1,8 +1,10 @@
 const request = require("supertest");
 const app = require("../index");
 const database = require("../database");
+const { findOptimumExam } = require("../utils/examSimulationUtil");
 
 jest.mock("../database");
+jest.mock("../utils/examSimulationUtil");
 
 describe("POST /api/exams/generate", () => {
   beforeEach(() => {
@@ -13,6 +15,7 @@ describe("POST /api/exams/generate", () => {
     const mockQuestions = [{ questionId: "1" }, { questionId: "2" }];
 
     database.getQuestionsByChapterIds.mockResolvedValue(mockQuestions);
+    findOptimumExam.mockResolvedValue(mockQuestions);
 
     const response = await request(app)
       .post("/api/exams/generate")
