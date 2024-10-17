@@ -16,14 +16,7 @@ const generateExam = [
     next();
   }),
   asyncHandler(async (req, res) => {
-    const {
-      chapters,
-      difficultQuestions,
-      simpleQuestions,
-      remindingQuestions,
-      understandingQuestions,
-      creativityQuestions,
-    } = req.body;
+    const { chapters, difficulty, objective } = req.body;
 
     const numberOfQuestions = Object.values(chapters).reduce(
       (accumulator, currentValue) => {
@@ -31,15 +24,14 @@ const generateExam = [
       },
       0
     );
-
+    console.log(numberOfQuestions);
+    console.log(chapters);
+    
     const optimumExam = await findOptimumExam(
       questionPool,
       numberOfQuestions,
-      simpleQuestions,
-      difficultQuestions,
-      remindingQuestions,
-      understandingQuestions,
-      creativityQuestions,
+      difficulty,
+      objective,
       chapters
     );
 

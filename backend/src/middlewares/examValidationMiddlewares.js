@@ -26,26 +26,32 @@ const postExamValidation = checkExact([
     }),
 
   // Simple numeric validations for other fields
-  body("difficultQuestions")
-    .isInt({ min: 0 })
-    .toInt()
-    .withMessage("Difficult questions must be a positive number"),
-  body("simpleQuestions")
-    .isInt({ min: 0 })
-    .toInt()
-    .withMessage("Simple questions must be a positive number"),
-  body("remindingQuestions")
-    .isInt({ min: 0 })
-    .toInt()
-    .withMessage("Reminding questions must be a positive number"),
-  body("understandingQuestions")
-    .isInt({ min: 0 })
-    .toInt()
-    .withMessage("Understanding questions must be a positive number"),
-  body("creativityQuestions")
-    .isInt({ min: 0 })
-    .toInt()
-    .withMessage("Creativity questions must be a positive number"),
+  body("difficulty")
+    .isObject()
+    .custom((difficulty) => {
+      for (let key in difficulty) {
+        const difficultyNumOfQuestion = Number(difficulty[key]);
+        if (isNaN(difficultyNumOfQuestion) || difficultyNumOfQuestion < 0) {
+          throw new Error(
+            "The number of questions for difficulty must be a valid number"
+          );
+        }
+        difficulty[key] = difficultyNumOfQuestion;
+      }
+      return true;
+    }),
+  body("objective")
+    .isObject()
+    .custom((objective) => {
+      for (let key in objective) {
+        const objectiveNumOfQuestion = Number(objective[key]);
+        if (isNaN(objectiveNumOfQuestion) || objectiveNumOfQuestion < 0) {
+          throw new Error("The number of objective  must be a valid number");
+        }
+        objective[key] = objectiveNumOfQuestion;
+      }
+      return true;
+    }),
 ]);
 
 module.exports = { postExamValidation };

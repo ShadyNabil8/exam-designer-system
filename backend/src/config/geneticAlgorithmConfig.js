@@ -2,11 +2,8 @@ const countUtil = require("../utils/countUtil");
 
 function calculateFitness(
   individual,
-  maxSimple,
-  maxDifficult,
-  maxReminding,
-  maxUnderstanding,
-  maxCreativity,
+  difficulty,
+  objective,
   questionsDistrebution
 ) {
   let fitness = 0;
@@ -26,15 +23,23 @@ function calculateFitness(
     }
   }
 
-  const { simple, difficult } = countUtil.countDifficulty(questions);
-  if (simple === maxSimple) fitness += 1;
-  if (difficult === maxDifficult) fitness += 1;
+  const individualDifficulty = countUtil.countDifficulty(questions);
+  for (key in difficulty) {
+    if (
+      individualDifficulty.hasOwnProperty(key) &&
+      difficulty[key] === individualDifficulty[key]
+    )
+      fitness++;
+  }
 
-  const { reminding, understanding, creativity } =
-    countUtil.countObjective(questions);
-  if (reminding === maxReminding) fitness += 1;
-  if (understanding === maxUnderstanding) fitness += 1;
-  if (creativity === maxCreativity) fitness += 1;
+  const individualObjective = countUtil.countObjective(questions);
+  for (key in objective) {
+    if (
+      individualObjective.hasOwnProperty(key) &&
+      objective[key] === individualObjective[key]
+    )
+      fitness++;
+  }
 
   return fitness;
 }

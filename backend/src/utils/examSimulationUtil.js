@@ -6,11 +6,8 @@ const getRandomUtil = require("../utils/getRandomUtil");
 function getSimulation(
   questionPool,
   numberOfQuestions,
-  maxSimple,
-  maxDifficult,
-  maxReminding,
-  maxUnderstanding,
-  maxCreativity,
+  difficulty,
+  objective,
   questionsDistrebution,
   onCalculateFitness,
   onFinish
@@ -40,11 +37,8 @@ function getSimulation(
     calculateFitness(individual) {
       const fitness = geneticAlgorithmConfig.calculateFitness(
         individual,
-        maxSimple,
-        maxDifficult,
-        maxReminding,
-        maxUnderstanding,
-        maxCreativity,
+        difficulty,
+        objective,
         questionsDistrebution
       );
       return fitness;
@@ -70,11 +64,8 @@ function getSimulation(
 const findOptimumExam = async (
   questionPool,
   numberOfQuestions,
-  simpleQuestions,
-  difficultQuestions,
-  remindingQuestions,
-  understandingQuestions,
-  creativityQuestions,
+  difficulty,
+  objective,
   chapters
 ) => {
   return new Promise((resolve, reject) => {
@@ -88,20 +79,22 @@ const findOptimumExam = async (
         // console.log(`New max fitness: ${maxFitness}`);
       }
     }
+
+    const numberOfNeededChapters = Object.values(chapters).length;
+
     function onFinish(state) {
       console.log("Simulation Finished");
-      console.log(`Max fitness scored is ${maxFitness}/8`);
+      console.log(
+        `Max fitness scored is ${maxFitness}/${numberOfNeededChapters + 5}`
+      );
       resolve(bestChoise);
     }
 
     const examSim = getSimulation(
       questionPool,
       numberOfQuestions,
-      simpleQuestions,
-      difficultQuestions,
-      remindingQuestions,
-      understandingQuestions,
-      creativityQuestions,
+      difficulty,
+      objective,
       chapters,
       onCalculateFitness,
       onFinish
