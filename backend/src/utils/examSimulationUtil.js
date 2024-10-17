@@ -70,22 +70,24 @@ const findOptimumExam = async (
 ) => {
   return new Promise((resolve, reject) => {
     let bestChoise;
-    let maxFitness = 0;
+    let curMaxFitness = 0;
 
     function onCalculateFitness(state) {
-      if (state.top.fitness >= maxFitness) {
+      if (state.top.fitness >= curMaxFitness) {
         bestChoise = state.top.getDna(0);
-        maxFitness = state.top.fitness;
-        // console.log(`New max fitness: ${maxFitness}`);
+        curMaxFitness = state.top.fitness;
       }
     }
 
     const numberOfNeededChapters = Object.values(chapters).length;
 
+    // 5 represent here the reward for matching difficult, simple, creativity, understanding, and reminding
+    const MaxAvailableFitness = numberOfNeededChapters + 5;
+
     function onFinish(state) {
       console.log("Simulation Finished");
       console.log(
-        `Max fitness scored is ${maxFitness}/${numberOfNeededChapters + 5}`
+        `Max fitness scored is ${curMaxFitness}/${MaxAvailableFitness}`
       );
       resolve(bestChoise);
     }

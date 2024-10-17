@@ -5,7 +5,6 @@ const { findOptimumExam } = require("../utils/examSimulationUtil");
 const {
   postExamValidation,
 } = require("../middlewares/examValidationMiddlewares");
-const questionPool = require("../dummyData/questions");
 const generateExam = [
   postExamValidation,
   asyncHandler(async (req, res, next) => {
