@@ -55,7 +55,7 @@ function mutate(genes, rate, getRandomQuestion) {
   return mutauedChromosomes;
 }
 
-function getSimulationConfig(individual,onCalculateFitness, onFinish) {
+function getSimulationConfig(individual, onCalculateFitness, onFinish) {
   const config = {
     prototype: individual,
     data: {},

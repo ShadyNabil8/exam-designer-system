@@ -1,14 +1,11 @@
 const asyncHandler = require("express-async-handler");
 const { validationResult } = require("express-validator");
 const database = require("../database");
-const {
-  getSimulation,
-  findOptimumExam,
-} = require("../utils/examSimulationUtil");
+const { findOptimumExam } = require("../utils/examSimulationUtil");
 const {
   postExamValidation,
 } = require("../middlewares/examValidationMiddlewares");
-
+const questionPool = require("../dummyData/questions");
 const generateExam = [
   postExamValidation,
   asyncHandler(async (req, res, next) => {
@@ -28,9 +25,15 @@ const generateExam = [
       creativityQuestions,
     } = req.body;
 
-    const numberOfQuestions = 12;
+    const numberOfQuestions = Object.values(chapters).reduce(
+      (accumulator, currentValue) => {
+        return accumulator + currentValue;
+      },
+      0
+    );
 
     const optimumExam = await findOptimumExam(
+      questionPool,
       numberOfQuestions,
       simpleQuestions,
       difficultQuestions,
@@ -40,18 +43,9 @@ const generateExam = [
       chapters
     );
 
-    console.log(optimumExam);
-
     res.status(201).json({
       message: "TEST",
-      data: {
-        chapters,
-        difficultQuestions,
-        simpleQuestions,
-        remindingQuestions,
-        understandingQuestions,
-        creativityQuestions,
-      },
+      data: optimumExam,
     });
   }),
 ];

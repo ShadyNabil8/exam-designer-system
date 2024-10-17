@@ -2,9 +2,9 @@ const genie = require("@adrianperea/genie.js");
 const { Simulation, Individual, Chromosome } = genie;
 const geneticAlgorithmConfig = require("../config/geneticAlgorithmConfig");
 const getRandomUtil = require("../utils/getRandomUtil");
-const { on } = require("../models/questionModel");
 
 function getSimulation(
+  questionPool,
   numberOfQuestions,
   maxSimple,
   maxDifficult,
@@ -15,14 +15,19 @@ function getSimulation(
   onCalculateFitness,
   onFinish
 ) {
+  function getRandomQuestion() {
+    const question = getRandomUtil.generateQuestion(questionPool);
+    return question;
+  }
+
   const questionChromosome = new Chromosome(
     numberOfQuestions,
-    getRandomUtil.generateQuestion,
+    getRandomQuestion,
     (genes, rate) => {
       const mutauedChromosomes = geneticAlgorithmConfig.mutate(
         genes,
         rate,
-        getRandomUtil.generateQuestion
+        getRandomQuestion
       );
       return mutauedChromosomes;
     }
@@ -53,9 +58,6 @@ function getSimulation(
     }
   }
 
-  let bestChoise;
-  let maxFitness = 0;
-
   const config = geneticAlgorithmConfig.getSimulationConfig(
     individual,
     onCalculateFitness,
@@ -66,6 +68,7 @@ function getSimulation(
 }
 
 const findOptimumExam = async (
+  questionPool,
   numberOfQuestions,
   simpleQuestions,
   difficultQuestions,
@@ -92,6 +95,7 @@ const findOptimumExam = async (
     }
 
     const examSim = getSimulation(
+      questionPool,
       numberOfQuestions,
       simpleQuestions,
       difficultQuestions,
