@@ -1,16 +1,15 @@
 const {
   body,
-  param,
-  validationResult,
   checkExact,
 } = require("express-validator");
 
 const postExamValidation = checkExact([
   body("chapters")
     .isObject()
+    .withMessage("No chapters provided")
     .custom((chapters) => {
       const numOfQuestions = Object.values(chapters);
-      if (numOfQuestions.length <= 0) {
+      if (numOfQuestions.length === 0) {
         throw new Error("You must provide at least one chapter.");
       }
       for (let n in chapters) {
@@ -24,8 +23,6 @@ const postExamValidation = checkExact([
       }
       return true;
     }),
-
-  // Simple numeric validations for other fields
   body("difficulty")
     .isObject()
     .custom((difficulty) => {

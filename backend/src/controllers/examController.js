@@ -30,7 +30,7 @@ const generateExam = [
     if (questionPool.length === 0) {
       return res
         .status(400)
-        .json({ message: "There is no any question to make an exam! " });
+        .json({ message: "There is no any question to make an exam!" });
     }
 
     const optimumExam = await findOptimumExam(

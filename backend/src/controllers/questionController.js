@@ -6,6 +6,7 @@ const addQuestion = [
   body("chapterId", "Invalid chapter ID").isMongoId(),
   body("text").isLength({ min: 1 }).withMessage("Question text is required!"),
   body("choices")
+    .isArray().withMessage("Choices must be an array with at least 3 items.")
     .custom((value) => {
       if (value.length !== 3) {
         throw new Error("Choices must contain exactly 3 items.");
