@@ -5,7 +5,7 @@ const NavigationLink = ({ title, icon, url }) => {
   return (
     <NavLink
       to={url}
-      className="flex rounded-md px-4 py-2 w-[230px] gap-3  items-center"
+      className="flex w-[230px] items-center gap-3 rounded-md px-4 py-2"
       style={({ isActive }) => {
         return {
           backgroundColor: isActive ? "#007AFF" : "",

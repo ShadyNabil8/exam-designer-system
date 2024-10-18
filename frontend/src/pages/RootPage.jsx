@@ -4,7 +4,7 @@ import { Outlet } from "react-router-dom";
 
 const RootPage = () => {
   return (
-    <div className="w-screen h-screen flex gap-4">
+    <div className="flex h-screen w-screen gap-4 overflow-x-hidden">
       <Navigator />
       <Outlet />
     </div>

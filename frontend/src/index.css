@@ -3,19 +3,7 @@
 @tailwind utilities;
 
 @layer components {
-  .absolute-center {
-    @apply left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform;
-  }
-  .above-center {
-    @apply left-1/2 top-[100px] -translate-x-1/2 transform;
-  }
-  .my-hover {
-    @apply hover:bg-hover-color-light-1 dark:hover:bg-hover-color-dark-1;
-  }
-  .normal-text-color {
-    @apply text-text-color-light dark:text-text-color-dark;
-  }
-  .lite-text-color {
-    @apply text-text-color-light-lite dark:text-text-color-dark-lite;
+  .vertical-center {
+    @apply top-1/2 -translate-y-1/2 transform;
   }
 }
