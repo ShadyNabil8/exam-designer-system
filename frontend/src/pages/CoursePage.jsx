@@ -25,8 +25,8 @@ const CoursePage = () => {
   }
 
   return (
-    <div className="flex w-full flex-col gap-5">
-      <p className="p-4 text-3xl">Course Details</p>
+    <div className="flex w-full flex-col gap-5 p-4">
+      <p className="text-3xl">Course Details</p>
       <div>
         <div className="flex gap-2">
           <span className="font-bold">Name:</span>

@@ -25,8 +25,8 @@ const QuestionPage = () => {
   }
 
   return (
-    <div className="flex w-full flex-col gap-5">
-      <p className="p-4 text-3xl">Question Details</p>
+    <div className="flex w-full flex-col gap-5 p-4">
+      <p className="text-3xl">Question Details</p>
       <div className="flex flex-col gap-2">
         <div className="flex gap-2">
           <span className="font-bold">Text:</span>

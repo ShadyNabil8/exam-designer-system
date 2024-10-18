@@ -21,7 +21,7 @@ const addCourse = [
 
     res.status(200).json({
       message: "The course was successfully added.",
-      addedCourse: addedCourse,
+      data: addedCourse,
     });
   }),
 ];
