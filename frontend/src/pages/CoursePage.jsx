@@ -2,6 +2,8 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import useFetchData from "../hooks/useFetchData";
 import api from "../api/api";
+import DeleteBtn from "../components/DeleteBtn";
+import UpdataBtn from "../components/UpdataBtn";
 
 const CoursePage = () => {
   const { courseId } = useParams();
@@ -23,7 +25,7 @@ const CoursePage = () => {
   }
 
   return (
-    <div className="flex flex-col gap-5">
+    <div className="flex w-full flex-col gap-5">
       <p className="p-4 text-3xl">Course Details</p>
       <div>
         <div className="flex gap-2">
@@ -34,6 +36,13 @@ const CoursePage = () => {
           <span className="font-bold">Number of chapters:</span>
           <span className="">{course.numberOfChapters}</span>
         </div>
+      </div>
+      <div className="flex gap-7">
+        <DeleteBtn
+          deleteUrl={`/api/courses/${courseId}`}
+          redirectUrl="/courses"
+        />
+        <UpdataBtn updateUrl={`/courses/${courseId}/update`} />
       </div>
     </div>
   );

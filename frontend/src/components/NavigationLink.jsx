@@ -4,6 +4,7 @@ import { NavLink } from "react-router-dom";
 const NavigationLink = ({ title, icon, url }) => {
   return (
     <NavLink
+      end
       to={url}
       className="flex w-[230px] items-center gap-3 rounded-md px-4 py-2"
       style={({ isActive }) => {
