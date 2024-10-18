@@ -11,54 +11,61 @@ import AddQuestionPage from "../pages/AddQuestionPage";
 import GenerateExamPage from "../pages/GenerateExamPage";
 import CourseChaptersPage from "../pages/CourseChaptersPage";
 import ChapterQuestionsPage from "../pages/ChapterQuestionsPage";
+import RootPage from "../pages/RootPage";
 const router = createBrowserRouter([
   {
-    path: "/courses",
-    element: <CoursesPage />,
-  },
-  {
-    path: "/courses/:id",
-    element: <CoursePage />,
-  },
-  {
-    path: "/courses/:id/chapters",
-    element: <CourseChaptersPage />,
-  },
-  {
-    path: "/add-course",
-    element: <AddCoursePage />,
-  },
-  {
-    path: "/chapters",
-    element: <ChaptersPage />,
-  },
-  {
-    path: "/chapters/:id",
-    element: <ChapterPage />,
-  },
-  {
-    path: "/chapters/:id/question",
-    element: <ChapterQuestionsPage />,
-  },
-  {
-    path: "/add-chapter",
-    element: <AddChapterPage />,
-  },
-  {
-    path: "/questions",
-    element: <QuestionsPage />,
-  },
-  {
-    path: "/questions/:id",
-    element: <QuestionPage />,
-  },
-  {
-    path: "/add-question",
-    element: <AddQuestionPage />,
-  },
-  {
-    path: "/renerate-exam",
-    element: <GenerateExamPage />,
+    path: "/",
+    element: <RootPage />,
+    children: [
+      {
+        path: "/courses",
+        element: <CoursesPage />,
+      },
+      {
+        path: "/courses/:courseId",
+        element: <CoursePage />,
+      },
+      {
+        path: "/courses/:courseId/chapters",
+        element: <CourseChaptersPage />,
+      },
+      {
+        path: "/add-course",
+        element: <AddCoursePage />,
+      },
+      {
+        path: "/chapters",
+        element: <ChaptersPage />,
+      },
+      {
+        path: "/chapters/:chapterId",
+        element: <ChapterPage />,
+      },
+      {
+        path: "/chapters/:chapterId/question",
+        element: <ChapterQuestionsPage />,
+      },
+      {
+        path: "/add-chapter",
+        element: <AddChapterPage />,
+      },
+      {
+        path: "/questions",
+        element: <QuestionsPage />,
+      },
+      {
+        path: "/questions/:questionId",
+        element: <QuestionPage />,
+      },
+      {
+        path: "/add-question",
+        element: <AddQuestionPage />,
+      },
+      {
+        path: "/renerate-exam",
+        element: <GenerateExamPage />,
+      },
+    ],
   },
 ]);
 
