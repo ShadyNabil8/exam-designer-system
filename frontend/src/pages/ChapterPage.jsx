@@ -4,6 +4,7 @@ import useFetchData from "../hooks/useFetchData";
 import api from "../api/api";
 import DeleteBtn from "../components/DeleteBtn";
 import UpdataBtn from "../components/UpdataBtn";
+import Detail from "../components/Detail";
 
 const ChapterPage = () => {
   const { chapterId } = useParams();
@@ -27,27 +28,17 @@ const ChapterPage = () => {
   return (
     <div className="flex w-full flex-col gap-5 p-4">
       <p className="text-3xl">Chapter Details</p>
-      <div>
-        <div className="flex gap-2">
-          <span className="font-bold">Name:</span>
-          <span className="">{chapter.name}</span>
-        </div>
-        <div className="flex gap-2">
-          <span className="font-bold">Number:</span>
-          <span className="">{chapter.number}</span>
-        </div>
-        <div className="flex gap-2">
-          <span className="font-bold">Maximum number of questions:</span>
-          <span className="">{chapter.maxNumberOfQuestions}</span>
-        </div>
-        <div className="flex gap-2">
-          <span className="font-bold">Maximum number of each difficulty:</span>
-          <span className="">{chapter.maxNumberOfEachDifficulty}</span>
-        </div>
-        <div className="flex gap-2">
-          <span className="font-bold">Maximum number of each objective:</span>
-          <span className="">{chapter.maxNumberOfEachObjective}</span>
-        </div>
+      <div className="flex flex-col gap-2">
+        <Detail detailTitle="Name" detailData={chapter.name} />
+        <Detail detailTitle="Number" detailData={chapter.number} />
+        <Detail
+          detailTitle="Maximum number of questions"
+          detailData={chapter.maxNumberOfEachDifficulty}
+        />
+        <Detail
+          detailTitle="Maximum number of objective"
+          detailData={chapter.maxNumberOfEachObjective}
+        />
       </div>
       <div className="flex gap-7">
         <DeleteBtn

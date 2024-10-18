@@ -4,6 +4,7 @@ import useFetchData from "../hooks/useFetchData";
 import api from "../api/api";
 import DeleteBtn from "../components/DeleteBtn";
 import UpdataBtn from "../components/UpdataBtn";
+import Detail from "../components/Detail";
 
 const CoursePage = () => {
   const { courseId } = useParams();
@@ -27,15 +28,12 @@ const CoursePage = () => {
   return (
     <div className="flex w-full flex-col gap-5 p-4">
       <p className="text-3xl">Course Details</p>
-      <div>
-        <div className="flex gap-2">
-          <span className="font-bold">Name:</span>
-          <span className="">{course.name}</span>
-        </div>
-        <div className="flex gap-2">
-          <span className="font-bold">Number of chapters:</span>
-          <span className="">{course.numberOfChapters}</span>
-        </div>
+      <div className="flex flex-col gap-2">
+        <Detail detailTitle="Name" detailData={course.name} />
+        <Detail
+          detailTitle="Number of chapters"
+          detailData={course.numberOfChapters}
+        />
       </div>
       <div className="flex gap-7">
         <DeleteBtn

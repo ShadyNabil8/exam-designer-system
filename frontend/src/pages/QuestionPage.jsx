@@ -4,6 +4,7 @@ import useFetchData from "../hooks/useFetchData";
 import api from "../api/api";
 import DeleteBtn from "../components/DeleteBtn";
 import UpdataBtn from "../components/UpdataBtn";
+import Detail from "../components/Detail";
 
 const QuestionPage = () => {
   const { questionId } = useParams();
@@ -28,39 +29,27 @@ const QuestionPage = () => {
     <div className="flex w-full flex-col gap-5 p-4">
       <p className="text-3xl">Question Details</p>
       <div className="flex flex-col gap-2">
-        <div className="flex gap-2">
-          <span className="font-bold">Text:</span>
-          <span className="">{question.text}</span>
-        </div>
+        <Detail detailTitle="Text" detailData={question.text} />
         <ul className="flex list-disc flex-col gap-1 px-6">
           {question.choices.map((choice, index) => (
             <li key={index}>{choice}</li>
           ))}
         </ul>
-        <div className="flex gap-2">
-          <span className="font-bold">Correct answer:</span>
-          <span className="">{question.correctAnswer}</span>
-        </div>
-        <div className="flex gap-2">
-          <span className="font-bold">Difficulty:</span>
-          <span className="">{question.difficulty}</span>
-        </div>
-        <div className="flex gap-2">
-          <span className="font-bold">Objective:</span>
-          <span className="">{question.objective}</span>
-        </div>
-        <div className="flex gap-2">
-          <span className="font-bold">Chapter name:</span>
-          <span className="">{question.chapter.name}</span>
-        </div>
-        <div className="flex gap-2">
-          <span className="font-bold">Chapter number:</span>
-          <span className="">{question.chapter.number}</span>
-        </div>
-        <div className="flex gap-2">
-          <span className="font-bold">Course name:</span>
-          <span className="">{question.chapter.course.name}</span>
-        </div>
+        <Detail
+          detailTitle="Correct answer"
+          detailData={question.correctAnswer}
+        />
+        <Detail detailTitle="Difficulty" detailData={question.difficulty} />
+        <Detail detailTitle="Objective" detailData={question.objective} />
+        <Detail detailTitle="Chapter name" detailData={question.chapter.name} />
+        <Detail
+          detailTitle="Chapter number"
+          detailData={question.chapter.number}
+        />
+        <Detail
+          detailTitle="Course name"
+          detailData={question.chapter.course.name}
+        />
       </div>
       <div className="flex gap-7">
         <DeleteBtn
