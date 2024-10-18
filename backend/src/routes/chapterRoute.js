@@ -37,6 +37,10 @@ const chapterController = require("../controllers/chapterController");
  *                         type: string
  *                         description: The MongoDB ObjectId of the course to which the chapter belongs
  *                         example: "60d21b4667d0d8992e610c85"
+ *                       maxNumberOfQuestions:
+ *                         type: number
+ *                         description: The maximum number of question that this chapter can have
+ *                         example: 30
  *       500:
  *         description: Server error
  *         content:

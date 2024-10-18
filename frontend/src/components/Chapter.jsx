@@ -6,7 +6,6 @@ const Chapter = ({
   chapterName,
   chapterNumber,
   maxNumberOfQuestions,
-  courseName,
   chapterId,
 }) => {
   const [isHovered, setIsHovered] = useState(false);
@@ -18,14 +17,12 @@ const Chapter = ({
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-3 gap-4">
         <div className="font-bold">Name</div>
         <div className="font-bold">Number</div>
-        <div className="font-bold">Course Name</div>
         <div className="font-bold">Maximum number of questions</div>
         <div>{chapterName}</div>
         <div>{chapterNumber}</div>
-        <div>{courseName}</div>
         <div>{maxNumberOfQuestions}</div>
       </div>
       {isHovered && (

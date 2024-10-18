@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Course from "../components/Course";
 import api from "../api/api";
 import useNotifier from "../hooks/useNotifier";
