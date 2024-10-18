@@ -40,6 +40,14 @@ const ChapterPage = () => {
           <span className="font-bold">Maximum number of questions:</span>
           <span className="">{chapter.maxNumberOfQuestions}</span>
         </div>
+        <div className="flex gap-2">
+          <span className="font-bold">Maximum number of each difficulty:</span>
+          <span className="">{chapter.maxNumberOfEachDifficulty}</span>
+        </div>
+        <div className="flex gap-2">
+          <span className="font-bold">Maximum number of each objective:</span>
+          <span className="">{chapter.maxNumberOfEachObjective}</span>
+        </div>
       </div>
       <div className="flex gap-7">
         <DeleteBtn
