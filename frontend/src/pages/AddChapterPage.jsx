@@ -5,6 +5,7 @@ import useNotifier from "../hooks/useNotifier";
 import useFetchData from "../hooks/useFetchData";
 import api from "../api/api";
 import Dropdown from "../components/Dropdown";
+import PageTitle from "../components/PageTitle";
 
 const AddChapterPage = () => {
   const [chapterName, setChapterName] = useState("");
@@ -28,7 +29,7 @@ const AddChapterPage = () => {
 
   return (
     <div className="flex w-full flex-col gap-2 p-2 sm:w-1/2 lg:w-1/4 lg:p-4">
-      <p className="text-3xl">Add new chapter</p>
+      <PageTitle title={"Add new chapter"} />
       <hr></hr>
       <div className="flex flex-col gap-4">
         <InputField

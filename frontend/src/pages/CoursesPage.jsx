@@ -3,6 +3,7 @@ import Course from "../components/Course";
 import api from "../api/api";
 import useNotifier from "../hooks/useNotifier";
 import useFetchData from "../hooks/useFetchData";
+import PageTitle from "../components/PageTitle";
 
 const CoursesPage = () => {
   const notify = useNotifier();
@@ -20,7 +21,7 @@ const CoursesPage = () => {
   }
   return (
     <div className="flex w-full flex-col gap-2 p-2 lg:p-4">
-      <p className="text-3xl">All Courses</p>
+      <PageTitle title={"All Courses"} />
       <hr></hr>
       <div className="flex w-full flex-col gap-2">
         {courses?.map((course, index) => (

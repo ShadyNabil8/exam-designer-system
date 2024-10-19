@@ -7,6 +7,7 @@ import Dropdown from "../components/Dropdown";
 import GeneratedQuestion from "../components/GeneratedQuestion";
 import { CgSpinner } from "react-icons/cg";
 import useNotifier from "../hooks/useNotifier";
+import PageTitle from "../components/PageTitle";
 
 function GenerateExamPage() {
   const [numOfSimpleQuestions, setNumOfSimpleQuestions] = useState("");
@@ -89,7 +90,7 @@ function GenerateExamPage() {
   return (
     <div className="flex w-full flex-col gap-4 p-2 lg:flex-row lg:gap-2 lg:p-4">
       <div className="flex w-full shrink-0 flex-col gap-2 sm:w-1/2 lg:w-1/3">
-        <p className="text-3xl">Exam Details</p>
+        <PageTitle title={"Exam Details"} />
         <hr></hr>
         <div className="flex flex-col gap-4">
           <Dropdown
@@ -155,7 +156,7 @@ function GenerateExamPage() {
       </div>
       <div className="h-[1px] w-full self-center border-t lg:h-3/4 lg:w-[1px] lg:border-r"></div>
       <div className="flex grow flex-col gap-2">
-        <p className="text-3xl">Generated Exam</p>
+        <PageTitle title={"Generated Exam"} />
         <hr></hr>
         <div className="flex flex-col gap-4">
           {generatedQuestions.map((question, index) => (

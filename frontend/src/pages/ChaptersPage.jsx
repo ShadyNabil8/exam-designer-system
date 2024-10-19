@@ -3,6 +3,7 @@ import Chapter from "../components/Chapter";
 import api from "../api/api";
 import useNotifier from "../hooks/useNotifier";
 import useFetchData from "../hooks/useFetchData";
+import PageTitle from "../components/PageTitle";
 
 const ChaptersPage = () => {
   const notify = useNotifier();
@@ -20,7 +21,7 @@ const ChaptersPage = () => {
   }
   return (
     <div className="flex w-full flex-col gap-2 p-2 lg:p-4">
-      <p className="text-3xl">All Chapters</p>
+      <PageTitle title={"All Chapters"} />
       <hr></hr>
       <div className="flex w-full flex-col gap-2">
         {chapters.map((chapter, index) => (

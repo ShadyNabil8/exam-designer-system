@@ -3,6 +3,7 @@ import api from "../api/api";
 import useNotifier from "../hooks/useNotifier";
 import useFetchData from "../hooks/useFetchData";
 import Question from "../components/Question";
+import PageTitle from "../components/PageTitle";
 
 const QuestionsPage = () => {
   const notify = useNotifier();
@@ -23,7 +24,7 @@ const QuestionsPage = () => {
   }
   return (
     <div className="flex w-full flex-col gap-2 p-2 lg:p-4">
-      <p className="text-3xl">All Questions</p>
+      <PageTitle title={"All Questions"} />
       <hr></hr>
       <div className="flex w-full flex-col gap-2">
         {questions.map((question, index) => (

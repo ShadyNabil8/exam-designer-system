@@ -4,6 +4,7 @@ import useFetchData from "../hooks/useFetchData";
 import Chapter from "../components/Chapter";
 import { useParams } from "react-router-dom";
 import api from "../api/api";
+import PageTitle from "../components/PageTitle";
 
 const CourseChaptersPage = () => {
   const { courseId } = useParams();
@@ -38,7 +39,7 @@ const CourseChaptersPage = () => {
 
   return (
     <div className="flex w-full flex-col gap-2 p-2 lg:p-4">
-      <p className="text-3xl">{`All Chapters for ${course.name} course`}</p>
+      <PageTitle title={`All Chapters for ${course.name} course`} />
       <hr></hr>
       <div className="flex w-full flex-col gap-2">
         {chapters.map((chapter, index) => (

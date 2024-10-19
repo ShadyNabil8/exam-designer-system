@@ -6,6 +6,7 @@ import useFetchData from "../hooks/useFetchData";
 import api from "../api/api";
 import Dropdown from "../components/Dropdown";
 import QuestionChoicesSetter from "../components/QuestionChoicesSetter";
+import PageTitle from "../components/PageTitle";
 
 const AddQuestionPage = () => {
   const [questionText, setQuestionTest] = useState("");
@@ -51,7 +52,7 @@ const AddQuestionPage = () => {
 
   return (
     <div className="flex w-full flex-col gap-2 p-2 sm:w-1/2 lg:w-1/4 lg:p-4">
-      <p className="text-3xl">Add new question</p>
+      <PageTitle title={"Add new question"} />
       <hr></hr>
       <div className="flex flex-col gap-4">
         <InputField

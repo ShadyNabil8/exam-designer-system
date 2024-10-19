@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import AddBtn from "../components/AddBtn";
 import InputField from "../components/InputField";
+import PageTitle from "../components/PageTitle";
 const AddCoursePage = () => {
   const [courseName, setCourseName] = useState("");
 
   return (
     <div className="flex w-full flex-col gap-2 p-2 sm:w-1/2 lg:w-1/4 lg:p-4">
-      <p className="text-3xl">Add new cource</p>
+      <PageTitle title={"Add new course"} />
       <hr></hr>
       <div className="flex flex-col gap-4">
         <InputField

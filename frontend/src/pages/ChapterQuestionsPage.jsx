@@ -4,6 +4,7 @@ import useNotifier from "../hooks/useNotifier";
 import useFetchData from "../hooks/useFetchData";
 import Question from "../components/Question";
 import { useParams } from "react-router-dom";
+import PageTitle from "../components/PageTitle";
 
 const ChapterQuestionsPage = () => {
   const { chapterId } = useParams();
@@ -39,7 +40,7 @@ const ChapterQuestionsPage = () => {
   }
   return (
     <div className="flex w-full flex-col gap-2 p-2 lg:p-4">
-      <p className="text-3xl">{`All Questions of ${chapter.name} chapter`}</p>
+      <PageTitle title={`All Questions of ${chapter.name} chapter`} />
       <hr></hr>
       <div className="flex w-full flex-col gap-2">
         {questions.map((question, index) => (
