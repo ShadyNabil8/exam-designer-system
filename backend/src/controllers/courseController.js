@@ -54,6 +54,27 @@ const getCourse = [
   }),
 ];
 
+const getCourseChapters = [
+  param("id", "Invalid course ID").isMongoId(),
+  asyncHandler(async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const courseId = req.params.id;
+
+    const chapters = await database.getChaptersByCourse(courseId);
+
+    res
+      .status(200)
+      .json({
+        message: "Course chapters was successfully fetched.",
+        data: chapters,
+      });
+  }),
+];
+
 const deleteCourse = [
   param("id", "Invalid course ID").isMongoId(),
   asyncHandler(async (req, res) => {
@@ -107,6 +128,7 @@ module.exports = {
   addCourse,
   getCourses,
   getCourse,
+  getCourseChapters,
   deleteCourse,
   updateCourse,
 };

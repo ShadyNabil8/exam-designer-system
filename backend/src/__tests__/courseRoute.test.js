@@ -37,8 +37,8 @@ describe("POST /courses", () => {
     expect(response.statusCode).toBe(200);
     expect(response.body.message).toEqual("The course was successfully added.");
 
-    expect(response.body).toHaveProperty("addedCourse");
-    expect(response.body.addedCourse).toEqual(mockCourse);
+    expect(response.body).toHaveProperty("data");
+    expect(response.body.data).toEqual(mockCourse);
   });
 
   it("should handle errors and call next with an error", async () => {
@@ -75,6 +75,65 @@ describe("GET /api/courses", () => {
     database.getCourses.mockRejectedValue(mockError);
 
     const response = await request(app).get("/api/courses");
+
+    expect(response.statusCode).toBe(500);
+    expect(response.body.message).toBe("Database error");
+  });
+});
+
+describe("GET /api/courses/:id/chapters", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+  const validCourseId = "60d21b4667d0d8992e610c85";
+  const mockChapters = [
+    {
+      id: "1",
+      name: "Intro to CS50",
+      number: 5,
+      maxNumberOfQuestions: 10,
+      courseId: "60d21b4667d0d8992e610c85",
+    },
+    {
+      id: "2",
+      name: "Math 101",
+      number: 15,
+      maxNumberOfQuestions: 15,
+      courseId: "60d21b4667d0d8992e610c85",
+    },
+  ];
+
+  it("should return a list of chapters", async () => {
+    database.getChaptersByCourse.mockResolvedValue(mockChapters);
+
+    const response = await request(app).get(
+      `/api/courses/${validCourseId}/chapters`
+    );
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body.data).toEqual(mockChapters);
+  });
+
+  it("should return 400 for an invalid course id", async () => {
+    const invalidId = "invalid-id";
+
+    const response = await request(app).get(
+      `/api/courses/${invalidId}/chapters`
+    );
+
+    expect(response.statusCode).toBe(400);
+    expect(Array.isArray(response.body.errors)).toBe(true);
+    expect(response.body.errors.length).toBeGreaterThan(0);
+    expect(response.body.errors[0].msg).toBe("Invalid course ID");
+  });
+
+  it("should handle errors from the database", async () => {
+    const mockError = new Error("Database error");
+    database.getChaptersByCourse.mockRejectedValue(mockError);
+
+    const response = await request(app).get(
+      `/api/courses/${validCourseId}/chapters`
+    );
 
     expect(response.statusCode).toBe(500);
     expect(response.body.message).toBe("Database error");

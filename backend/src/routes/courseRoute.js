@@ -128,6 +128,83 @@ courseRouter.get("/:id", courseController.getCourse);
 
 /**
  * @swagger
+ * /api/courses/{id}/chapters:
+ *   get:
+ *     tags:
+ *       - Courses
+ *     summary: Fetch all chapters for a specific course
+ *     description: Retrieves all chapters associated with a given course by course ID.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the course
+ *         example: "6712137bfd670c8782b3aaea"
+ *     responses:
+ *       200:
+ *         description: Course chapters were successfully fetched
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Course chapters were successfully fetched."
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       _id:
+ *                         type: string
+ *                         example: "671254ac7fd685b10afaefbc"
+ *                       courseId:
+ *                         type: string
+ *                         description: The ID of the course the chapter belongs to
+ *                         example: "6712137bfd670c8782b3aaea"
+ *                       name:
+ *                         type: string
+ *                         description: The name of the chapter
+ *                         example: "ITest"
+ *                       number:
+ *                         type: integer
+ *                         description: The chapter number
+ *                         example: 1
+ *                       maxNumberOfQuestions:
+ *                         type: integer
+ *                         description: Maximum number of questions allowed in the chapter
+ *                         example: 5
+ *       400:
+ *         description: Invalid course ID
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 errors:
+ *                   type: array
+ *                   description: Validation errors
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       msg:
+ *                         type: string
+ *                         example: "Invalid course ID"
+ *                       param:
+ *                         type: string
+ *                         example: "id"
+ *                       path:
+ *                         type: string
+ *                         example: "params"
+ */
+// GET all the course's chapters
+courseRouter.get("/:id/chapters", courseController.getCourseChapters);
+
+/**
+ * @swagger
  * /api/courses/{id}:
  *   delete:
  *     summary: Delete a course by its ID

@@ -65,6 +65,11 @@ async function getChapters() {
   return chapters;
 }
 
+async function getChaptersByCourse(courseId) {
+  const chapters = await chapterModel.find({ courseId }).lean();
+  return chapters;
+}
+
 async function getChapter(id) {
   const chapter = await chapterModel
     .findById(id)
@@ -270,6 +275,7 @@ module.exports = {
   isCourseExistsById,
   addChapter,
   getChapters,
+  getChaptersByCourse,
   getChapter,
   isChapterExists,
   isChapterExistsById,

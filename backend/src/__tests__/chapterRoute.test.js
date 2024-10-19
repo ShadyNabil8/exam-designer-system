@@ -114,8 +114,8 @@ describe("POST /api/chapters", () => {
     expect(response.body.message).toEqual(
       "The chapter was successfully added."
     );
-    expect(response.body).toHaveProperty("addedChapter");
-    expect(response.body.addedChapter).toEqual(mockChapter);
+    expect(response.body).toHaveProperty("data");
+    expect(response.body.data).toEqual(mockChapter);
   });
 
   it("should handle errors and call next with an error", async () => {
