@@ -57,7 +57,7 @@ const addQuestion = [
     ) {
       return res.status(400).json({
         message:
-          "Failed adding a question with this difficuly because there will be no balance",
+          "Failed adding a question with this difficulty because there will be no balance",
       });
     }
 

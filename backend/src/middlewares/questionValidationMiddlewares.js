@@ -11,8 +11,7 @@ const postQuestionValidation = [
         throw new Error("Choices must contain exactly 3 items.");
       }
       return true;
-    })
-    .withMessage("Choices must be an array with at least 3 items."),
+    }),
   body("correctAnswer")
     .isString()
     .withMessage("Correct answer is required!")

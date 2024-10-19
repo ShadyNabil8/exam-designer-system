@@ -40,6 +40,11 @@ const Navigator = () => {
           url="/questions"
           icon={<LuListTodo className="text-2xl" />}
         />
+        <NavigationLink
+          title="Add question"
+          url="/add-question"
+          icon={<GrAddCircle className="text-2xl" />}
+        />
       </div>
     </div>
   );

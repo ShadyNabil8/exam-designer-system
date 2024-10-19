@@ -5,7 +5,7 @@ const InputField = ({ value, fieldName, placeholder, onFieldChange }) => {
     <div className="flex items-center gap-2">
       <span className="font-bold">{`${fieldName}:`}</span>
       <input
-        className="rounded-md border p-2 focus:outline-none"
+        className="w-full rounded-md border p-2 focus:outline-none"
         name={fieldName}
         placeholder={placeholder}
         value={value}

@@ -63,7 +63,7 @@ describe("POST /api/questions", () => {
 
     expect(response.statusCode).toBe(400);
     expect(response.body.errors[0].msg).toEqual(
-      "Choices must be an array with at least 3 items."
+      "Choices must contain exactly 3 items."
     );
   });
 

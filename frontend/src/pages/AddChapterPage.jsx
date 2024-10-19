@@ -49,6 +49,7 @@ const AddChapterPage = () => {
       <Dropdown
         selectedOption={selectedCourse}
         setSelectedOption={setSelectedCourse}
+        title="Select a course"
       >
         {courses.map((course, index) => (
           <option key={index} value={course._id}>
