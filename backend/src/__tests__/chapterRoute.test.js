@@ -444,3 +444,68 @@ describe("PUT /api/chapters/:id", () => {
     expect(response.body.message).toBe("Database error");
   });
 });
+
+describe("GET /api/chapters/:id/questions", () => {
+  it("should return 200 and fetch the questions for a valid chapter ID", async () => {
+    const mockQuestions = [
+      {
+        _id: "671114f2afe0d6b3ab7eced6",
+        chapterId: "671112a0afe0d6b3ab7ece99",
+        text: "Which planet is known as the Red Planet?",
+        choices: ["Mars", "Venus", "Jupiter"],
+        correctAnswer: "Mars",
+        difficulty: "simple",
+        objective: "reminding",
+      },
+      {
+        _id: "671114fcafe0d6b3ab7ecedd",
+        chapterId: "671112a0afe0d6b3ab7ece99",
+        text: "Who wrote 'To Kill a Mockingbird'?",
+        choices: ["Harper Lee", "George Orwell", "F. Scott Fitzgerald"],
+        correctAnswer: "Harper Lee",
+        difficulty: "simple",
+        objective: "understanding",
+      },
+    ];
+
+    database.getQuestionsByChapter.mockResolvedValue(mockQuestions);
+
+    const response = await request(app).get(
+      "/api/chapters/671112a0afe0d6b3ab7ece99/questions"
+    );
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body.message).toBe(
+      "The questions was successfully fetched."
+    );
+    expect(response.body.data).toHaveLength(2);
+    expect(response.body.data[0].text).toBe(
+      "Which planet is known as the Red Planet?"
+    );
+    expect(response.body.data[1].correctAnswer).toBe("Harper Lee");
+  });
+
+  it("should return 400 when the chapter ID is invalid", async () => {
+    const response = await request(app).get(
+      "/api/chapters/invalid-id/questions"
+    );
+
+    expect(response.statusCode).toBe(400);
+    expect(Array.isArray(response.body.errors)).toBe(true);
+    expect(response.body.errors.length).toBeGreaterThan(0);
+    expect(response.body.errors[0].msg).toEqual("Invalid chapter ID");
+  });
+
+  it("should return 500 if there is a server error", async () => {
+    database.getQuestionsByChapter.mockRejectedValue(
+      new Error("Database error")
+    );
+
+    const response = await request(app).get(
+      "/api/chapters/671112a0afe0d6b3ab7ece99/questions"
+    );
+
+    expect(response.statusCode).toBe(500);
+    expect(response.body.message).toBe("Database error");
+  });
+});

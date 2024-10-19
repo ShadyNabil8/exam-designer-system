@@ -42,7 +42,7 @@ const router = createBrowserRouter([
         element: <ChapterPage />,
       },
       {
-        path: "/chapters/:chapterId/question",
+        path: "/chapters/:chapterId/questions",
         element: <ChapterQuestionsPage />,
       },
       {

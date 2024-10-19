@@ -156,6 +156,105 @@ chapterRouter.get("/:id", chapterController.getChapter);
 
 /**
  * @swagger
+ * /api/chapters/{id}/questions:
+ *   get:
+ *     tags:
+ *       - Chapters
+ *     summary: Get questions for a specific chapter
+ *     description: Retrieves a list of questions associated with the given chapter ID.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the chapter
+ *         example: "671112a0afe0d6b3ab7ece99"
+ *     responses:
+ *       200:
+ *         description: The questions were successfully fetched
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "The questions were successfully fetched."
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       _id:
+ *                         type: string
+ *                         example: "671114f2afe0d6b3ab7eced6"
+ *                       chapterId:
+ *                         type: string
+ *                         description: The ID of the chapter this question belongs to
+ *                         example: "671112a0afe0d6b3ab7ece99"
+ *                       text:
+ *                         type: string
+ *                         description: The question text
+ *                         example: "Which planet is known as the Red Planet?"
+ *                       choices:
+ *                         type: array
+ *                         description: The available choices for the question
+ *                         items:
+ *                           type: string
+ *                         example: ["Mars", "Venus", "Jupiter"]
+ *                       correctAnswer:
+ *                         type: string
+ *                         description: The correct answer to the question
+ *                         example: "Mars"
+ *                       difficulty:
+ *                         type: string
+ *                         description: The difficulty level of the question
+ *                         enum: [simple, difficult]
+ *                         example: "simple"
+ *                       objective:
+ *                         type: string
+ *                         description: The objective type of the question
+ *                         enum: [reminding, understanding, creativity]
+ *                         example: "reminding"
+ *       400:
+ *         description: Invalid chapter ID
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 errors:
+ *                   type: array
+ *                   description: Validation errors
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       msg:
+ *                         type: string
+ *                         example: "Invalid chapter ID"
+ *                       path:
+ *                         type: string
+ *                         example: "id"
+ *                       location:
+ *                         type: string
+ *                         example: "params"
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Internal Server Error"
+ */
+// GET a all questions for this chapter
+chapterRouter.get("/:id/questions", chapterController.getChapterQuestions);
+
+/**
+ * @swagger
  * /api/chapters/{id}:
  *   delete:
  *     summary: Delete a chapter by its ID

@@ -88,6 +88,25 @@ const getChapter = [
   }),
 ];
 
+const getChapterQuestions = [
+  param("id", "Invalid chapter ID").isMongoId(),
+  asyncHandler(async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const chapterId = req.params.id;
+
+    const questions = await database.getQuestionsByChapter(chapterId);
+
+    res.status(200).json({
+      message: "The questions was successfully fetched.",
+      data: questions,
+    });
+  }),
+];
+
 const deleteChapter = [
   param("id", "Invalid chapter ID").isMongoId(),
   asyncHandler(async (req, res) => {
@@ -171,6 +190,7 @@ const updateChapter = [
 module.exports = {
   addChapter,
   getChapters,
+  getChapterQuestions,
   getChapter,
   deleteChapter,
   updateChapter,

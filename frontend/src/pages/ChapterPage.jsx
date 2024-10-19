@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import useFetchData from "../hooks/useFetchData";
 import api from "../api/api";
 import DeleteBtn from "../components/DeleteBtn";
@@ -41,6 +41,12 @@ const ChapterPage = () => {
             detailTitle="Maximum number of objective"
             detailData={chapter.maxNumberOfEachObjective}
           />
+          <Link
+            to={`/chapters/${chapterId}/questions`}
+            className="text-blue-600 underline"
+          >
+            Questions
+          </Link>
         </div>
         <div className="flex gap-7">
           <DeleteBtn

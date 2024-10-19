@@ -34,6 +34,8 @@ function GenerateExamPage() {
 
   const onGenerateExam = async () => {
     try {
+      setIsGenerating(true);
+
       // I will remove the name proberty from each chapter.
       const chaptersData = chaptersDistribution.reduce((acc, curr) => {
         acc[curr.id] = curr.numberOfQuestions;
@@ -59,6 +61,8 @@ function GenerateExamPage() {
           error?.response?.data?.errors[0]?.msg ||
           "Something sent wrong",
       );
+    } finally {
+      setIsGenerating(false);
     }
   };
 

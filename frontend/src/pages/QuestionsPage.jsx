@@ -1,5 +1,4 @@
 import React from "react";
-import Chapter from "../components/Chapter";
 import api from "../api/api";
 import useNotifier from "../hooks/useNotifier";
 import useFetchData from "../hooks/useFetchData";

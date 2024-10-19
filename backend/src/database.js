@@ -265,6 +265,14 @@ async function getQuestionsByChapterIds(chapterIds) {
   return questions;
 }
 
+async function getQuestionsByChapter(chapterId) {
+  const questions = await questionModel.find({
+    chapterId,
+  });
+
+  return questions;
+}
+
 module.exports = {
   dbConnect,
   addCourse,
@@ -292,4 +300,5 @@ module.exports = {
   getQuestionDifficultyDistribution,
   getQuestionObjectiveDistribution,
   getQuestionsByChapterIds,
+  getQuestionsByChapter,
 };
