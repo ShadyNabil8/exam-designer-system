@@ -7,7 +7,7 @@ import { GrAddCircle } from "react-icons/gr";
 
 const Navigator = () => {
   return (
-    <div className="flex h-full flex-col gap-3 border-r p-2 lg:p-6">
+    <div className="flex h-full flex-col gap-3 border-r px-2 py-6">
       <div className="flex flex-col gap-1">
         <NavigationLink
           title="Courses"

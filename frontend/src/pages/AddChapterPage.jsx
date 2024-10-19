@@ -27,47 +27,51 @@ const AddChapterPage = () => {
   }
 
   return (
-    <div className="flex flex-col gap-4 px-4 py-10">
-      <InputField
-        value={chapterName}
-        fieldName="Name"
-        placeholder="e.g.,Dynamic programming"
-        onFieldChange={(e) => setChapterName(e.target.value)}
-      />
-      <InputField
-        value={chapterNumber}
-        fieldName="Number"
-        placeholder="e.g.,1"
-        onFieldChange={(e) => setChapterNumber(e.target.value)}
-      />
-      <InputField
-        value={chapterMaxNumOfQuestions}
-        fieldName="Maximum number of questions"
-        placeholder="e.g.,12"
-        onFieldChange={(e) => setChapterMaxNumOfQuestions(e.target.value)}
-      />
-      <Dropdown
-        selectedOption={selectedCourse}
-        setSelectedOption={setSelectedCourse}
-        title="Select a course"
-      >
-        {courses.map((course, index) => (
-          <option key={index} value={course._id}>
-            {course.name}
-          </option>
-        ))}
-      </Dropdown>
-      <AddBtn
-        itemTypeName="Chapter"
-        postUrl="/api/chapters"
-        redirectUrl="/chapters"
-        data={{
-          name: chapterName,
-          number: chapterNumber,
-          maxNumberOfQuestions: chapterMaxNumOfQuestions,
-          courseId: selectedCourse,
-        }}
-      />
+    <div className="flex w-full flex-col gap-2 p-2 sm:w-1/2 lg:w-1/4 lg:p-4">
+      <p className="text-3xl">Add new chapter</p>
+      <hr></hr>
+      <div className="flex flex-col gap-4">
+        <InputField
+          value={chapterName}
+          fieldName="Name"
+          placeholder="e.g.,Dynamic programming"
+          onFieldChange={(e) => setChapterName(e.target.value)}
+        />
+        <InputField
+          value={chapterNumber}
+          fieldName="Number"
+          placeholder="e.g.,1"
+          onFieldChange={(e) => setChapterNumber(e.target.value)}
+        />
+        <InputField
+          value={chapterMaxNumOfQuestions}
+          fieldName="Maximum number of questions"
+          placeholder="e.g.,12"
+          onFieldChange={(e) => setChapterMaxNumOfQuestions(e.target.value)}
+        />
+        <Dropdown
+          selectedOption={selectedCourse}
+          setSelectedOption={setSelectedCourse}
+          title="Select a course"
+        >
+          {courses.map((course, index) => (
+            <option key={index} value={course._id}>
+              {course.name}
+            </option>
+          ))}
+        </Dropdown>
+        <AddBtn
+          itemTypeName="Chapter"
+          postUrl="/api/chapters"
+          redirectUrl="/chapters"
+          data={{
+            name: chapterName,
+            number: chapterNumber,
+            maxNumberOfQuestions: chapterMaxNumOfQuestions,
+            courseId: selectedCourse,
+          }}
+        />
+      </div>
     </div>
   );
 };

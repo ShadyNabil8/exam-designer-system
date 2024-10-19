@@ -26,26 +26,29 @@ const ChapterPage = () => {
   }
 
   return (
-    <div className="flex w-full flex-col gap-5 p-4">
-      <p className="text-3xl">Chapter Details</p>
-      <div className="flex flex-col gap-2">
-        <Detail detailTitle="Name" detailData={chapter.name} />
-        <Detail detailTitle="Number" detailData={chapter.number} />
-        <Detail
-          detailTitle="Maximum number of difficulty"
-          detailData={chapter.maxNumberOfEachDifficulty}
-        />
-        <Detail
-          detailTitle="Maximum number of objective"
-          detailData={chapter.maxNumberOfEachObjective}
-        />
-      </div>
-      <div className="flex gap-7">
-        <DeleteBtn
-          deleteUrl={`/api/chapters/${chapterId}`}
-          redirectUrl="/chapters"
-        />
-        <UpdataBtn updateUrl={`/chapters/${chapterId}/update`} />
+    <div className="flex w-full flex-col gap-2 p-2 sm:w-1/2 lg:w-1/4 lg:p-4">
+      <p className="text-3xl">Chapter details</p>
+      <hr></hr>
+      <div className="flex w-full flex-col gap-5">
+        <div className="flex flex-col gap-2">
+          <Detail detailTitle="Name" detailData={chapter.name} />
+          <Detail detailTitle="Number" detailData={chapter.number} />
+          <Detail
+            detailTitle="Maximum number of difficulty"
+            detailData={chapter.maxNumberOfEachDifficulty}
+          />
+          <Detail
+            detailTitle="Maximum number of objective"
+            detailData={chapter.maxNumberOfEachObjective}
+          />
+        </div>
+        <div className="flex gap-7">
+          <DeleteBtn
+            deleteUrl={`/api/chapters/${chapterId}`}
+            redirectUrl="/chapters"
+          />
+          <UpdataBtn updateUrl={`/chapters/${chapterId}/update`} />
+        </div>
       </div>
     </div>
   );

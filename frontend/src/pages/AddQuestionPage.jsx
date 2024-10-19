@@ -50,81 +50,85 @@ const AddQuestionPage = () => {
   }
 
   return (
-    <div className="flex flex-col gap-4 px-4 py-10">
-      <InputField
-        value={questionText}
-        fieldName="Text"
-        placeholder="e.g.,What is the capital of Egypt"
-        onFieldChange={(e) => setQuestionTest(e.target.value)}
-      />
-      <QuestionChoicesSetter
-        choices={questionChoices}
-        setChoices={setQuestionChoices}
-      />
-      <InputField
-        value={questionCorrectAnswer}
-        fieldName="Correct answer"
-        placeholder="e.g.,Cairo"
-        onFieldChange={(e) => setQuestionCorrectAnswer(e.target.value)}
-      />
-      <Dropdown
-        title="Select an difficulty"
-        selectedOption={questionDifficulty}
-        setSelectedOption={setQuestionDifficulty}
-      >
-        {["simple", "difficult"].map((difficulty, index) => (
-          <option key={index} value={difficulty}>
-            {difficulty}
-          </option>
-        ))}
-      </Dropdown>
-      <Dropdown
-        title="Select an Objective"
-        selectedOption={questionObjective}
-        setSelectedOption={setQuestionObjective}
-      >
-        {["reminding", "understanding", "creativity"].map(
-          (objective, index) => (
-            <option key={index} value={objective}>
-              {objective}
+    <div className="flex w-full flex-col gap-2 p-2 sm:w-1/2 lg:w-1/4 lg:p-4">
+      <p className="text-3xl">Add new question</p>
+      <hr></hr>
+      <div className="flex flex-col gap-4">
+        <InputField
+          value={questionText}
+          fieldName="Text"
+          placeholder="e.g.,What is the capital of Egypt"
+          onFieldChange={(e) => setQuestionTest(e.target.value)}
+        />
+        <QuestionChoicesSetter
+          choices={questionChoices}
+          setChoices={setQuestionChoices}
+        />
+        <InputField
+          value={questionCorrectAnswer}
+          fieldName="Correct answer"
+          placeholder="e.g.,Cairo"
+          onFieldChange={(e) => setQuestionCorrectAnswer(e.target.value)}
+        />
+        <Dropdown
+          title="Select an difficulty"
+          selectedOption={questionDifficulty}
+          setSelectedOption={setQuestionDifficulty}
+        >
+          {["simple", "difficult"].map((difficulty, index) => (
+            <option key={index} value={difficulty}>
+              {difficulty}
             </option>
-          ),
-        )}
-      </Dropdown>
-      <Dropdown
-        title="Select a course"
-        selectedOption={questionCourse}
-        setSelectedOption={setQuestionCourse}
-      >
-        {courses.map((course, index) => (
-          <option key={index} value={course._id}>
-            {course.name}
-          </option>
-        ))}
-      </Dropdown>
-      <Dropdown
-        title="Select a chapter"
-        selectedOption={questionChapter}
-        setSelectedOption={setQuestionChapter}
-      >
-        {chaptersList.map((chapter, index) => (
-          <option key={index} value={chapter._id}>
-            {chapter.name}
-          </option>
-        ))}
-      </Dropdown>
-      <AddBtn
-        itemTypeName="Question"
-        postUrl="/api/questions"
-        data={{
-          chapterId: questionChapter,
-          text: questionText,
-          choices: questionChoices,
-          correctAnswer: questionCorrectAnswer,
-          difficulty: questionDifficulty,
-          objective: questionObjective,
-        }}
-      />
+          ))}
+        </Dropdown>
+        <Dropdown
+          title="Select an Objective"
+          selectedOption={questionObjective}
+          setSelectedOption={setQuestionObjective}
+        >
+          {["reminding", "understanding", "creativity"].map(
+            (objective, index) => (
+              <option key={index} value={objective}>
+                {objective}
+              </option>
+            ),
+          )}
+        </Dropdown>
+        <Dropdown
+          title="Select a course"
+          selectedOption={questionCourse}
+          setSelectedOption={setQuestionCourse}
+        >
+          {courses.map((course, index) => (
+            <option key={index} value={course._id}>
+              {course.name}
+            </option>
+          ))}
+        </Dropdown>
+        <Dropdown
+          title="Select a chapter"
+          selectedOption={questionChapter}
+          setSelectedOption={setQuestionChapter}
+        >
+          {chaptersList.map((chapter, index) => (
+            <option key={index} value={chapter._id}>
+              {chapter.name}
+            </option>
+          ))}
+        </Dropdown>
+        <AddBtn
+          itemTypeName="Question"
+          postUrl="/api/questions"
+          data={{
+            chapterId: questionChapter,
+            text: questionText,
+            choices: questionChoices,
+            correctAnswer: questionCorrectAnswer,
+            difficulty: questionDifficulty,
+            objective: questionObjective,
+          }}
+        />
+      </div>
     </div>
   );
 };

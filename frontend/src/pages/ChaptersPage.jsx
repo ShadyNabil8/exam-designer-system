@@ -20,15 +20,19 @@ const ChaptersPage = () => {
   }
   return (
     <div className="flex w-full flex-col gap-2 p-2 lg:p-4">
-      {chapters.map((chapter, index) => (
-        <Chapter
-          key={index}
-          chapterName={chapter.name}
-          chapterNumber={chapter.number}
-          maxNumberOfQuestions={chapter.maxNumberOfQuestions}
-          chapterId={chapter._id}
-        />
-      ))}
+      <p className="text-3xl">All Chapters</p>
+      <hr></hr>
+      <div className="flex w-full flex-col gap-2">
+        {chapters.map((chapter, index) => (
+          <Chapter
+            key={index}
+            chapterName={chapter.name}
+            chapterNumber={chapter.number}
+            maxNumberOfQuestions={chapter.maxNumberOfQuestions}
+            chapterId={chapter._id}
+          />
+        ))}
+      </div>
     </div>
   );
 };

@@ -26,21 +26,24 @@ const CoursePage = () => {
   }
 
   return (
-    <div className="flex w-full flex-col gap-5 p-4">
+    <div className="flex w-full flex-col gap-2 p-2 sm:w-1/2 lg:w-1/4 lg:p-4">
       <p className="text-3xl">Course Details</p>
-      <div className="flex flex-col gap-2">
-        <Detail detailTitle="Name" detailData={course.name} />
-        <Detail
-          detailTitle="Number of chapters"
-          detailData={course.numberOfChapters}
-        />
-      </div>
-      <div className="flex gap-7">
-        <DeleteBtn
-          deleteUrl={`/api/courses/${courseId}`}
-          redirectUrl="/courses"
-        />
-        <UpdataBtn updateUrl={`/courses/${courseId}/update`} />
+      <hr></hr>
+      <div className="flex w-full flex-col gap-5">
+        <div className="flex flex-col gap-2">
+          <Detail detailTitle="Name" detailData={course.name} />
+          <Detail
+            detailTitle="Number of chapters"
+            detailData={course.numberOfChapters}
+          />
+        </div>
+        <div className="flex gap-7">
+          <DeleteBtn
+            deleteUrl={`/api/courses/${courseId}`}
+            redirectUrl="/courses"
+          />
+          <UpdataBtn updateUrl={`/courses/${courseId}/update`} />
+        </div>
       </div>
     </div>
   );

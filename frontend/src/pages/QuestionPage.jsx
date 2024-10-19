@@ -26,37 +26,43 @@ const QuestionPage = () => {
   }
 
   return (
-    <div className="flex w-full flex-col gap-5 p-4">
+    <div className="flex w-full flex-col gap-2 p-2 sm:w-1/2 lg:w-1/4 lg:p-4">
       <p className="text-3xl">Question Details</p>
-      <div className="flex flex-col gap-2">
-        <Detail detailTitle="Text" detailData={question.text} />
-        <ul className="flex list-disc flex-col gap-1 px-6">
-          {question.choices.map((choice, index) => (
-            <li key={index}>{choice}</li>
-          ))}
-        </ul>
-        <Detail
-          detailTitle="Correct answer"
-          detailData={question.correctAnswer}
-        />
-        <Detail detailTitle="Difficulty" detailData={question.difficulty} />
-        <Detail detailTitle="Objective" detailData={question.objective} />
-        <Detail detailTitle="Chapter name" detailData={question.chapter.name} />
-        <Detail
-          detailTitle="Chapter number"
-          detailData={question.chapter.number}
-        />
-        <Detail
-          detailTitle="Course name"
-          detailData={question.chapter.course.name}
-        />
-      </div>
-      <div className="flex gap-7">
-        <DeleteBtn
-          deleteUrl={`/api/questions/${questionId}`}
-          redirectUrl="/questions"
-        />
-        <UpdataBtn updateUrl={`/questions/${questionId}/update`} />
+      <hr></hr>
+      <div className="flex w-full flex-col gap-5">
+        <div className="flex flex-col gap-2">
+          <Detail detailTitle="Text" detailData={question.text} />
+          <ul className="flex list-disc flex-col gap-1 px-6">
+            {question.choices.map((choice, index) => (
+              <li key={index}>{choice}</li>
+            ))}
+          </ul>
+          <Detail
+            detailTitle="Correct answer"
+            detailData={question.correctAnswer}
+          />
+          <Detail detailTitle="Difficulty" detailData={question.difficulty} />
+          <Detail detailTitle="Objective" detailData={question.objective} />
+          <Detail
+            detailTitle="Chapter name"
+            detailData={question.chapter.name}
+          />
+          <Detail
+            detailTitle="Chapter number"
+            detailData={question.chapter.number}
+          />
+          <Detail
+            detailTitle="Course name"
+            detailData={question.chapter.course.name}
+          />
+        </div>
+        <div className="flex gap-7">
+          <DeleteBtn
+            deleteUrl={`/api/questions/${questionId}`}
+            redirectUrl="/questions"
+          />
+          <UpdataBtn updateUrl={`/questions/${questionId}/update`} />
+        </div>
       </div>
     </div>
   );

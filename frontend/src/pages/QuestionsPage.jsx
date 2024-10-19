@@ -23,18 +23,22 @@ const QuestionsPage = () => {
     return <p>Loading Chapters...</p>;
   }
   return (
-    <div className="flex w-full flex-col gap-2 p-4">
-      {questions.map((question, index) => (
-        <Question
-          key={index}
-          questionId={question._id}
-          questionText={question.text}
-          questionChoices={question.choices}
-          questionCorrectAnswer={question.correctAnswer}
-          questionDifficulty={question.difficulty}
-          questionObjective={question.objective}
-        />
-      ))}
+    <div className="flex w-full flex-col gap-2 p-2 lg:p-4">
+      <p className="text-3xl">All Questions</p>
+      <hr></hr>
+      <div className="flex w-full flex-col gap-2">
+        {questions.map((question, index) => (
+          <Question
+            key={index}
+            questionId={question._id}
+            questionText={question.text}
+            questionChoices={question.choices}
+            questionCorrectAnswer={question.correctAnswer}
+            questionDifficulty={question.difficulty}
+            questionObjective={question.objective}
+          />
+        ))}
+      </div>
     </div>
   );
 };

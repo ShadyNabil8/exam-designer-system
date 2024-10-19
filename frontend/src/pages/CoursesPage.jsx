@@ -20,14 +20,18 @@ const CoursesPage = () => {
   }
   return (
     <div className="flex w-full flex-col gap-2 p-2 lg:p-4">
-      {courses?.map((course, index) => (
-        <Course
-          key={index}
-          courseName={course.name}
-          courseNumberOfChapters={course.numberOfChapters}
-          courseId={course._id}
-        />
-      ))}
+      <p className="text-3xl">All Courses</p>
+      <hr></hr>
+      <div className="flex w-full flex-col gap-2">
+        {courses?.map((course, index) => (
+          <Course
+            key={index}
+            courseName={course.name}
+            courseNumberOfChapters={course.numberOfChapters}
+            courseId={course._id}
+          />
+        ))}
+      </div>
     </div>
   );
 };
