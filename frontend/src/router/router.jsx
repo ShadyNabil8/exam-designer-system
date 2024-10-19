@@ -62,7 +62,7 @@ const router = createBrowserRouter([
         element: <AddQuestionPage />,
       },
       {
-        path: "/renerate-exam",
+        path: "/generate-exam",
         element: <GenerateExamPage />,
       },
     ],

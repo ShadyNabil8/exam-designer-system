@@ -4,10 +4,7 @@ import { MdDelete } from "react-icons/md";
 
 const QuestionChoicesSetter = ({ choices, setChoices }) => {
   const [newChoice, setNewChoice] = useState("");
-
-  useEffect(() => {
-    console.log(choices);
-  }, [choices]);
+  
   return (
     <div className="flex flex-col gap-2">
       <span className="font-bold">{"Choices"}</span>

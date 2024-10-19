@@ -4,6 +4,7 @@ import { FiBook } from "react-icons/fi";
 import { IoBookmarkOutline } from "react-icons/io5";
 import { LuListTodo } from "react-icons/lu";
 import { GrAddCircle } from "react-icons/gr";
+import { GiOpenBook } from "react-icons/gi";
 
 const Navigator = () => {
   return (
@@ -44,6 +45,13 @@ const Navigator = () => {
           title="Add question"
           url="/add-question"
           icon={<GrAddCircle className="shrink-0 text-2xl" />}
+        />
+      </div>
+      <div>
+        <NavigationLink
+          title="Generage exam"
+          url="/generate-exam"
+          icon={<GiOpenBook className="shrink-0 text-2xl" />}
         />
       </div>
     </div>

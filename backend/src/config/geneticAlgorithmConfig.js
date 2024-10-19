@@ -65,7 +65,7 @@ function getSimulationConfig(individual, onCalculateFitness, onFinish) {
     prototype: individual,
     data: {},
     popSize: 100,
-    maxGenerations: 50,
+    maxGenerations: 500,
     mutationRate: 0.05,
     onCalculateFitness,
     onFinish,
