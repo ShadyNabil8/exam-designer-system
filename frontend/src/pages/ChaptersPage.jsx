@@ -19,7 +19,7 @@ const ChaptersPage = () => {
     return <p>Loading Chapters...</p>;
   }
   return (
-    <div className="flex w-full flex-col gap-2 p-4">
+    <div className="flex w-full flex-col gap-2 p-2 lg:p-4">
       {chapters.map((chapter, index) => (
         <Chapter
           key={index}

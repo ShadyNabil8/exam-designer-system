@@ -18,21 +18,43 @@ const Question = ({
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <div className="grid grid-cols-5 gap-4">
-        <div className="font-bold">Text</div>
-        <div className="font-bold">Choices</div>
-        <div className="font-bold">Correct answer</div>
-        <div className="font-bold">Difficulty</div>
-        <div className="font-bold">Objective</div>
-        <div>{questionText}</div>
-        <ul className="flex list-disc flex-col gap-1">
+      <div
+        className="flex flex-col gap-2 sm:grid"
+        style={{
+          gridTemplateColumns: "repeat(5, 1fr)",
+          gridTemplateAreas: `
+          "text choices correct difficulty objective"
+          "textData choicesData correctData difficultyData objectiveData"
+        `,
+        }}
+      >
+        <div className="font-bold" style={{ gridArea: "text" }}>
+          Text
+        </div>
+        <div style={{ gridArea: "textData" }}>{questionText}</div>
+        <div className="font-bold" style={{ gridArea: "choices" }}>
+          Choices
+        </div>
+        <ul
+          className="flex list-disc flex-col gap-1 pl-3"
+          style={{ gridArea: "choicesData" }}
+        >
           {questionChoices.map((choice, index) => (
             <li key={index}>{choice}</li>
           ))}
         </ul>
-        <div>{questionCorrectAnswer}</div>
-        <div>{questionDifficulty}</div>
-        <div>{questionObjective}</div>
+        <div className="font-bold" style={{ gridArea: "correct" }}>
+          Correct answer
+        </div>
+        <div style={{ gridArea: "correctData" }}>{questionCorrectAnswer}</div>
+        <div className="font-bold" style={{ gridArea: "difficulty" }}>
+          Difficulty
+        </div>
+        <div style={{ gridArea: "difficultyData" }}>{questionDifficulty}</div>
+        <div className="font-bold" style={{ gridArea: "objective" }}>
+          Objective
+        </div>
+        <div style={{ gridArea: "objectiveData" }}>{questionObjective}</div>
       </div>
       {isHovered && (
         <div className="vertical-center absolute right-4">

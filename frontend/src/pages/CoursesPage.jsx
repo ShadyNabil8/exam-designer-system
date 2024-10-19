@@ -19,7 +19,7 @@ const CoursesPage = () => {
     return <p>Loading courses...</p>;
   }
   return (
-    <div className="flex w-full flex-col gap-2 p-4">
+    <div className="flex w-full flex-col gap-2 p-2 lg:p-4">
       {courses?.map((course, index) => (
         <Course
           key={index}

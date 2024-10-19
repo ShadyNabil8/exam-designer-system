@@ -7,7 +7,7 @@ import { GrAddCircle } from "react-icons/gr";
 
 const Navigator = () => {
   return (
-    <div className="flex h-full flex-col gap-3 border-r p-6">
+    <div className="flex h-full flex-col gap-3 border-r p-2 lg:p-6">
       <div className="flex flex-col gap-1">
         <NavigationLink
           title="Courses"
@@ -25,12 +25,12 @@ const Navigator = () => {
         <NavigationLink
           title="Chapters"
           url="/chapters"
-          icon={<IoBookmarkOutline className="text-2xl" />}
+          icon={<IoBookmarkOutline className="shrink-0 text-2xl" />}
         />
         <NavigationLink
           title="Add chapter"
           url="/add-chapter"
-          icon={<GrAddCircle className="text-2xl" />}
+          icon={<GrAddCircle className="shrink-0 text-2xl" />}
         />
       </div>
       <hr></hr>
@@ -38,12 +38,12 @@ const Navigator = () => {
         <NavigationLink
           title="Question"
           url="/questions"
-          icon={<LuListTodo className="text-2xl" />}
+          icon={<LuListTodo className="shrink-0 text-2xl" />}
         />
         <NavigationLink
           title="Add question"
           url="/add-question"
-          icon={<GrAddCircle className="text-2xl" />}
+          icon={<GrAddCircle className="shrink-0 text-2xl" />}
         />
       </div>
     </div>
