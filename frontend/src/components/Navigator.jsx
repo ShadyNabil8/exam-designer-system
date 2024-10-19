@@ -28,6 +28,14 @@ const Navigator = () => {
           icon={<IoBookmarkOutline className="text-2xl" />}
         />
         <NavigationLink
+          title="Add chapter"
+          url="/add-chapter"
+          icon={<GrAddCircle className="text-2xl" />}
+        />
+      </div>
+      <hr></hr>
+      <div>
+        <NavigationLink
           title="Question"
           url="/questions"
           icon={<LuListTodo className="text-2xl" />}

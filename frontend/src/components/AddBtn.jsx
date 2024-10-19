@@ -13,7 +13,7 @@ const AddBtn = ({ itemTypeName, postUrl, redirectUrl, data }) => {
     try {
       setIsLoading(true);
       const response = await api.post(postUrl, data);
-      notify(response?.data?.message || `${itemTypeName} added successfully`);
+      notify(response?.data?.message || `${itemTypeName} added successfully`);      
       navigate(`${redirectUrl}/${response?.data?.data?._id || ""}`);
     } catch (error) {
       notify.error(
@@ -27,7 +27,7 @@ const AddBtn = ({ itemTypeName, postUrl, redirectUrl, data }) => {
   };
   return (
     <button
-      className="flex h-[40px] w-[100px] items-center justify-center rounded-md bg-[#007AFF] p-1 font-medium text-white"
+      className="flex h-[40px] max-w-[150px] items-center justify-center rounded-md bg-[#007AFF] p-1 font-medium text-white"
       style={{ pointerEvents: isLoading ? "none" : "" }}
       onClick={onPost}
     >

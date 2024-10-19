@@ -7,6 +7,7 @@ const AddCoursePage = () => {
   return (
     <div className="flex flex-col gap-4 px-4 py-10">
       <InputField
+        value={courseName}
         fieldName="Name"
         placeholder="e.g.,CS50"
         onFieldChange={(e) => setCourseName(e.target.value)}

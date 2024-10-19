@@ -54,7 +54,7 @@ const addChapter = [
 
     res.status(200).json({
       message: "The chapter was successfully added.",
-      addedChapter: addedChapter,
+      data: addedChapter,
     });
   }),
 ];

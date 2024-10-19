@@ -401,7 +401,7 @@ chapterRouter.put("/:id", chapterController.updateChapter);
  *                 message:
  *                   type: string
  *                   example: "The chapter was successfully added."
- *                 addedChapter:
+ *                 data:
  *                   type: object
  *                   properties:
  *                     id:
