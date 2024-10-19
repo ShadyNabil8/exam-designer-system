@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import useFetchData from "../hooks/useFetchData";
 import api from "../api/api";
 import DeleteBtn from "../components/DeleteBtn";
@@ -36,6 +36,12 @@ const CoursePage = () => {
             detailTitle="Number of chapters"
             detailData={course.numberOfChapters}
           />
+          <Link
+            to={`/courses/${courseId}/chapters`}
+            className="text-blue-600 underline"
+          >
+            Chapters
+          </Link>
         </div>
         <div className="flex gap-7">
           <DeleteBtn
