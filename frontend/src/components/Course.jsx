@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import FloatingDeleteBtn from "./FloatingDeleteBtn";
+import FloatingUpdateBtn from "./FloatingUpdateBtn";
 
 const Course = ({ courseName, courseNumberOfChapters, courseId }) => {
   const [isHovered, setIsHovered] = useState(false);
@@ -18,11 +19,12 @@ const Course = ({ courseName, courseNumberOfChapters, courseId }) => {
         <div>{courseNumberOfChapters}</div>
       </div>
       {isHovered && (
-        <div className="vertical-center absolute right-4">
+        <div className="vertical-center absolute gap-2 right-4">
           <FloatingDeleteBtn
             deleteUrl={`api/courses/${courseId}`}
             queryKey={["courses"]}
           />
+          <FloatingUpdateBtn updateUrl={`/courses/${courseId}/update`} />
         </div>
       )}
     </Link>
