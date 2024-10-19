@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import useFetchData from "../hooks/useFetchData";
 import api from "../api/api";
 import DeleteBtn from "../components/DeleteBtn";
-import UpdataBtn from "../components/UpdataBtn";
+import UpdataPageBtn from "../components/UpdatePageBtn";
 import Detail from "../components/Detail";
 import PageTitle from "../components/PageTitle";
 
@@ -62,7 +62,7 @@ const QuestionPage = () => {
             deleteUrl={`/api/questions/${questionId}`}
             redirectUrl="/questions"
           />
-          <UpdataBtn updateUrl={`/questions/${questionId}/update`} />
+          <UpdataPageBtn updateUrl={`/questions/${questionId}/update`} />
         </div>
       </div>
     </div>

@@ -12,6 +12,7 @@ import GenerateExamPage from "../pages/GenerateExamPage";
 import CourseChaptersPage from "../pages/CourseChaptersPage";
 import ChapterQuestionsPage from "../pages/ChapterQuestionsPage";
 import RootPage from "../pages/RootPage";
+import UpdataCoursePage from "../pages/UpdataCoursePage";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
       {
         path: "/courses/:courseId/chapters",
         element: <CourseChaptersPage />,
+      },
+      {
+        path: "/courses/:courseId/update",
+        element: <UpdataCoursePage />,
       },
       {
         path: "/add-course",

@@ -3,7 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import useFetchData from "../hooks/useFetchData";
 import api from "../api/api";
 import DeleteBtn from "../components/DeleteBtn";
-import UpdataBtn from "../components/UpdataBtn";
+import UpdatePageBtn from "../components/UpdatePageBtn";
 import Detail from "../components/Detail";
 import PageTitle from "../components/PageTitle";
 
@@ -54,7 +54,7 @@ const ChapterPage = () => {
             deleteUrl={`/api/chapters/${chapterId}`}
             redirectUrl="/chapters"
           />
-          <UpdataBtn updateUrl={`/chapters/${chapterId}/update`} />
+          <UpdatePageBtn updateUrl={`/chapters/${chapterId}/update`} />
         </div>
       </div>
     </div>
