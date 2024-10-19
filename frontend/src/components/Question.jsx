@@ -14,47 +14,29 @@ const Question = ({
   return (
     <Link
       to={`/questions/${questionId}`}
-      className="relative w-full rounded-md border border-gray-400 p-4 transition-colors hover:bg-gray-50"
+      className="relative w-full rounded-sm border p-4 transition-colors hover:bg-[#fcfcfcf2]"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <div
-        className="flex flex-col gap-2 sm:grid"
-        style={{
-          gridTemplateColumns: "repeat(5, 1fr)",
-          gridTemplateAreas: `
-          "text choices correct difficulty objective"
-          "textData choicesData correctData difficultyData objectiveData"
-        `,
-        }}
-      >
-        <div className="font-bold" style={{ gridArea: "text" }}>
-          Text
-        </div>
-        <div style={{ gridArea: "textData" }}>{questionText}</div>
-        <div className="font-bold" style={{ gridArea: "choices" }}>
-          Choices
-        </div>
-        <ul
-          className="flex list-disc flex-col gap-1 pl-3"
-          style={{ gridArea: "choicesData" }}
-        >
+      <div className="flex flex-col">
+        <div className="text-lg font-medium">{questionText}</div>
+        <ul className="flex list-disc flex-col justify-between pl-5 pr-[10%] md:flex-row">
           {questionChoices.map((choice, index) => (
-            <li key={index}>{choice}</li>
+            <li
+              key={index}
+              style={{
+                fontWeight: choice === questionCorrectAnswer ? "bold" : "",
+                textDecorationLine:
+                  choice === questionCorrectAnswer ? "underline" : "",
+              }}
+            >
+              {choice}
+            </li>
           ))}
         </ul>
-        <div className="font-bold" style={{ gridArea: "correct" }}>
-          Correct answer
+        <div className="mt-3">
+          {`Difficulty: ${questionDifficulty}. Objective: ${questionObjective}`}
         </div>
-        <div style={{ gridArea: "correctData" }}>{questionCorrectAnswer}</div>
-        <div className="font-bold" style={{ gridArea: "difficulty" }}>
-          Difficulty
-        </div>
-        <div style={{ gridArea: "difficultyData" }}>{questionDifficulty}</div>
-        <div className="font-bold" style={{ gridArea: "objective" }}>
-          Objective
-        </div>
-        <div style={{ gridArea: "objectiveData" }}>{questionObjective}</div>
       </div>
       {isHovered && (
         <div className="vertical-center absolute right-4">

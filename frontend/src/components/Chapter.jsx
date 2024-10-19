@@ -13,7 +13,7 @@ const Chapter = ({
   return (
     <Link
       to={`/chapters/${chapterId}`}
-      className="relative w-full rounded-md border border-gray-400 p-4 transition-colors hover:bg-gray-50"
+      className="relative w-full rounded-sm border p-4 transition-colors hover:bg-[#fcfcfcf2]"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >

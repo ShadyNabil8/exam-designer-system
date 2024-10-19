@@ -4,18 +4,18 @@ import { MdDelete } from "react-icons/md";
 
 const QuestionChoicesSetter = ({ choices, setChoices }) => {
   const [newChoice, setNewChoice] = useState("");
-  
+
   return (
     <div className="flex flex-col gap-2">
       <span className="font-bold">{"Choices"}</span>
       {choices.map((choice, index) => (
         <div
           key={index}
-          className="relative flex w-full items-center rounded-md border p-2 focus:outline-none"
+          className="relative flex w-full items-center rounded-md border p-2 pr-8 focus:outline-none"
         >
           {choice}
           <button
-            className="absolute -right-8 flex items-center text-2xl"
+            className="absolute right-2 flex items-center text-2xl"
             onClick={(e) =>
               setChoices((prev) =>
                 prev.filter((prevChoice) => choice != prevChoice),

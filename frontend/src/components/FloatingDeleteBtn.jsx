@@ -29,7 +29,7 @@ const FloatingDeleteBtn = ({ deleteUrl, queryKey }) => {
 
   return (
     <button
-      className="rounded-md p-2 transition-colors hover:bg-slate-200"
+      className="rounded-md p-2 transition-colors hover:bg-[#ffcdcd]"
       onClick={onDelete}
     >
       {isLoading ? (
