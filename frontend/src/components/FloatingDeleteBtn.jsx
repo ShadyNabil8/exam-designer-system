@@ -11,7 +11,7 @@ const FloatingDeleteBtn = ({ deleteUrl, queryKey }) => {
 
   const { mutateAsync } = useMutateData(queryKey, async () => {
     const response = await api.delete(deleteUrl);
-    notify(response.data?.message || "Item was succussfully deleted");
+    notify.success(response.data?.message || "Item was succussfully deleted");
   });
 
   const onDelete = async (e) => {

@@ -12,8 +12,8 @@ const DeleteBtn = ({ deleteUrl, redirectUrl }) => {
   const onDelete = async () => {
     try {
       setIsLoading(true);
-      const response = await api.delete(deleteUrl);
-      notify(response?.data?.message || "Item deleted successfully");
+      const response = await api.delete(deleteUrl);      
+      notify.success(response?.data?.message || "Item deleted successfully");
       navigate(redirectUrl);
     } catch (error) {
       console.log(error);

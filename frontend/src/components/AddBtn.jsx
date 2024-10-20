@@ -13,7 +13,7 @@ const AddBtn = ({ itemTypeName, postUrl, redirectUrl, data }) => {
     try {
       setIsLoading(true);
       const response = await api.post(postUrl, data);
-      notify(response?.data?.message || `${itemTypeName} added successfully`);
+      notify.success(response?.data?.message || `${itemTypeName} added successfully`);
       if (redirectUrl) {
         navigate(`${redirectUrl}/${response?.data?.data?._id || ""}`);
       }
