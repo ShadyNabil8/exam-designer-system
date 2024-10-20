@@ -5,7 +5,6 @@ const checkCooldownPeriod = asyncHandler(async function (userId) {
   const recentVerificationCodes = await database.findVerificationCodesAndSort(
     userId
   );
-  console.log(recentVerificationCodes);
 
   if (recentVerificationCodes.length === 0) {
     return { canResend: true };

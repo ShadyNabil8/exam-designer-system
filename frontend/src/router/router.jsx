@@ -16,6 +16,7 @@ import UpdataCoursePage from "../pages/UpdataCoursePage";
 import LoginPage from "../pages/LoginPage";
 import SignupPage from "../pages/SignupPage";
 import ProtectedRoute from "../pages/ProtectedRoute";
+import VerifyEmailPage from "../pages/VerifyEmailPage";
 const router = createBrowserRouter([
   {
     element: <ProtectedRoute />,
@@ -87,6 +88,10 @@ const router = createBrowserRouter([
   {
     path: "/signup",
     element: <SignupPage />,
+  },
+  {
+    path: "/verify-email",
+    element: <VerifyEmailPage />,
   },
 ]);
 

@@ -6,7 +6,6 @@ const { checkCooldownPeriod } = require("../utils/verificationCodeUtil");
 const { CustomError } = require("./errorHandlerMiddleware");
 const { verifyToken } = require("../utils/token");
 
-
 const loginValidation = [
   body("email")
     .isLength({ min: 1 })
@@ -55,14 +54,7 @@ const signupValidation = [
     .isLength({ min: 1 })
     .withMessage("Email is required.")
     .isEmail()
-    .withMessage("Please provide a valid email address.")
-    .custom(async (email) => {
-      const user = await database.getUserByEmail(email);
-      if (user) {
-        throw new Error("Email is already registered!");
-      }
-      return true;
-    }),
+    .withMessage("Please provide a valid email address."),
   body("password")
     .isLength({ min: 8 })
     .withMessage("Password must be at least 8 characters long")
@@ -76,6 +68,13 @@ const signupValidation = [
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
+    }
+    next();
+  }),
+  asyncHandler(async function (req, res, next) {
+    const user = await database.getUserByEmail(req.body.email);
+    if (user) {
+      return res.status(400).json({ message: "Email is already registered!" });
     }
     next();
   }),
@@ -101,7 +100,7 @@ const getUserValidation = [
 ];
 
 const verifyEmailValidation = [
-  query("verificationCode")
+  body("verificationCode")
     .isString({ min: 1 })
     .withMessage("No verification code provided"),
   asyncHandler(async function (req, res, next) {
@@ -112,7 +111,7 @@ const verifyEmailValidation = [
     next();
   }),
   asyncHandler(async function (req, res, next) {
-    const { verificationCode } = req.query;
+    const { verificationCode } = req.body;
 
     const verificationCodeDocument = await database.findVerificationCode(
       verificationCode
@@ -184,7 +183,7 @@ const resendVerificationCodeValidation = [
 ];
 
 const refreshTokenValidation = [
-  asyncHandler(async function (req, res, next) {    
+  asyncHandler(async function (req, res, next) {
     const refreshToken = req.cookies?.refreshToken;
     if (!refreshToken) {
       return res.status(401).json({ message: "Refresh token not found" });

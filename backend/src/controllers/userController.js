@@ -93,7 +93,7 @@ const signup = [
     return res.status(200).json({
       message: "Registered successfully",
       accessToken,
-      data: {
+      user: {
         email: createdUser.email,
         id: createdUser._id,
         isVerified: createdUser.isVerified,

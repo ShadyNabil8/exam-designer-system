@@ -100,25 +100,13 @@ export const AuthProvider = ({ children }) => {
     console.log("token", token);
   }, [user, token]);
 
-  const logout = async () => {
-    try {
-      await api.post("/user/logout");
-      setToken(null);
-      setUser(null);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   // Way for different components to get the auth state.
   const isAuthenticated = () => {
     return { token, user };
   };
 
   return (
-    <AuthContext.Provider
-      value={{ user, setUser, login, logout, isAuthenticated }}
-    >
+    <AuthContext.Provider value={{ user, setUser, login, isAuthenticated }}>
       {!loading ? children : <div>Loading.......</div>}
     </AuthContext.Provider>
   );
