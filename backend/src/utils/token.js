@@ -13,13 +13,15 @@ const generateRefreshToken = (id) => {
   });
 };
 
-const verifyToken = function (refreshToken, secretKey, cb) {
-  try {
-    jwt.verify(refreshToken, secretKey, cb);
-  } catch (error) {
-    console.log("Error in verifying token");
-    throw error;
-  }
+const verifyToken = async function (refreshToken, secretKey, customError) {
+  return new Promise((resolve, reject) => {
+    try {
+      const user = jwt.verify(refreshToken, secretKey);
+      resolve(user);
+    } catch (error) {
+      reject(customError);
+    }
+  });
 };
 
 module.exports = {

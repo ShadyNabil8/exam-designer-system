@@ -12,6 +12,11 @@ const { hashPassword } = require("../utils/password");
 const { generateAccessToken, generateRefreshToken } = require("../utils/token");
 const database = require("../database");
 const { sendVerificationCode } = require("../utils/email");
+const {
+  refreshTokenValidation,
+} = require("../middlewares/userValidationMiddleware");
+
+const { getUserById } = require("../database");
 
 const getUser = [
   getUserValidation,
@@ -139,10 +144,33 @@ const resendVerificationCode = [
   }),
 ];
 
+const refreshToken = [
+  refreshTokenValidation,
+  asyncHandler(async function (req, res) {
+    const userDocument = await getUserById(req.user.id);
+
+    if (!userDocument) {
+      return res.status(404).json({
+        message: "User not found",
+      });
+    }
+
+    const newAccessToken = generateAccessToken(req.user.id);
+
+    return res.status(200).json({
+      accessToken: newAccessToken,
+      user: {
+        id: userDocument._id,
+        email: userDocument.email,
+      },
+    });
+  }),
+];
 module.exports = {
   login,
   getUser,
   signup,
   verifyEmail,
   resendVerificationCode,
+  refreshToken,
 };

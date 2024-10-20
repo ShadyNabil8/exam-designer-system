@@ -9,7 +9,13 @@ require("dotenv").config();
 const { swaggerUi, swaggerSpec } = require("./swagger");
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: process.env.CLIENT_DOMAIN,
+    credentials: true,
+  })
+);
+
 app.use(logger("dev"));
 app.use(express.json());
 

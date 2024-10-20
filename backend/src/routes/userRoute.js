@@ -16,4 +16,5 @@ userRouter.post(
   authenticateUserMiddleware,
   userController.resendVerificationCode
 );
+userRouter.post("/refresh-token", userController.refreshToken);
 module.exports = userRouter;
