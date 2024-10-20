@@ -33,6 +33,7 @@ const ChapterPage = () => {
       <div className="flex w-full flex-col gap-5">
         <div className="flex flex-col gap-2">
           <Detail detailTitle="Name" detailData={chapter.name} />
+          <Detail detailTitle="Course name" detailData={chapter.course.name} />
           <Detail detailTitle="Number" detailData={chapter.number} />
           <Detail
             detailTitle="Maximum number of difficulty"
