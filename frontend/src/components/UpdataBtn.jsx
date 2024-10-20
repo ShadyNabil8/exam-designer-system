@@ -14,7 +14,7 @@ const UpdataBtn = ({ itemTypeName, updateUrl, redirectUrl, updatedData }) => {
     try {
       setIsLoading(true);
       const response = await api.put(updateUrl, updatedData);
-      notify(response?.data?.message || `${itemTypeName} updated successfully`);
+      notify.success(response?.data?.message || `${itemTypeName} updated successfully`);
       if (redirectUrl) {
         navigate(`${redirectUrl}/${response?.data?.data?._id || ""}`);
       }

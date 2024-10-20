@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import FloatingDeleteBtn from "../components/FloatingDeleteBtn";
+import FloatingUpdateBtn from "./FloatingUpdateBtn";
 
 const Chapter = ({
   chapterName,
@@ -26,11 +27,12 @@ const Chapter = ({
         <div>{maxNumberOfQuestions}</div>
       </div>
       {isHovered && (
-        <div className="vertical-center absolute right-4">
+        <div className="vertical-center absolute right-4 gap-2">
           <FloatingDeleteBtn
             deleteUrl={`api/chapters/${chapterId}`}
             queryKey={["chapters"]}
           />
+          <FloatingUpdateBtn updateUrl={`/chapters/${chapterId}/update`} />
         </div>
       )}
     </Link>

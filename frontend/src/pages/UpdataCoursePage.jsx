@@ -46,7 +46,7 @@ const UpdataCoursePage = () => {
         <UpdataBtn
           itemTypeName="Course"
           updateUrl={`/api/courses/${courseId}`}
-          redirectUrl="/courses"
+          redirectUrl="/courses" // The course id will be added to go the the course page
           updatedData={{ name: updatedCourseName }}
         />
       </div>

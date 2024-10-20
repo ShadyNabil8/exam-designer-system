@@ -17,6 +17,7 @@ import LoginPage from "../pages/LoginPage";
 import SignupPage from "../pages/SignupPage";
 import ProtectedRoute from "../pages/ProtectedRoute";
 import VerifyEmailPage from "../pages/VerifyEmailPage";
+import UpdataChapterPage from "../pages/UpdataChapterPage";
 const router = createBrowserRouter([
   {
     element: <ProtectedRoute />,
@@ -52,6 +53,10 @@ const router = createBrowserRouter([
           {
             path: "/chapters/:chapterId",
             element: <ChapterPage />,
+          },
+          {
+            path: "/chapters/:chapterId/update",
+            element: <UpdataChapterPage />,
           },
           {
             path: "/chapters/:chapterId/questions",
