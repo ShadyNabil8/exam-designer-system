@@ -38,6 +38,7 @@ const chapterUpdateValidation = [
       return res.status(404).json({ message: "Chapter not found" });
     }
 
+    // Check if there is a chapter with the same number in the course
     const chapterExistsWithSameNumber = await database.isChapterExists(
       number,
       courseId,

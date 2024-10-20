@@ -16,7 +16,6 @@ app.use(
     credentials: true,
   })
 );
-console.log(process.env.CLIENT_DOMAIN);
 
 app.use(logger("dev"));
 app.use(express.json());

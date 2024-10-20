@@ -83,7 +83,7 @@ describe("POST /api/chapters", () => {
     database.isCourseExistsById.mockResolvedValue(true);
 
     const response = await request(app)
-      .put(`/api/chapters/${validChapterId}`)
+      .post("/api/chapters")
       .send(validChapter);
 
     expect(response.statusCode).toBe(400);
@@ -307,6 +307,7 @@ describe("PUT /api/chapters/:id", () => {
   };
   it("should return 200 and the updated chapter object for a valid id", async () => {
     database.isChapterExists.mockResolvedValue(false);
+    database.isChapterExistsById.mockResolvedValue(true);
     database.updateChapter.mockResolvedValue(validChapter);
 
     const response = await request(app)
@@ -402,6 +403,7 @@ describe("PUT /api/chapters/:id", () => {
   });
 
   it("should return 400 if the course that this chapter belongs to has another chapter with the same number", async () => {
+    database.isChapterExistsById.mockResolvedValue(true);
     database.isChapterExists.mockResolvedValue(true);
 
     const response = await request(app)
@@ -416,6 +418,7 @@ describe("PUT /api/chapters/:id", () => {
 
   // Test case: Course not found in database
   it("should return 404 if the chapter is not found", async () => {
+    database.isChapterExistsById.mockResolvedValue(true);
     database.isChapterExists.mockResolvedValue(false);
     database.updateChapter.mockResolvedValue(null); // Mock no course found
 
@@ -433,6 +436,7 @@ describe("PUT /api/chapters/:id", () => {
     const mockError = new Error("Database error");
 
     database.isChapterExists.mockResolvedValue(false);
+    database.isChapterExistsById.mockResolvedValue(true);
     database.updateChapter.mockRejectedValue(mockError);
 
     const validId = "60d21b4667d0d8992e610c85"; // Use a valid MongoDB ObjectId
