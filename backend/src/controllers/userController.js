@@ -6,6 +6,7 @@ const {
   signupValidation,
   getUserValidation,
   verifyEmailValidation,
+  resendVerificationCodeValidation,
 } = require("../middlewares/userValidationMiddleware");
 const { hashPassword } = require("../utils/password");
 const { generateAccessToken, generateRefreshToken } = require("../utils/token");
@@ -118,71 +119,30 @@ const verifyEmail = [
   }),
 ];
 
-// const resendVerificationCode = async (req, res, next) => {
-//   try {
-//     const { email } = req.body;
+const resendVerificationCode = [
+  resendVerificationCodeValidation,
+  asyncHandler(async function (req, res, next) {
+    const { email } = req.body;
+    const { id: userId } = req.user;
 
-//     const userDocument = await userModel.findOne({ email });
-//     if (!userDocument) {
-//       return res.status(404).json({ message: "User not found" });
-//     }
+    // Generate a verification code and store it in the database
+    const verificationCode = crypto.randomBytes(3).toString("hex");
+    const expiresAt = Date.now() + 3600000; // 1 Hour
+    await database.createVerificationCode(userId, verificationCode, expiresAt);
 
-//     if (userDocument.isVerified) {
-//       return res.status(400).json({ message: "User is already verified" });
-//     }
+    // Send verification code to the user's email
+    await sendVerificationCode(email, verificationCode);
 
-//     const { canResend, timeRemaining } = await checkCooldownPeriod(
-//       userDocument._id
-//     );
-
-//     if (!canResend) {
-//       return res
-//         .status(400)
-//         .json({ message: `Wait ${timeRemaining} before asking to resend` });
-//     }
-
-//     await generateAndSendVerificationCode(userDocument);
-
-//     return res
-//       .status(200)
-//       .json({ message: "Verification code has been resent" });
-//   } catch (error) {
-//     next(error);
-//   }
-// };
-
-// const checkCooldownPeriod = async (userId) => {
-//   try {
-//     const recentVerificationCode = await verificationCodeModel
-//       .findOne({ userId })
-//       .sort({ createdAt: -1 });
-
-//     if (!recentVerificationCode) {
-//       return { canResend: true };
-//     }
-
-//     const now = new Date();
-//     const createdAt = recentVerificationCode.createdAt;
-
-//     const timeDifferenceInSeconds = (now - createdAt) / 1000;
-
-//     if (timeDifferenceInSeconds < 60) {
-//       const timeRemaining = Math.floor(60 - timeDifferenceInSeconds);
-//       return { canResend: false, timeRemaining };
-//     }
-
-//     return { canResend: true };
-//   } catch (error) {
-//     console.error("Error checking cooldown period:", error);
-//     throw error;
-//   }
-// };
+    return res
+      .status(200)
+      .json({ message: "Verification code has been resent" });
+  }),
+];
 
 module.exports = {
   login,
   getUser,
   signup,
-  //   verifyEmail,
-  //   resendVerificationCode,
-  //   getUserInitialData,
+  verifyEmail,
+  resendVerificationCode,
 };

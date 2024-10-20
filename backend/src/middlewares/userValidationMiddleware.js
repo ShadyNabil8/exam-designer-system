@@ -1,7 +1,8 @@
 const asyncHandler = require("express-async-handler");
-const { body, validationResult } = require("express-validator");
+const { body, query, validationResult } = require("express-validator");
 const database = require("../database");
 const { comparePassword } = require("../utils/password");
+const { checkCooldownPeriod } = require("../utils/verificationCodeUtil");
 
 const loginValidation = [
   body("email")
@@ -97,6 +98,16 @@ const getUserValidation = [
 ];
 
 const verifyEmailValidation = [
+  query("verificationCode")
+    .isString({ min: 1 })
+    .withMessage("No verification code provided"),
+  asyncHandler(async function (req, res, next) {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ message: errors.array() });
+    }
+    next();
+  }),
   asyncHandler(async function (req, res, next) {
     const { verificationCode } = req.query;
 
@@ -120,8 +131,49 @@ const verifyEmailValidation = [
       return res.status(400).json({ message: "User not found" });
     }
 
-    if (userDocument.isVerified) {
+    if (user.isVerified) {
       return res.status(400).json({ message: "User is already verified" });
+    }
+
+    next();
+  }),
+];
+
+const resendVerificationCodeValidation = [
+  body("email")
+    .isLength({ min: 1 })
+    .withMessage("Email is required.")
+    .isEmail()
+    .withMessage("Please provide a valid email address."),
+  asyncHandler(async function (req, res, next) {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ message: errors.array() });
+    }
+    next();
+  }),
+  asyncHandler(async function (req, res, next) {
+    const { email } = req.body;
+
+    const user = await database.getUserByEmail(email);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (user.isVerified) {
+      return res.status(400).json({ message: "User is already verified" });
+    }
+
+    next();
+  }),
+  asyncHandler(async function (req, res, next) {
+    const { canResend, timeRemaining } = await checkCooldownPeriod(req.user.id);
+
+    if (!canResend) {
+      return res
+        .status(400)
+        .json({ message: `Wait ${timeRemaining} before asking to resend` });
     }
 
     next();
@@ -133,4 +185,5 @@ module.exports = {
   loginValidation,
   signupValidation,
   verifyEmailValidation,
+  resendVerificationCodeValidation,
 };

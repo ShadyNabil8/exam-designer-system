@@ -6,5 +6,14 @@ const authenticateUserMiddleware = require("../middlewares/authenticateUserMiddl
 userRouter.post("/login", userController.login);
 userRouter.post("/signup", userController.signup);
 userRouter.get("/", authenticateUserMiddleware, userController.getUser);
-
+userRouter.post(
+  "/verify-email",
+  authenticateUserMiddleware,
+  userController.verifyEmail
+);
+userRouter.post(
+  "/resend-verification-code",
+  authenticateUserMiddleware,
+  userController.resendVerificationCode
+);
 module.exports = userRouter;

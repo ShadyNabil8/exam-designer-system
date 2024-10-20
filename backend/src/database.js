@@ -303,7 +303,7 @@ async function updateUserbyId(id, updatedData) {
 }
 
 async function createVerificationCode(userId, verificationCode, expiresAt) {
-  const createdVerificationCode = new verificationCodeModel({
+  const createdVerificationCode = await verificationCodeModel.create({
     userId: userId,
     verificationCode,
     expiresAt,
@@ -321,6 +321,14 @@ async function findVerificationCode(verificationCode) {
     .lean();
 
   return verificationCodeDocument;
+}
+
+async function findVerificationCodesAndSort(userId) {
+  const recentVerificationCodes = await verificationCodeModel
+    .find({ userId })
+    .sort({ createdAt: -1 });
+
+  return recentVerificationCodes;
 }
 
 async function deleteVerificationCodesByUserId(userId) {
@@ -362,4 +370,5 @@ module.exports = {
   findVerificationCode,
   updateUserbyId,
   deleteVerificationCodesByUserId,
+  findVerificationCodesAndSort,
 };
