@@ -2,6 +2,8 @@ const mongoose = require("mongoose");
 const courseModel = require("./models/courseModel");
 const chapterModel = require("./models/chapterModel");
 const questionModel = require("./models/questionModel");
+const userModel = require("./models/userModel");
+const verificationCodeModel = require("./models/verificationCodeModel");
 require("dotenv").config();
 
 const dbConnect = async () => {
@@ -273,6 +275,58 @@ async function getQuestionsByChapter(chapterId) {
   return questions;
 }
 
+async function getUserByEmail(email) {
+  const user = await userModel.findOne({ email }).lean();
+  return user;
+}
+
+async function getUserById(id) {
+  const user = await userModel.findById(id).lean();
+  return user;
+}
+
+async function createUser(email, passwordHash) {
+  const createdUser = await userModel.create({
+    email,
+    passwordHash,
+  });
+
+  return createdUser;
+}
+
+async function updateUserbyId(id, updatedData) {
+  const updatedUser = await userModel.findByIdAndUpdate(id, updatedData, {
+    new: true,
+    runValidators: true,
+  });
+  return updatedUser;
+}
+
+async function createVerificationCode(userId, verificationCode, expiresAt) {
+  const createdVerificationCode = new verificationCodeModel({
+    userId: userId,
+    verificationCode,
+    expiresAt,
+  });
+
+  return createdVerificationCode;
+}
+
+async function findVerificationCode(verificationCode) {
+  const verificationCodeDocument = await verificationCodeModel
+    .findOne({
+      verificationCode,
+      expiresAt: { $gt: Date.now() },
+    })
+    .lean();
+
+  return verificationCodeDocument;
+}
+
+async function deleteVerificationCodesByUserId(userId) {
+  await verificationCodeModel.deleteMany({ userId });
+}
+
 module.exports = {
   dbConnect,
   addCourse,
@@ -301,4 +355,11 @@ module.exports = {
   getQuestionObjectiveDistribution,
   getQuestionsByChapterIds,
   getQuestionsByChapter,
+  getUserByEmail,
+  createUser,
+  createVerificationCode,
+  getUserById,
+  findVerificationCode,
+  updateUserbyId,
+  deleteVerificationCodesByUserId,
 };
