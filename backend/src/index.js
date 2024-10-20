@@ -4,6 +4,7 @@ const { dbConnect } = require("./database");
 const {
   errorHandlerMiddleware,
 } = require("./middlewares/errorHandlerMiddleware");
+const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 require("dotenv").config();
 const { swaggerUi, swaggerSpec } = require("./swagger");
@@ -11,13 +12,15 @@ const app = express();
 
 app.use(
   cors({
-    origin: process.env.CLIENT_DOMAIN,
+    origin: "http://localhost:5173",
     credentials: true,
   })
 );
+console.log(process.env.CLIENT_DOMAIN);
 
 app.use(logger("dev"));
 app.use(express.json());
+app.use(cookieParser());
 
 const courseRouter = require("./routes/courseRoute");
 app.use("/api/courses", courseRouter);

@@ -1,6 +1,7 @@
 const express = require("express");
 const questionRouter = express.Router();
 const questionController = require("../controllers/questionController");
+const authenticateUserMiddleware = require("../middlewares/authenticateUserMiddleware");
 
 /**
  * @swagger
@@ -65,7 +66,11 @@ const questionController = require("../controllers/questionController");
  *                   example: "Internal Server Error"
  */
 // GET all questions
-questionRouter.get("/", questionController.getQuestions);
+questionRouter.get(
+  "/",
+  authenticateUserMiddleware,
+  questionController.getQuestions
+);
 
 /**
  * @swagger
@@ -203,7 +208,11 @@ questionRouter.get("/", questionController.getQuestions);
  *                   example: "Internal Server Error"
  */
 // GET a single question by ID
-questionRouter.get("/:id", questionController.getQuestion);
+questionRouter.get(
+  "/:id",
+  authenticateUserMiddleware,
+  questionController.getQuestion
+);
 
 /**
  * @swagger
@@ -307,7 +316,11 @@ questionRouter.get("/:id", questionController.getQuestion);
  *                   example: "Internal Server Error"
  */
 // DELETE a single question by ID
-questionRouter.delete("/:id", questionController.deleteQuestion);
+questionRouter.delete(
+  "/:id",
+  authenticateUserMiddleware,
+  questionController.deleteQuestion
+);
 
 /**
  * @swagger
@@ -446,7 +459,11 @@ questionRouter.delete("/:id", questionController.deleteQuestion);
  *                   example: "Internal Server Error"
  */
 // UPDATE a single question by ID
-questionRouter.put("/:id", questionController.updateQuestion);
+questionRouter.put(
+  "/:id",
+  authenticateUserMiddleware,
+  questionController.updateQuestion
+);
 
 /**
  * @swagger
@@ -578,6 +595,10 @@ questionRouter.put("/:id", questionController.updateQuestion);
  *                   example: "Internal Server Error"
  */
 // ADD a single question
-questionRouter.post("/", questionController.addQuestion);
+questionRouter.post(
+  "/",
+  authenticateUserMiddleware,
+  questionController.addQuestion
+);
 
 module.exports = questionRouter;

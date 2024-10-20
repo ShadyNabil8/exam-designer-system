@@ -1,6 +1,7 @@
 const express = require("express");
 const courseRouter = express.Router();
 const courseController = require("../controllers/courseController");
+const authenticateUserMiddleware = require("../middlewares/authenticateUserMiddleware");
 
 /**
  * @swagger
@@ -46,7 +47,7 @@ const courseController = require("../controllers/courseController");
  */
 
 // GET all courses
-courseRouter.get("/", courseController.getCourses);
+courseRouter.get("/", authenticateUserMiddleware, courseController.getCourses);
 
 /**
  * @swagger
@@ -124,7 +125,11 @@ courseRouter.get("/", courseController.getCourses);
  *                   example: "Internal Server Error"
  */
 // GET a single course by ID
-courseRouter.get("/:id", courseController.getCourse);
+courseRouter.get(
+  "/:id",
+  authenticateUserMiddleware,
+  courseController.getCourse
+);
 
 /**
  * @swagger
@@ -201,7 +206,11 @@ courseRouter.get("/:id", courseController.getCourse);
  *                         example: "params"
  */
 // GET all the course's chapters
-courseRouter.get("/:id/chapters", courseController.getCourseChapters);
+courseRouter.get(
+  "/:id/chapters",
+  authenticateUserMiddleware,
+  courseController.getCourseChapters
+);
 
 /**
  * @swagger
@@ -280,7 +289,11 @@ courseRouter.get("/:id/chapters", courseController.getCourseChapters);
  */
 
 // DELETE a single course by ID
-courseRouter.delete("/:id", courseController.deleteCourse);
+courseRouter.delete(
+  "/:id",
+  authenticateUserMiddleware,
+  courseController.deleteCourse
+);
 
 /**
  * @swagger
@@ -375,7 +388,11 @@ courseRouter.delete("/:id", courseController.deleteCourse);
  *                   example: "Internal Server Error"
  */
 // UPDATE a single course by ID
-courseRouter.put("/:id", courseController.updateCourse);
+courseRouter.put(
+  "/:id",
+  authenticateUserMiddleware,
+  courseController.updateCourse
+);
 
 /**
  * @swagger
@@ -451,6 +468,6 @@ courseRouter.put("/:id", courseController.updateCourse);
  */
 
 // ADD a single course
-courseRouter.post("/", courseController.addCourse);
+courseRouter.post("/", authenticateUserMiddleware, courseController.addCourse);
 
 module.exports = courseRouter;

@@ -13,64 +13,80 @@ import CourseChaptersPage from "../pages/CourseChaptersPage";
 import ChapterQuestionsPage from "../pages/ChapterQuestionsPage";
 import RootPage from "../pages/RootPage";
 import UpdataCoursePage from "../pages/UpdataCoursePage";
+import LoginPage from "../pages/LoginPage";
+import SignupPage from "../pages/SignupPage";
+import ProtectedRoute from "../pages/ProtectedRoute";
 const router = createBrowserRouter([
   {
-    path: "/",
-    element: <RootPage />,
+    element: <ProtectedRoute />,
     children: [
       {
-        path: "/courses",
-        element: <CoursesPage />,
-      },
-      {
-        path: "/courses/:courseId",
-        element: <CoursePage />,
-      },
-      {
-        path: "/courses/:courseId/chapters",
-        element: <CourseChaptersPage />,
-      },
-      {
-        path: "/courses/:courseId/update",
-        element: <UpdataCoursePage />,
-      },
-      {
-        path: "/add-course",
-        element: <AddCoursePage />,
-      },
-      {
-        path: "/chapters",
-        element: <ChaptersPage />,
-      },
-      {
-        path: "/chapters/:chapterId",
-        element: <ChapterPage />,
-      },
-      {
-        path: "/chapters/:chapterId/questions",
-        element: <ChapterQuestionsPage />,
-      },
-      {
-        path: "/add-chapter",
-        element: <AddChapterPage />,
-      },
-      {
-        path: "/questions",
-        element: <QuestionsPage />,
-      },
-      {
-        path: "/questions/:questionId",
-        element: <QuestionPage />,
-      },
-      {
-        path: "/add-question",
-        element: <AddQuestionPage />,
-      },
-      {
-        path: "/generate-exam",
-        element: <GenerateExamPage />,
+        path: "/",
+        element: <RootPage />,
+        children: [
+          {
+            path: "/courses",
+            element: <CoursesPage />,
+          },
+          {
+            path: "/courses/:courseId",
+            element: <CoursePage />,
+          },
+          {
+            path: "/courses/:courseId/chapters",
+            element: <CourseChaptersPage />,
+          },
+          {
+            path: "/courses/:courseId/update",
+            element: <UpdataCoursePage />,
+          },
+          {
+            path: "/add-course",
+            element: <AddCoursePage />,
+          },
+          {
+            path: "/chapters",
+            element: <ChaptersPage />,
+          },
+          {
+            path: "/chapters/:chapterId",
+            element: <ChapterPage />,
+          },
+          {
+            path: "/chapters/:chapterId/questions",
+            element: <ChapterQuestionsPage />,
+          },
+          {
+            path: "/add-chapter",
+            element: <AddChapterPage />,
+          },
+          {
+            path: "/questions",
+            element: <QuestionsPage />,
+          },
+          {
+            path: "/questions/:questionId",
+            element: <QuestionPage />,
+          },
+          {
+            path: "/add-question",
+            element: <AddQuestionPage />,
+          },
+          {
+            path: "/generate-exam",
+            element: <GenerateExamPage />,
+          },
+        ],
       },
     ],
+  },
+  {
+    path: "/login",
+    element: <LoginPage />,
+  },
+  {
+    path: "/signup",
+    element: <SignupPage />,
   },
 ]);
 

@@ -17,7 +17,7 @@ const loginValidation = [
   asyncHandler(async function (req, res, next) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ message: errors.array() });
+      return res.status(400).json({ errors: errors.array() });
     }
     next();
   }),
@@ -75,7 +75,7 @@ const signupValidation = [
   asyncHandler(async function (req, res, next) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ message: errors.array() });
+      return res.status(400).json({ errors: errors.array() });
     }
     next();
   }),
@@ -107,7 +107,7 @@ const verifyEmailValidation = [
   asyncHandler(async function (req, res, next) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ message: errors.array() });
+      return res.status(400).json({ errors: errors.array() });
     }
     next();
   }),
@@ -151,7 +151,7 @@ const resendVerificationCodeValidation = [
   asyncHandler(async function (req, res, next) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ message: errors.array() });
+      return res.status(400).json({ errors: errors.array() });
     }
     next();
   }),
@@ -184,14 +184,8 @@ const resendVerificationCodeValidation = [
 ];
 
 const refreshTokenValidation = [
-  asyncHandler(async function (req, res, next) {
-    console.log(req);
-    
-    const refreshToken = req.cookie.refreshToken;
-
-    console.log('here');
-    
-
+  asyncHandler(async function (req, res, next) {    
+    const refreshToken = req.cookies?.refreshToken;
     if (!refreshToken) {
       return res.status(401).json({ message: "Refresh token not found" });
     }
@@ -199,6 +193,7 @@ const refreshTokenValidation = [
     next();
   }),
   asyncHandler(async function (req, res, next) {
+    const refreshToken = req.cookies?.refreshToken;
     const customError = new CustomError("Invalid refresh token", 401);
     const user = await verifyToken(
       refreshToken,

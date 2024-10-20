@@ -50,11 +50,7 @@ const login = [
 
     return res.status(200).json({
       accessToken,
-      data: {
-        email: user.email,
-        id: user._id,
-        isVerified: user.isVerified,
-      },
+      user: { email: user.email, id: user._id, isVerified: user.isVerified },
     });
   }),
 ];

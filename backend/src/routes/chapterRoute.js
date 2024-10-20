@@ -1,6 +1,7 @@
 const express = require("express");
 const chapterRouter = express.Router();
 const chapterController = require("../controllers/chapterController");
+const authenticateUserMiddleware = require("../middlewares/authenticateUserMiddleware");
 
 /**
  * @swagger
@@ -53,7 +54,11 @@ const chapterController = require("../controllers/chapterController");
  *                   example: "Internal Server Error"
  */
 // GET all chapters
-chapterRouter.get("/", chapterController.getChapters);
+chapterRouter.get(
+  "/",
+  authenticateUserMiddleware,
+  chapterController.getChapters
+);
 
 /**
  * @swagger
@@ -152,7 +157,11 @@ chapterRouter.get("/", chapterController.getChapters);
  *                   example: "Internal Server Error"
  */
 // GET a single chapter by ID
-chapterRouter.get("/:id", chapterController.getChapter);
+chapterRouter.get(
+  "/:id",
+  authenticateUserMiddleware,
+  chapterController.getChapter
+);
 
 /**
  * @swagger
@@ -251,7 +260,11 @@ chapterRouter.get("/:id", chapterController.getChapter);
  *                   example: "Internal Server Error"
  */
 // GET a all questions for this chapter
-chapterRouter.get("/:id/questions", chapterController.getChapterQuestions);
+chapterRouter.get(
+  "/:id/questions",
+  authenticateUserMiddleware,
+  chapterController.getChapterQuestions
+);
 
 /**
  * @swagger
@@ -343,7 +356,11 @@ chapterRouter.get("/:id/questions", chapterController.getChapterQuestions);
  *                   example: "Internal Server Error"
  */
 // DELETE a single chapter by ID
-chapterRouter.delete("/:id", chapterController.deleteChapter);
+chapterRouter.delete(
+  "/:id",
+  authenticateUserMiddleware,
+  chapterController.deleteChapter
+);
 
 /**
  * @swagger
@@ -458,7 +475,11 @@ chapterRouter.delete("/:id", chapterController.deleteChapter);
  *                   example: "Internal Server Error"
  */
 // UPDATE a single chapter by ID
-chapterRouter.put("/:id", chapterController.updateChapter);
+chapterRouter.put(
+  "/:id",
+  authenticateUserMiddleware,
+  chapterController.updateChapter
+);
 
 /**
  * @swagger
@@ -577,6 +598,10 @@ chapterRouter.put("/:id", chapterController.updateChapter);
  *                   example: "Internal Server Error"
  */
 // ADD a single chapter
-chapterRouter.post("/", chapterController.addChapter);
+chapterRouter.post(
+  "/",
+  authenticateUserMiddleware,
+  chapterController.addChapter
+);
 
 module.exports = chapterRouter;
