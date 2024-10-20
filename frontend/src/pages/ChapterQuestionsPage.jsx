@@ -18,7 +18,8 @@ const ChapterQuestionsPage = () => {
         const response = await api.get(`/api/chapters/${chapterId}`);
         return response.data.data;
       } catch (error) {
-        notify.error(error.response?.data?.message || "Something went wrong!");
+        console.log(error);
+        // notify.error(error.response?.data?.message || "Something went wrong!");
       }
     },
   );
@@ -30,7 +31,8 @@ const ChapterQuestionsPage = () => {
         const response = await api.get(`/api/chapters/${chapterId}/questions`);
         return response.data.data;
       } catch (error) {
-        notify.error(error.response?.data?.message || "Something went wrong!");
+        console.log(error);
+        // notify.error(error.response?.data?.message || "Something went wrong!");
       }
     },
   );

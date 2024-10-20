@@ -9,14 +9,14 @@ const ProtectedRoute = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!(token && user)) {
+    if (!token || !user) {
       navigate("/login");
     }
 
     if (!user.isVerified) {
       navigate("/verify-email");
     }
-  }, []);
+  }, [token, user]);
 
   return <Outlet />;
 };

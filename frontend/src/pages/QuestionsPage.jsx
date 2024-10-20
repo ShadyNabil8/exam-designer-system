@@ -14,7 +14,8 @@ const QuestionsPage = () => {
         const response = await api.get("/api/questions");
         return response.data.data;
       } catch (error) {
-        notify.error(error.response?.data?.message || "Something went wrong!");
+        console.log(error);
+        // notify.error(error.response?.data?.message || "Something went wrong!");
       }
     },
   );

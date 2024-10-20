@@ -17,7 +17,8 @@ const CourseChaptersPage = () => {
         const response = await api.get(`/api/courses/${courseId}`);
         return response.data.data;
       } catch (error) {
-        notify.error(error.response?.data?.message || "Something went wrong!");
+        console.log(error);
+        // notify.error(error.response?.data?.message || "Something went wrong!");
       }
     },
   );
@@ -28,7 +29,8 @@ const CourseChaptersPage = () => {
         const response = await api.get(`/api/courses/${courseId}/chapters`);
         return response.data.data;
       } catch (error) {
-        notify.error(error.response?.data?.message || "Something went wrong!");
+        console.log(error);
+        // notify.error(error.response?.data?.message || "Something went wrong!");
       }
     },
   );
