@@ -86,8 +86,9 @@ const findOptimumExam = async (
 
     function onFinish(state) {
       console.log("Simulation Finished");
+      const MaxFitnessScored = (curMaxFitness / MaxAvailableFitness) * 100;
       console.log(
-        `Max fitness scored is ${curMaxFitness}/${MaxAvailableFitness}`
+        `Exam matches your conditions by ${MaxFitnessScored}%`
       );
       resolve(bestChoise);
     }
