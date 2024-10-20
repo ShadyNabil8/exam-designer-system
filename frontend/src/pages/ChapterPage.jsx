@@ -35,6 +35,7 @@ const ChapterPage = () => {
           <Detail detailTitle="Name" detailData={chapter.name} />
           <Detail detailTitle="Course name" detailData={chapter.course.name} />
           <Detail detailTitle="Number" detailData={chapter.number} />
+          <Detail detailTitle="Maximum number of questions" detailData={chapter.maxNumberOfQuestions} />
           <Detail
             detailTitle="Maximum number of difficulty"
             detailData={chapter.maxNumberOfEachDifficulty}

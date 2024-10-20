@@ -15,7 +15,7 @@ const AddBtn = ({ itemTypeName, postUrl, redirectUrl, data }) => {
       const response = await api.post(postUrl, data);
       notify.success(response?.data?.message || `${itemTypeName} added successfully`);
       if (redirectUrl) {
-        navigate(`${redirectUrl}/${response?.data?.data?._id || ""}`);
+        // navigate(`${redirectUrl}/${response?.data?.data?._id || ""}`);
       }
     } catch (error) {
       notify.error(

@@ -80,6 +80,9 @@ async function getChapter(id) {
   return chapter;
 }
 
+// This function used to check if a certain question exists or not.
+// If the chapterId param is defined, then we need to check if there is a chapter that has this number but not this chapterId
+// If the chapterId param is not defined, then we need to check if there is a chapter that has this number
 async function isChapterExists(number, courseId, chapterId = null) {
   const query = { courseId, number };
 
