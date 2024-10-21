@@ -18,6 +18,9 @@ import SignupPage from "../pages/SignupPage";
 import ProtectedRoute from "../pages/ProtectedRoute";
 import VerifyEmailPage from "../pages/VerifyEmailPage";
 import UpdataChapterPage from "../pages/UpdataChapterPage";
+import ExamsPage from "../pages/ExamsPage";
+import ExamPage from "../pages/ExamPage";
+import ExamQuestionsPage from "../pages/ExamQuestionsPage";
 const router = createBrowserRouter([
   {
     element: <ProtectedRoute />,
@@ -81,6 +84,18 @@ const router = createBrowserRouter([
           {
             path: "/generate-exam",
             element: <GenerateExamPage />,
+          },
+          {
+            path: "/exams",
+            element: <ExamsPage />,
+          },
+          {
+            path: "/exams/:examId",
+            element: <ExamPage />,
+          },
+          {
+            path: "/exams/:examId/questions",
+            element: <ExamQuestionsPage />,
           },
         ],
       },

@@ -5,6 +5,7 @@ import { IoBookmarkOutline } from "react-icons/io5";
 import { LuListTodo } from "react-icons/lu";
 import { GrAddCircle } from "react-icons/gr";
 import { GiOpenBook } from "react-icons/gi";
+import { PiExamFill } from "react-icons/pi";
 
 const Navigator = () => {
   return (
@@ -37,7 +38,7 @@ const Navigator = () => {
       <hr></hr>
       <div>
         <NavigationLink
-          title="Question"
+          title="Questions"
           url="/questions"
           icon={<LuListTodo className="shrink-0 text-2xl" />}
         />
@@ -47,11 +48,17 @@ const Navigator = () => {
           icon={<GrAddCircle className="shrink-0 text-2xl" />}
         />
       </div>
+      <hr></hr>
       <div>
         <NavigationLink
           title="Generage exam"
           url="/generate-exam"
           icon={<GiOpenBook className="shrink-0 text-2xl" />}
+        />
+        <NavigationLink
+          title="All Exams"
+          url="/exams"
+          icon={<PiExamFill className="shrink-0 text-2xl" />}
         />
       </div>
     </div>

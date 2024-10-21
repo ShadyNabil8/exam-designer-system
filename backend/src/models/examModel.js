@@ -2,6 +2,10 @@ const mongoose = require("mongoose");
 const mongooseLeanVirtuals = require("mongoose-lean-virtuals");
 
 const examSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+  },
   courseId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Course",
@@ -14,6 +18,11 @@ const examSchema = new mongoose.Schema({
       required: true,
     },
   ],
+  chaptersDistribution: {
+    type: Map,
+    of: Number,
+    required: true,
+  },
   difficultyDistribution: {
     simple: { type: Number, required: true },
     difficult: { type: Number, required: true },
@@ -42,7 +51,7 @@ examSchema.virtual("course", {
   justOne: true, // Since courseId is an ObjectId, just populate one document
 });
 
-examSchema.virtual("numberOfQuestions").get(function () {  
+examSchema.virtual("numberOfQuestions").get(function () {
   const numberOfQuestions = this.questions.length;
   return numberOfQuestions;
 });

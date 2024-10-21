@@ -16,11 +16,14 @@ function GenerateExamPage() {
   const [numOfUnderstandingQuestions, setNumOfUnderstandingQuestions] =
     useState("");
   const [numOfCreativityQuestions, setNumOfCreativityQuestions] = useState("");
+  const [examName, setExamName] = useState("");
   const [examCourse, setExamCourse] = useState("");
   const [chaptersList, setChaptersList] = useState([]);
   const [chaptersDistribution, setChaptersDistribution] = useState([]);
   const [generatedQuestions, setGeneratedQquestions] = useState([]);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [isExamReady, setIsExamReady] = useState(false);
+  const [isSaveLoading, setIsSaveLoading] = useState(false);
 
   const notify = useNotifier();
 
@@ -36,6 +39,7 @@ function GenerateExamPage() {
   const onGenerateExam = async () => {
     try {
       setIsGenerating(true);
+      setIsExamReady(false);
 
       // I will remove the name proberty from each chapter.
       const chaptersData = chaptersDistribution.reduce((acc, curr) => {
@@ -56,6 +60,7 @@ function GenerateExamPage() {
         },
       });
       setGeneratedQquestions(response.data.data);
+      setIsExamReady(true);
     } catch (error) {
       notify.error(
         error?.response?.data?.message ||
@@ -64,6 +69,49 @@ function GenerateExamPage() {
       );
     } finally {
       setIsGenerating(false);
+    }
+  };
+
+  const onSaveExam = async () => {
+    try {
+      setIsSaveLoading(true);
+      const examQuestionsIds = generatedQuestions.map(
+        (question) => question._id,
+      );
+      // Convert chapters distribution from object to an array.
+      const newChaptersDistribution = chaptersDistribution.reduce(
+        (acc, chapter) => {
+          acc[chapter.id] = chapter.numberOfQuestions;
+          return acc;
+        },
+        {},
+      );
+
+      const response = await api.post("/api/exams/", {
+        name: examName,
+        courseId: examCourse,
+        questions: examQuestionsIds,
+        chaptersDistribution: newChaptersDistribution,
+        difficultyDistribution: {
+          simple: numOfSimpleQuestions,
+          difficult: numOfDifficultQuestions,
+        },
+        objectiveDistribution: {
+          reminding: numOfRemindingQuestions,
+          understanding: numOfUnderstandingQuestions,
+          creativity: numOfCreativityQuestions,
+        },
+      });
+      
+      notify.success(response.data?.message || "Exam saved")
+    } catch (error) {
+      notify.error(
+        error?.response?.data?.message ||
+          error?.response?.data?.errors[0]?.msg ||
+          "Something sent wrong",
+      );
+    } finally {
+      setIsSaveLoading(false);
     }
   };
 
@@ -141,6 +189,12 @@ function GenerateExamPage() {
             placeholder="e.g.,CS50"
             onFieldChange={(e) => setNumOfCreativityQuestions(e.target.value)}
           />
+          <InputField
+            value={examName}
+            fieldName="Exam Name"
+            placeholder="e.g.,Algorithms Final"
+            onFieldChange={(e) => setExamName(e.target.value)}
+          />
         </div>
         <button
           className="flex h-[40px] max-w-[150px] items-center justify-center rounded-md bg-[#007AFF] p-1 font-medium text-white transition hover:bg-[#2673c4]"
@@ -151,6 +205,20 @@ function GenerateExamPage() {
             <CgSpinner className="animate-spin text-3xl text-white" />
           ) : (
             "Generate Exam"
+          )}
+        </button>
+        <button
+          className="flex h-[40px] max-w-[150px] items-center justify-center rounded-md bg-green-500 p-1 font-medium text-white transition hover:bg-[#4dbe39]"
+          style={{
+            pointerEvents: isExamReady ? "" : "none",
+            opacity: isExamReady ? "1" : "0.5",
+          }}
+          onClick={onSaveExam}
+        >
+          {isSaveLoading ? (
+            <CgSpinner className="animate-spin text-3xl text-white" />
+          ) : (
+            "Save Exam"
           )}
         </button>
       </div>

@@ -5,6 +5,7 @@ const questionModel = require("./models/questionModel");
 const userModel = require("./models/userModel");
 const verificationCodeModel = require("./models/verificationCodeModel");
 const examModel = require("./models/examModel");
+const { CustomError } = require("./middlewares/errorHandlerMiddleware");
 require("dotenv").config();
 
 const dbConnect = async () => {
@@ -79,6 +80,11 @@ async function getChapter(id) {
     .populate("course")
     .lean({ virtuals: true });
   return chapter;
+}
+
+async function findChaptersByIds(chapterIds) {
+  const chapters = await chapterModel.find({ _id: { $in: chapterIds } }).lean();
+  return chapters;
 }
 
 // This function used to check if a certain question exists or not.
@@ -340,14 +346,18 @@ async function deleteVerificationCodesByUserId(userId) {
 }
 
 async function addExam(
+  name,
   courseId,
   questions,
+  chaptersDistribution,
   difficultyDistribution,
   objectiveDistribution
 ) {
   const addedExam = await examModel.create({
+    name,
     courseId,
     questions,
+    chaptersDistribution,
     difficultyDistribution,
     objectiveDistribution,
   });
@@ -359,6 +369,27 @@ async function findExamById(examId) {
     .findById(examId)
     .populate("course")
     .lean({ virtuals: true }); // This converts the Mongoose document into a plain JavaScript object, allowing to manipulate the result before sending it as a response.
+
+  // I need to replace chaptersDistribution by adding each chapter with the corresponding number of question
+  // Extract chapter IDs from the chaptersDistribution keys
+  const chapterIds = Object.keys(exam.chaptersDistribution);
+
+  // Query all chapter documents by their IDs
+  const chapters = await findChaptersByIds(chapterIds);
+
+  const newDisstribution = chapterIds.map((chapterId) => {
+    const chapter = chapters.find((ch) => ch._id.toString() === chapterId);
+
+    if (!chapter) {
+      throw new CustomError("One of the exam chapter can't be found", 404);
+    }
+    
+    chapter["numberOfQuestionsInExam"] = exam.chaptersDistribution[chapterId];
+    return chapter;
+  });
+
+  exam.chaptersDistribution = newDisstribution;
+
   delete exam.questions;
   return exam;
 }
@@ -367,6 +398,9 @@ async function findExams() {
   const exams = await examModel
     .find({})
     .populate("course")
+    .select(
+      "-chaptersDistribution -difficultyDistribution -objectiveDistribution"
+    )
     .lean({ virtuals: true });
   // Remove the 'questions' field from each exam
   exams.forEach((exam) => {
@@ -424,4 +458,5 @@ module.exports = {
   findExamById,
   findExams,
   findExamQuestions,
+  findChaptersByIds,
 };

@@ -31,7 +31,7 @@ const AddBtn = ({ itemTypeName, postUrl, redirectUrl, data }) => {
   };
   return (
     <button
-      className="flex h-[40px] max-w-[150px] items-center justify-center rounded-md bg-[#007AFF] p-1 font-medium text-white"
+      className="flex h-[40px] max-w-[150px] items-center justify-center rounded-md bg-[#007AFF] p-1 font-medium text-white hover:bg-[#2673c4]"
       style={{ pointerEvents: isLoading ? "none" : "" }}
       onClick={onPost}
     >

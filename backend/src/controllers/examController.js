@@ -48,21 +48,25 @@ const addExam = [
   addExamValidation,
   asyncHandler(async (req, res) => {
     const {
+      name,
       courseId,
       questions,
+      chaptersDistribution,
       difficultyDistribution,
       objectiveDistribution,
     } = req.body;
     const addedExam = await database.addExam(
+      name,
       courseId,
       questions,
+      chaptersDistribution,
       difficultyDistribution,
       objectiveDistribution
     );
 
     return res
       .status(200)
-      .json({ message: "Exam is added successfully", data: addedExam });
+      .json({ message: "Exam has beed successfully saved", data: addedExam });
   }),
 ];
 

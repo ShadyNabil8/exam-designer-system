@@ -66,6 +66,12 @@ const postExamValidation = [
 ];
 
 const addExamValidation = [
+  body("name", "Exam name is required")
+    .isString()
+    .isLength({ min: 1 })
+    .trim()
+    .escape()
+    .withMessage("Exam name is required"),
   body("courseId").isMongoId().withMessage("Invalid course"),
   body("questions")
     .isArray({ min: 1 })
@@ -75,6 +81,28 @@ const addExamValidation = [
         if (!mongoose.Types.ObjectId.isValid(questionId)) {
           throw new Error("Question must be valid questions.");
         }
+      }
+      return true;
+    }),
+  body("chaptersDistribution")
+    .isObject()
+    .withMessage("Chapters distribution must be an object.")
+    .custom((distribution) => {
+      const chapters = Object.keys(distribution);
+      if (chapters.length === 0) {
+        throw new Error("Chapter distribution is required");
+      }
+      for (let chapter of chapters) {
+        if (!mongoose.Types.ObjectId.isValid(chapter)) {
+          throw new Error("Chapters must be valid");
+        }
+        const questionsCountPerChapter = Number(distribution[chapter]);
+        if (isNaN(questionsCountPerChapter) || questionsCountPerChapter < 0) {
+          throw new Error(
+            "Number of question per chapter must be number greater than or equal 0"
+          );
+        }
+        distribution[chapter] = questionsCountPerChapter;
       }
       return true;
     }),

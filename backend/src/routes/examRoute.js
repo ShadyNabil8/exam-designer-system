@@ -123,9 +123,13 @@ examRouter.post(
   examController.generateExam
 );
 
-examRouter.post("/", examController.addExam);
-examRouter.get("/", examController.findExams);
-examRouter.get("/:id", examController.findExam);
-examRouter.get("/:id/questions", examController.findExamQuestions);
+examRouter.post("/", authenticateUserMiddleware, examController.addExam);
+examRouter.get("/", authenticateUserMiddleware, examController.findExams);
+examRouter.get("/:id", authenticateUserMiddleware, examController.findExam);
+examRouter.get(
+  "/:id/questions",
+  authenticateUserMiddleware,
+  examController.findExamQuestions
+);
 
 module.exports = examRouter;

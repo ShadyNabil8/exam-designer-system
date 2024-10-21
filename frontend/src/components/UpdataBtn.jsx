@@ -14,7 +14,9 @@ const UpdataBtn = ({ itemTypeName, updateUrl, redirectUrl, updatedData }) => {
     try {
       setIsLoading(true);
       const response = await api.put(updateUrl, updatedData);
-      notify.success(response?.data?.message || `${itemTypeName} updated successfully`);
+      notify.success(
+        response?.data?.message || `${itemTypeName} updated successfully`,
+      );
       if (redirectUrl) {
         navigate(`${redirectUrl}/${response?.data?.data?._id || ""}`);
       }
@@ -30,7 +32,7 @@ const UpdataBtn = ({ itemTypeName, updateUrl, redirectUrl, updatedData }) => {
   };
   return (
     <button
-      className="flex h-[40px] max-w-[150px] items-center justify-center rounded-md bg-green-500 p-1 font-medium text-white"
+      className="flex h-[40px] max-w-[150px] items-center justify-center rounded-md bg-green-500 p-1 font-medium text-white hover:bg-[#4dbe39]"
       style={{ pointerEvents: isLoading ? "none" : "" }}
       onClick={onUpdate}
     >
