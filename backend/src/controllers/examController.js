@@ -5,6 +5,8 @@ const { findOptimumExam } = require("../utils/examSimulationUtil");
 const {
   postExamValidation,
   addExamValidation,
+  findExamValidation,
+  findExamQuestionsValidation,
 } = require("../middlewares/examValidationMiddlewares");
 const generateExam = [
   postExamValidation,
@@ -47,20 +49,58 @@ const addExam = [
   asyncHandler(async (req, res) => {
     const {
       courseId,
-      questionsIds,
+      questions,
       difficultyDistribution,
       objectiveDistribution,
     } = req.body;
     const addedExam = await database.addExam(
       courseId,
-      questionsIds,
+      questions,
       difficultyDistribution,
       objectiveDistribution
     );
+
     return res
       .status(200)
       .json({ message: "Exam is added successfully", data: addedExam });
   }),
 ];
 
-module.exports = { generateExam, addExam };
+const findExam = [
+  findExamValidation,
+  asyncHandler(async (req, res) => {
+    const { id } = req.params;
+
+    const exam = await database.findExamById(id);
+
+    return res.status(200).json({ message: "Exam found", data: exam });
+  }),
+];
+
+const findExams = [
+  asyncHandler(async (req, res) => {
+    const exams = await database.findExams();
+    return res.status(200).json({ message: "Exams found", data: exams });
+  }),
+];
+
+const findExamQuestions = [
+  findExamQuestionsValidation,
+  asyncHandler(async (req, res) => {
+    const { id } = req.params;
+
+    const questions = await database.findExamQuestions(id);
+
+    return res
+      .status(200)
+      .json({ message: "Exam questions found", data: questions });
+  }),
+];
+
+module.exports = {
+  generateExam,
+  addExam,
+  findExam,
+  findExamQuestions,
+  findExams,
+};

@@ -1,4 +1,9 @@
-const { body, checkExact, validationResult } = require("express-validator");
+const {
+  body,
+  checkExact,
+  validationResult,
+  param,
+} = require("express-validator");
 const asyncHandler = require("express-async-handler");
 const mongoose = require("mongoose");
 const database = require("../database");
@@ -62,7 +67,7 @@ const postExamValidation = [
 
 const addExamValidation = [
   body("courseId").isMongoId().withMessage("Invalid course"),
-  body("questionsIds")
+  body("questions")
     .isArray({ min: 1 })
     .withMessage("Questions must be non-empty.")
     .custom((questionsIds) => {
@@ -133,4 +138,31 @@ const addExamValidation = [
   }),
 ];
 
-module.exports = { postExamValidation, addExamValidation };
+const findExamValidation = [
+  param("id").isMongoId().withMessage("Invalid exam"),
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    next();
+  }),
+];
+
+const findExamQuestionsValidation = [
+  param("id").isMongoId().withMessage("Invalid exam"),
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    next();
+  }),
+];
+
+module.exports = {
+  postExamValidation,
+  addExamValidation,
+  findExamValidation,
+  findExamQuestionsValidation,
+};

@@ -341,17 +341,47 @@ async function deleteVerificationCodesByUserId(userId) {
 
 async function addExam(
   courseId,
-  questionsIds,
+  questions,
   difficultyDistribution,
   objectiveDistribution
 ) {
   const addedExam = await examModel.create({
     courseId,
-    questionsIds,
+    questions,
     difficultyDistribution,
     objectiveDistribution,
   });
   return addedExam;
+}
+
+async function findExamById(examId) {
+  const exam = await examModel
+    .findById(examId)
+    .populate("course")
+    .lean({ virtuals: true }); // This converts the Mongoose document into a plain JavaScript object, allowing to manipulate the result before sending it as a response.
+  delete exam.questions;
+  return exam;
+}
+
+async function findExams() {
+  const exams = await examModel
+    .find({})
+    .populate("course")
+    .lean({ virtuals: true });
+  // Remove the 'questions' field from each exam
+  exams.forEach((exam) => {
+    delete exam.questions;
+  });
+  return exams;
+}
+
+async function findExamQuestions(examId) {
+  const exam = await examModel
+    .findById(examId)
+    .populate("questions")
+    .select("questions")
+    .lean(); // This converts the Mongoose document into a plain JavaScript object, allowing to manipulate the result before sending it as a response.
+  return exam.questions;
 }
 
 module.exports = {
@@ -391,4 +421,7 @@ module.exports = {
   deleteVerificationCodesByUserId,
   findVerificationCodesAndSort,
   addExam,
+  findExamById,
+  findExams,
+  findExamQuestions,
 };

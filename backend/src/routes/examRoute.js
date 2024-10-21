@@ -124,5 +124,8 @@ examRouter.post(
 );
 
 examRouter.post("/", examController.addExam);
+examRouter.get("/", examController.findExams);
+examRouter.get("/:id", examController.findExam);
+examRouter.get("/:id/questions", examController.findExamQuestions);
 
 module.exports = examRouter;

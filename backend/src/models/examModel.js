@@ -7,7 +7,7 @@ const examSchema = new mongoose.Schema({
     ref: "Course",
     required: true,
   },
-  questionsIds: [
+  questions: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Question",
@@ -31,6 +31,10 @@ const examSchema = new mongoose.Schema({
 
 examSchema.plugin(mongooseLeanVirtuals);
 
+// Ensure that virtual fields are included when the document is converted to JSON or a plain object (as it will be in API responses).
+examSchema.set("toObject", { virtuals: true });
+examSchema.set("toJSON", { virtuals: true });
+
 examSchema.virtual("course", {
   ref: "Course",
   localField: "courseId",
@@ -38,14 +42,9 @@ examSchema.virtual("course", {
   justOne: true, // Since courseId is an ObjectId, just populate one document
 });
 
-examSchema.virtual("questions", {
-  ref: "Question",
-  localField: "questionsIds",
-  foreignField: "_id",
+examSchema.virtual("numberOfQuestions").get(function () {  
+  const numberOfQuestions = this.questions.length;
+  return numberOfQuestions;
 });
-
-// Ensure that virtual fields are included when the document is converted to JSON or a plain object (as it will be in API responses).
-examSchema.set("toObject", { virtuals: true });
-examSchema.set("toJSON", { virtuals: true });
 
 module.exports = mongoose.model("Exam", examSchema);
