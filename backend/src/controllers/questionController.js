@@ -4,62 +4,15 @@ const database = require("../database");
 const {
   postQuestionValidation,
   putQuestionValidation,
+  getQuestionValidation,
+  deleteQuestionValidation,
 } = require("../middlewares/questionValidationMiddlewares");
 
 const addQuestion = [
   postQuestionValidation,
-  asyncHandler(async (req, res, next) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-    next();
-  }),
   asyncHandler(async (req, res) => {
     const { chapterId, text, choices, correctAnswer, difficulty, objective } =
       req.body;
-
-    const [chapter, questionCount] = await Promise.all([
-      database.getChapter(chapterId),
-      // Ensure that this chapter hasn't reached the limit of the allowed number of questions.
-      database.getNumberOfQuestion(chapterId),
-    ]);
-
-    if (!chapter) {
-      return res.status(404).json({ message: "Chapter not found!" });
-    }
-
-    if (questionCount >= chapter.maxNumberOfQuestions) {
-      return res.status(400).json({
-        message: "This chapter reached the limit for the number of questions",
-      });
-    }
-
-    [questionDifficultyDistribution, questionObkectiveDistribution] =
-      await Promise.all([
-        database.getQuestionDifficultyDistribution(chapterId),
-        database.getQuestionObjectiveDistribution(chapterId),
-      ]);
-
-    if (
-      questionObkectiveDistribution[objective] >=
-      chapter.maxNumberOfEachObjective
-    ) {
-      return res.status(400).json({
-        message:
-          "Failed adding a question with this objective because there will be no balance",
-      });
-    }
-
-    if (
-      questionDifficultyDistribution[difficulty] >=
-      chapter.maxNumberOfEachDifficulty
-    ) {
-      return res.status(400).json({
-        message:
-          "Failed adding a question with this difficulty because there will be no balance",
-      });
-    }
 
     const newQuestion = await database.addQuestion(
       chapterId,
@@ -84,13 +37,8 @@ const getQuestions = asyncHandler(async (req, res) => {
 });
 
 const getQuestion = [
-  param("id", "Invalid question ID").isMongoId(),
+  getQuestionValidation,
   asyncHandler(async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-
     const questionId = req.params.id;
 
     const question = await database.getQuestion(questionId);
@@ -107,13 +55,8 @@ const getQuestion = [
 ];
 
 const deleteQuestion = [
-  param("id", "Invalid question ID").isMongoId(),
+  deleteQuestionValidation,
   asyncHandler(async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-
     const questionId = req.params.id;
 
     const deletedQuestion = await database.deleteQuestion(questionId);
@@ -131,13 +74,6 @@ const deleteQuestion = [
 
 const updateQuestion = [
   putQuestionValidation,
-  asyncHandler(async (req, res, next) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-    next();
-  }),
   asyncHandler(async (req, res) => {
     const questionId = req.params.id;
 

@@ -1,51 +1,18 @@
 const asyncHandler = require("express-async-handler");
 const { body, param, validationResult } = require("express-validator");
 const database = require("../database");
-const { chapterUpdateValidation } = require("../middlewares/chapterValidationMiddlewares");
+const {
+  chapterUpdateValidation,
+  addChapterValidation,
+  getChapterValidation,
+  getChapterQuestionsValidation,
+  deleteChapterValidation,
+} = require("../middlewares/chapterValidationMiddlewares");
 
 const addChapter = [
-  body("name")
-    .isLength({ min: 1 })
-    .trim()
-    .escape()
-    .withMessage("Chapter name is required!"),
-  body("number")
-    .isInt({ min: 1 }) // Ensure it's a positive integer
-    .withMessage(
-      "Chapter number is required and must be a valid positive integer!"
-    )
-    .toInt(),
-  body("maxNumberOfQuestions")
-    .isInt({ min: 1 }) // Ensure it's a positive integer
-    .withMessage(
-      "Maximum number of questions is required and must be a valid positive integer!"
-    )
-    .toInt(),
-  body("courseId").isMongoId().withMessage("Invalid course ID"),
+  addChapterValidation,
   asyncHandler(async (req, res) => {
-    const errors = validationResult(req);
-
-    if (!errors.isEmpty()) {
-      res.status(400).json({ errors: errors.array() });
-    }
-
     const { name, number, maxNumberOfQuestions, courseId } = req.body;
-
-    const [courseExists, chapterExists] = await Promise.all([
-      database.isCourseExistsById(courseId),
-      database.isChapterExists(number, courseId),
-    ]);
-
-    if (!courseExists) {
-      return res.status(404).json({ message: "Course not found" });
-    }
-
-    if (chapterExists) {
-      return res
-        .status(400)
-        .json({ message: "Chapter With the same number exists!" });
-    }
-
     const addedChapter = await database.addChapter(
       name,
       number,
@@ -67,13 +34,8 @@ const getChapters = asyncHandler(async (req, res) => {
 });
 
 const getChapter = [
-  param("id", "Invalid chapter ID").isMongoId(),
+  getChapterValidation,
   asyncHandler(async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-
     const chapterId = req.params.id;
 
     const chapter = await database.getChapter(chapterId);
@@ -90,13 +52,8 @@ const getChapter = [
 ];
 
 const getChapterQuestions = [
-  param("id", "Invalid chapter ID").isMongoId(),
+  getChapterQuestionsValidation,
   asyncHandler(async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-
     const chapterId = req.params.id;
 
     const questions = await database.getQuestionsByChapter(chapterId);
@@ -109,13 +66,8 @@ const getChapterQuestions = [
 ];
 
 const deleteChapter = [
-  param("id", "Invalid chapter ID").isMongoId(),
+  deleteChapterValidation,
   asyncHandler(async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-
     const chapterId = req.params.id;
 
     const deletedChapter = await database.deleteChapter(chapterId);
@@ -144,7 +96,7 @@ const updateChapter = [
       maxNumberOfQuestions,
       courseId
     );
-    
+
     if (!updatedChapter) {
       return res.status(404).json({ message: "Chapter not found" });
     }

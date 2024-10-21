@@ -10,6 +10,8 @@ const errorHandlerMiddleware = function (err, req, res, next) {
   const message = err.message || "Internal Server Error";
 
   if (process.env.NODE_ENV !== "test") {
+    console.log(err);
+    
     console.error(`Error: ${message}, Status Code: ${statusCode}`);
   }
 

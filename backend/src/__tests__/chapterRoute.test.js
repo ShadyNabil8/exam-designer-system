@@ -75,7 +75,7 @@ describe("POST /api/chapters", () => {
     expect(response.statusCode).toBe(400);
     expect(Array.isArray(response.body.errors)).toBe(true);
     expect(response.body.errors.length).toBeGreaterThan(0);
-    expect(response.body.errors[0].msg).toEqual("Invalid course ID");
+    expect(response.body.errors[0].msg).toEqual("Course is required.");
   });
 
   it("should return 400 if the course that this chapter belongs to has another chapter with the same number", async () => {
@@ -85,7 +85,7 @@ describe("POST /api/chapters", () => {
     const response = await request(app)
       .post("/api/chapters")
       .send(validChapter);
-
+    
     expect(response.statusCode).toBe(400);
     expect(response.body.message).toEqual(
       "Chapter With the same number exists!"

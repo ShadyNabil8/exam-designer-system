@@ -1,4 +1,6 @@
-const { body, param } = require("express-validator");
+const { body, param, query, validationResult } = require("express-validator");
+const asyncHandler = require("express-async-handler");
+const database = require("../database");
 
 const postQuestionValidation = [
   body("chapterId", "Invalid chapter ID").isMongoId(),
@@ -30,6 +32,79 @@ const postQuestionValidation = [
     .withMessage(
       "Objective must be one of 'reminding', 'understanding', or 'creativity'."
     ),
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      res.status(400).json({ errors: errors.array() });
+    }
+    next();
+  }),
+  asyncHandler(async (req, res, next) => {
+    const { chapterId } = req.body;
+
+    const [chapter, questionCount] = await Promise.all([
+      database.getChapter(chapterId),
+      // Ensure that this chapter hasn't reached the limit of the allowed number of questions.
+      database.getNumberOfQuestion(chapterId),
+    ]);
+
+    if (!chapter) {
+      return res.status(404).json({ message: "Chapter not found!" });
+    }
+
+    if (questionCount >= chapter.maxNumberOfQuestions) {
+      return res.status(400).json({
+        message: "This chapter reached the limit for the number of questions",
+      });
+    }
+
+    req.chapter = chapter;
+
+    next();
+  }),
+  asyncHandler(async (req, res, next) => {
+    const { chapterId, difficulty, objective } = req.body;
+    const chapter = req.chapter;
+
+    const [questionDifficultyDistribution, questionObjectiveDistribution] =
+      await Promise.all([
+        database.getQuestionDifficultyDistribution(chapterId),
+        database.getQuestionObjectiveDistribution(chapterId),
+      ]);
+
+    if (
+      questionObjectiveDistribution[objective] >=
+      chapter.maxNumberOfEachObjective
+    ) {
+      return res.status(400).json({
+        message:
+          "Failed adding a question with this objective because there will be no balance",
+      });
+    }
+
+    if (
+      questionDifficultyDistribution[difficulty] >=
+      chapter.maxNumberOfEachDifficulty
+    ) {
+      return res.status(400).json({
+        message:
+          "Failed adding a question with this difficulty because there will be no balance",
+      });
+    }
+
+    next();
+  }),
+];
+
+const getQuestionValidation = [
+  param("id", "Invalid question ID").isMongoId(),
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      res.status(400).json({ errors: errors.array() });
+    }
+    next();
+  }),
 ];
 
 const putQuestionValidation = [
@@ -62,5 +137,28 @@ const putQuestionValidation = [
     .withMessage(
       "Objective must be one of 'reminding', 'understanding', or 'creativity'."
     ),
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      res.status(400).json({ errors: errors.array() });
+    }
+    next();
+  }),
 ];
-module.exports = { postQuestionValidation, putQuestionValidation };
+
+const deleteQuestionValidation = [
+  param("id", "Invalid question ID").isMongoId(),
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      res.status(400).json({ errors: errors.array() });
+    }
+    next();
+  }),
+];
+module.exports = {
+  postQuestionValidation,
+  putQuestionValidation,
+  getQuestionValidation,
+  deleteQuestionValidation,
+};
