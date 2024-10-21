@@ -48,7 +48,7 @@ chapterSchema.virtual("maxNumberOfEachObjective").get(function () {
   return Math.floor(this.maxNumberOfQuestions / objectiveEnum.length);
 });
 
-// Enable virtuals in toJSON and toObject
+// Ensure that virtual fields are included when the document is converted to JSON or a plain object (as it will be in API responses).
 chapterSchema.set("toObject", { virtuals: true });
 chapterSchema.set("toJSON", { virtuals: true });
 

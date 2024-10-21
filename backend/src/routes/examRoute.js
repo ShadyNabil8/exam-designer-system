@@ -123,4 +123,6 @@ examRouter.post(
   examController.generateExam
 );
 
+examRouter.post("/", examController.addExam);
+
 module.exports = examRouter;

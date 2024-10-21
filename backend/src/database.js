@@ -4,6 +4,7 @@ const chapterModel = require("./models/chapterModel");
 const questionModel = require("./models/questionModel");
 const userModel = require("./models/userModel");
 const verificationCodeModel = require("./models/verificationCodeModel");
+const examModel = require("./models/examModel");
 require("dotenv").config();
 
 const dbConnect = async () => {
@@ -338,6 +339,21 @@ async function deleteVerificationCodesByUserId(userId) {
   await verificationCodeModel.deleteMany({ userId });
 }
 
+async function addExam(
+  courseId,
+  questionsIds,
+  difficultyDistribution,
+  objectiveDistribution
+) {
+  const addedExam = await examModel.create({
+    courseId,
+    questionsIds,
+    difficultyDistribution,
+    objectiveDistribution,
+  });
+  return addedExam;
+}
+
 module.exports = {
   dbConnect,
   addCourse,
@@ -374,4 +390,5 @@ module.exports = {
   updateUserbyId,
   deleteVerificationCodesByUserId,
   findVerificationCodesAndSort,
+  addExam,
 };

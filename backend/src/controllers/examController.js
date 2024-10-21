@@ -4,6 +4,7 @@ const database = require("../database");
 const { findOptimumExam } = require("../utils/examSimulationUtil");
 const {
   postExamValidation,
+  addExamValidation,
 } = require("../middlewares/examValidationMiddlewares");
 const generateExam = [
   postExamValidation,
@@ -41,4 +42,25 @@ const generateExam = [
   }),
 ];
 
-module.exports = { generateExam };
+const addExam = [
+  addExamValidation,
+  asyncHandler(async (req, res) => {
+    const {
+      courseId,
+      questionsIds,
+      difficultyDistribution,
+      objectiveDistribution,
+    } = req.body;
+    const addedExam = await database.addExam(
+      courseId,
+      questionsIds,
+      difficultyDistribution,
+      objectiveDistribution
+    );
+    return res
+      .status(200)
+      .json({ message: "Exam is added successfully", data: addedExam });
+  }),
+];
+
+module.exports = { generateExam, addExam };
