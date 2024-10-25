@@ -31,7 +31,7 @@ const LoginPage = () => {
 
       // login function inside the AuthContext is ised to set the auth state with token and user data.
       login(accessToken, user);
-      navigate("/courses");
+      navigate("/generate-exam");
     } catch (error) {
       console.log(error.response.data);
       notify.error(

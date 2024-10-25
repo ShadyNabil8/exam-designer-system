@@ -22,10 +22,15 @@ import ExamsPage from "../pages/ExamsPage";
 import ExamPage from "../pages/ExamPage";
 import ExamQuestionsPage from "../pages/ExamQuestionsPage";
 import UpdateQuestionPage from "../pages/UpdateQuestionPage";
+import LandingPage from "../pages/LandingPage";
 const router = createBrowserRouter([
   {
     element: <ProtectedRoute />,
     children: [
+      {
+        path: "/about",
+        element: <LandingPage />,
+      },
       {
         path: "/",
         element: <RootPage />,
