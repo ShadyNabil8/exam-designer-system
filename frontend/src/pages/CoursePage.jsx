@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import useFetchData from "../hooks/useFetchData";
 import api from "../api/api";
@@ -21,6 +21,10 @@ const CoursePage = () => {
       }
     },
   );
+
+  useEffect(() => {
+    document.title = "Course Details | Exam Generation System";
+  }, []);
 
   if (isLoading) {
     return <p>Loading courses...</p>;

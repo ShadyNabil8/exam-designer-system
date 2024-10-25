@@ -31,6 +31,10 @@ const UpdataChapterPage = () => {
     }
   }, [chapter]);
 
+  useEffect(() => {
+    document.title = "Update Chapter | Exam Generation System";
+  }, []);
+
   if (isLoading) {
     return <p>Loading course...</p>;
   }

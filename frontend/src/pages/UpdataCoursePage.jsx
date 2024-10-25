@@ -29,6 +29,10 @@ const UpdataCoursePage = () => {
     }
   }, [course]);
 
+  useEffect(() => {
+    document.title = "Update Course | Exam Generation System";
+  }, []);
+
   if (isLoading) {
     return <p>Loading course...</p>;
   }

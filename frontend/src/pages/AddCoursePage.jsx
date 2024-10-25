@@ -5,6 +5,10 @@ import PageTitle from "../components/PageTitle";
 const AddCoursePage = () => {
   const [courseName, setCourseName] = useState("");
 
+  useEffect(() => {
+    document.title = "Add Course | Exam Generation System";
+  }, []);
+
   return (
     <div className="flex w-full flex-col gap-2 p-2 sm:w-1/2 lg:w-1/4 lg:p-4">
       <PageTitle title={"Add new course"} />

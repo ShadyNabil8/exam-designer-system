@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import api from "../api/api";
 import useNotifier from "../hooks/useNotifier";
 import useFetchData from "../hooks/useFetchData";
@@ -17,6 +17,10 @@ const ExamsPage = () => {
       // notify.error(error.response?.data?.message || "Something went wrong!");
     }
   });
+
+  useEffect(() => {
+    document.title = "Exams | Exam Generation System";
+  }, []);
 
   if (isLoading) {
     return <p>Loading exams...</p>;

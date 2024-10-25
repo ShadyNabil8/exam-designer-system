@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import useNotifier from "../hooks/useNotifier";
 import useFetchData from "../hooks/useFetchData";
 import Chapter from "../components/Chapter";
@@ -34,6 +34,10 @@ const CourseChaptersPage = () => {
       }
     },
   );
+
+  useEffect(() => {
+    document.title = "Course Chapters | Exam Generation System";
+  }, []);
 
   if (isChaptersLoading || isCourseLoading) {
     return <p>Loading Chapters...</p>;

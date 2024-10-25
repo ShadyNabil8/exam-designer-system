@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { Form, useNavigate, Link } from "react-router-dom";
 import api from "../api/api";
@@ -44,6 +44,10 @@ const SignupPage = () => {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    document.title = "Sign Up | Exam Generation System";
+  }, []);
 
   return (
     <div className="relative h-screen w-screen overflow-hidden bg-[#FAFBFC]">

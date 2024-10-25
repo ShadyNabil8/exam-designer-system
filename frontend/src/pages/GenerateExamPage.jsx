@@ -102,8 +102,8 @@ function GenerateExamPage() {
           creativity: numOfCreativityQuestions,
         },
       });
-      
-      notify.success(response.data?.message || "Exam saved")
+
+      notify.success(response.data?.message || "Exam saved");
     } catch (error) {
       notify.error(
         error?.response?.data?.message ||
@@ -131,6 +131,10 @@ function GenerateExamPage() {
       getCourseChapters();
     }
   }, [examCourse]);
+
+  useEffect(() => {
+    document.title = "Generate Exam | Exam Generation System";
+  }, []);
 
   if (isLoading) {
     return <p>Loading courses...</p>;

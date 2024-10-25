@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import api from "../api/api";
 import useNotifier from "../hooks/useNotifier";
 import useFetchData from "../hooks/useFetchData";
@@ -10,6 +10,10 @@ const ChapterQuestionsPage = () => {
   const { chapterId } = useParams();
 
   const notify = useNotifier();
+
+  useEffect(() => {
+    document.title = "Chapter Questions | Exam Generation System";
+  }, []);
 
   const { data: chapter, isLoading: isChapterLoading } = useFetchData(
     ["chapters", chapterId],

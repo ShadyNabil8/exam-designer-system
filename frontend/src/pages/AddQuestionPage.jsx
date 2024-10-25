@@ -46,6 +46,10 @@ const AddQuestionPage = () => {
     }
   }, [questionCourse]);
 
+  useEffect(() => {
+    document.title = "Add Question | Exam Generation System";
+  }, []);
+
   if (isLoading) {
     return <p>Loading courses...</p>;
   }

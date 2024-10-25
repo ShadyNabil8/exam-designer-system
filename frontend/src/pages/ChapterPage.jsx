@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import useFetchData from "../hooks/useFetchData";
 import api from "../api/api";
@@ -22,6 +22,10 @@ const ChapterPage = () => {
     },
   );
 
+  useEffect(() => {
+    document.title = "Chapter Details | Exam Generation System";
+  }, []);
+
   if (isLoading) {
     return <p>Loading courses...</p>;
   }
@@ -35,7 +39,10 @@ const ChapterPage = () => {
           <Detail detailTitle="Name" detailData={chapter.name} />
           <Detail detailTitle="Course name" detailData={chapter.course.name} />
           <Detail detailTitle="Number" detailData={chapter.number} />
-          <Detail detailTitle="Maximum number of questions" detailData={chapter.maxNumberOfQuestions} />
+          <Detail
+            detailTitle="Maximum number of questions"
+            detailData={chapter.maxNumberOfQuestions}
+          />
           <Detail
             detailTitle="Maximum number of difficulty"
             detailData={chapter.maxNumberOfEachDifficulty}

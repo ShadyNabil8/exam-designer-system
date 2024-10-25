@@ -1,8 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const LandingPage = () => {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    document.title = "About | Exam Generation System";
+  }, []);
+
   return (
     <div className="flex min-h-screen flex-col text-gray-900">
       <header className="bg-blue-600 p-8 text-center text-white">

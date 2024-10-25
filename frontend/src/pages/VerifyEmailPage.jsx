@@ -71,6 +71,10 @@ const VerifyEmailPage = () => {
   }, []);
 
   useEffect(() => {
+    document.title = "Verify Email | Exam Generation System";
+  }, []);
+
+  useEffect(() => {
     if (verificationEffectRan.current === false && verificationCodeParam) {
       setLoading(true);
       verifyEmail(verificationCodeParam).finally(() => setLoading(false));

@@ -23,6 +23,10 @@ const AddChapterPage = () => {
     }
   });
 
+  useEffect(() => {
+    document.title = "Add Chapter | Exam Generation System";
+  }, []);
+
   if (isLoading) {
     return <p>Loading courses...</p>;
   }

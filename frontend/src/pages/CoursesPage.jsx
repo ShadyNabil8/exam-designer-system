@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Course from "../components/Course";
 import api from "../api/api";
 import useNotifier from "../hooks/useNotifier";
@@ -16,6 +16,10 @@ const CoursesPage = () => {
       // notify.error(error.response?.data?.message || "Something went wrong!");
     }
   });
+
+  useEffect(() => {
+    document.title = "Courses | Exam Generation System";
+  }, []);
 
   if (isLoading) {
     return <p>Loading courses...</p>;

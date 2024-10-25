@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import api from "../api/api";
 import useNotifier from "../hooks/useNotifier";
 import useFetchData from "../hooks/useFetchData";
@@ -39,6 +39,10 @@ const ExamQuestionsPage = () => {
       }
     },
   );
+
+  useEffect(() => {
+    document.title = "Exam Questions | Exam Generation System";
+  }, []);
 
   if (isExamLoading || isQuestionsLoading) {
     return <p>Loading Questions...</p>;

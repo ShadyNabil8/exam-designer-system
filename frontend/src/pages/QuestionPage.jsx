@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import useFetchData from "../hooks/useFetchData";
 import api from "../api/api";
@@ -21,6 +21,10 @@ const QuestionPage = () => {
       }
     },
   );
+
+  useEffect(() => {
+    document.title = "Question Details | Exam Generation System";
+  }, []);
 
   if (isLoading) {
     return <p>Loading questions...</p>;

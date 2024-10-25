@@ -76,6 +76,10 @@ const UpdateQuestionPage = () => {
     }
   }, [question]);
 
+  useEffect(() => {
+    document.title = "Update Question | Exam Generation System";
+  }, []);
+
   if (isQuestionLoading /*|| isCourseLoading*/) {
     return <p>Loading...</p>;
   }

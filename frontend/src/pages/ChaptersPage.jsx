@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Chapter from "../components/Chapter";
 import api from "../api/api";
 import useNotifier from "../hooks/useNotifier";
@@ -16,6 +16,10 @@ const ChaptersPage = () => {
       // notify.error(error.response?.data?.message || "Something went wrong!");
     }
   });
+
+  useEffect(() => {
+    document.title = "Chapters | Exam Generation System";
+  }, []);
 
   if (isLoading) {
     return <p>Loading Chapters...</p>;
