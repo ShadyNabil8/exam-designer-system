@@ -25,12 +25,12 @@ import UpdateQuestionPage from "../pages/UpdateQuestionPage";
 import LandingPage from "../pages/LandingPage";
 const router = createBrowserRouter([
   {
+    path: "/about",
+    element: <LandingPage />,
+  },
+  {
     element: <ProtectedRoute />,
     children: [
-      {
-        path: "/about",
-        element: <LandingPage />,
-      },
       {
         path: "/",
         element: <RootPage />,
