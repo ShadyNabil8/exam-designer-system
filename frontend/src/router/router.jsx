@@ -21,6 +21,7 @@ import UpdataChapterPage from "../pages/UpdataChapterPage";
 import ExamsPage from "../pages/ExamsPage";
 import ExamPage from "../pages/ExamPage";
 import ExamQuestionsPage from "../pages/ExamQuestionsPage";
+import UpdateQuestionPage from "../pages/UpdateQuestionPage";
 const router = createBrowserRouter([
   {
     element: <ProtectedRoute />,
@@ -76,6 +77,10 @@ const router = createBrowserRouter([
           {
             path: "/questions/:questionId",
             element: <QuestionPage />,
+          },
+          {
+            path: "/questions/:questionId/update",
+            element: <UpdateQuestionPage />,
           },
           {
             path: "/add-question",
