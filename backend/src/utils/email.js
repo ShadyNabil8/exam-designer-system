@@ -8,7 +8,7 @@ const sendVerificationCode = async (receiverEmail, verificationCode) => {
       from: process.env.TRANSPORTER_EMAIL,
       to: receiverEmail,
       subject: "Verification Code",
-      text: `Your verification code is: ${verificationCode}. Or click the link: http://localhost:5173/verify-email?verificationCode=${verificationCode}`,
+      text: `Your verification code is: ${verificationCode}. Or click the link: ${process.env.CLIENT_DOMAIN}/verify-email?verificationCode=${verificationCode}`,
     });
   } catch (error) {
     throw new CustomError("Failed to send verification email", 500);
