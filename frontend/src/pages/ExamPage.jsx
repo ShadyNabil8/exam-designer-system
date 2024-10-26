@@ -85,7 +85,7 @@ const ExamPage = () => {
             deleteUrl={`/api/exams/${examId}`}
             redirectUrl="/questions"
           />
-          <UpdataPageBtn updateUrl={`/questions/${examId}/update`} />
+          {/* <UpdataPageBtn updateUrl={`/questions/${examId}/update`} /> */}
         </div>
       </div>
     </div>
