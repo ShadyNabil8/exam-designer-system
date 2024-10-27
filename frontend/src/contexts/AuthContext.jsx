@@ -60,10 +60,8 @@ export const AuthProvider = ({ children }) => {
       (response) => response,
       async (error) => {
         const originalRequest = error.config;
-        if (
-          error.response.status === 401 &&
-          error.response.data.message.startsWith("Unauthorized")
-        ) {
+
+        if (error.response.status === 401) {
           try {
             // Refresh the access token in server.
             const response = await api.post("/api/users/refresh-token");
@@ -95,10 +93,10 @@ export const AuthProvider = ({ children }) => {
     setToken(accessToken);
   };
 
-  useEffect(() => {
-    console.log("user: ", user);
-    console.log("token", token);
-  }, [user, token]);
+  // useEffect(() => {
+  //   console.log("user: ", user);
+  //   console.log("token", token);
+  // }, [user, token]);
 
   // Way for different components to get the auth state.
   const isAuthenticated = () => {

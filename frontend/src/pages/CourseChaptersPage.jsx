@@ -17,7 +17,7 @@ const CourseChaptersPage = () => {
         const response = await api.get(`/api/courses/${courseId}`);
         return response.data.data;
       } catch (error) {
-        console.log(error);
+        // console.log(error);
         // notify.error(error.response?.data?.message || "Something went wrong!");
       }
     },

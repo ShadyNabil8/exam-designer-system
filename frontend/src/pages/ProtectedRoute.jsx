@@ -13,7 +13,7 @@ const ProtectedRoute = () => {
       navigate("/login");
     }
 
-    if (!user.isVerified) {
+    if (user && !user?.isVerified) {
       navigate("/verify-email");
     }
   }, [token, user]);

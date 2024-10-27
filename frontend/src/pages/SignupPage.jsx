@@ -34,7 +34,6 @@ const SignupPage = () => {
       login(accessToken, user);
       navigate("/verify-email");
     } catch (error) {
-      console.log(error.response.data);
       notify.error(
         error.response?.data?.message ||
           error.response?.data?.errors[0]?.msg ||

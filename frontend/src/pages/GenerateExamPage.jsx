@@ -31,7 +31,7 @@ function GenerateExamPage() {
     try {
       const response = await api.get("/api/courses");
       return response.data.data;
-    } catch (error) {
+    } catch (error) {      
       notify.error(error.response?.data?.message || "Something went wrong!");
     }
   });

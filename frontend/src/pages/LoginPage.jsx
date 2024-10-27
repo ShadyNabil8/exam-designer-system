@@ -25,7 +25,6 @@ const LoginPage = () => {
         email,
         password,
       });
-      console.log(response.data);
       const accessToken = response.data.accessToken;
       const user = response.data.user;
 
@@ -33,7 +32,6 @@ const LoginPage = () => {
       login(accessToken, user);
       navigate("/generate-exam");
     } catch (error) {
-      console.log(error.response.data);
       notify.error(
         error.response?.data?.message ||
           error.response?.data?.errors[0]?.msg ||

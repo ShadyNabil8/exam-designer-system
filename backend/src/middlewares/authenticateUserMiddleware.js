@@ -12,11 +12,11 @@ const authenticateUserMiddleware = asyncHandler(async function (
     return next();
   }
   if (!req.headers.authorization) {
-    return res.status(401).json({ message: "Unauthorized, No token provided" });
+    return res.status(401).json({ message: "Login required" });
   }
 
   const token = req.headers.authorization.split(" ")[1];
-  const customError = new CustomError("Unauthorized, Invalid token", 401);
+  const customError = new CustomError("Login required", 401);
   const user = await verifyToken(
     token,
     process.env.ACCESS_TOKEN_SECRET,

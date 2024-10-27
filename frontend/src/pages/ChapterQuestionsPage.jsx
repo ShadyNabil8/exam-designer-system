@@ -22,7 +22,7 @@ const ChapterQuestionsPage = () => {
         const response = await api.get(`/api/chapters/${chapterId}`);
         return response.data.data;
       } catch (error) {
-        console.log(error);
+        // console.log(error);
         // notify.error(error.response?.data?.message || "Something went wrong!");
       }
     },
