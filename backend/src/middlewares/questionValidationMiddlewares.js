@@ -35,7 +35,7 @@ const postQuestionValidation = [
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      res.status(400).json({ errors: errors.array() });
+      return res.status(400).json({ errors: errors.array() });
     }
     next();
   }),
@@ -101,7 +101,7 @@ const getQuestionValidation = [
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      res.status(400).json({ errors: errors.array() });
+      return res.status(400).json({ errors: errors.array() });
     }
     next();
   }),
@@ -140,7 +140,7 @@ const putQuestionValidation = [
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      res.status(400).json({ errors: errors.array() });
+      return res.status(400).json({ errors: errors.array() });
     }
     next();
   }),
@@ -151,7 +151,7 @@ const deleteQuestionValidation = [
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      res.status(400).json({ errors: errors.array() });
+      return res.status(400).json({ errors: errors.array() });
     }
     next();
   }),

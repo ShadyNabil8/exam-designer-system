@@ -23,7 +23,7 @@ const addQuestion = [
       objective
     );
 
-    res.status(201).json({
+    return res.status(201).json({
       message: "Question added successfully.",
       data: newQuestion,
     });
@@ -33,7 +33,7 @@ const addQuestion = [
 const getQuestions = asyncHandler(async (req, res) => {
   const questions = await database.getQuestions();
 
-  res.status(200).json({ data: questions });
+  return res.status(200).json({ data: questions });
 });
 
 const getQuestion = [
@@ -47,7 +47,7 @@ const getQuestion = [
       return res.status(404).json({ message: "Question not found" });
     }
 
-    res.status(200).json({
+    return res.status(200).json({
       message: "The question was successfully fetched.",
       data: question,
     });
@@ -65,7 +65,7 @@ const deleteQuestion = [
       return res.status(404).json({ message: "Question not found" });
     }
 
-    res.status(200).json({
+    return res.status(200).json({
       message: "The question was successfully deleted.",
       data: deletedQuestion,
     });
