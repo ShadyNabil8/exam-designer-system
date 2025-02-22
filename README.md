@@ -2,7 +2,7 @@
 
 This project is a system for generating exams based on teacher-defined constraints using genetic algorithms. It allows teachers to specify the number of questions from each chapter, difficulty levels, and educational objectives, and it uses genetic algorithm to optimize a set of questions that meet those constraints.
 
-**Try** [**demo**](https://exam-designer-system-x5it.vercel.app/about). Use **operating system** course when you try to generate an exam because the dummy date is on this course.
+**Try** [**demo**](https://exam-designer-system-x5it.vercel.app/about). Use **operating system** course when you try to generate an exam because questions is on this course.
 
 ## Features
 
