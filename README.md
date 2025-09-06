@@ -1,8 +1,13 @@
 # Exam Question Generator Created for Intlaq Backend Engineer Role
 
-This project is a system for generating exams based on teacher-defined constraints using genetic algorithms. It allows teachers to specify the number of questions from each chapter, difficulty levels, and educational objectives, and it uses genetic algorithm to optimize a set of questions that meet those constraints.
+This project is a system for generating exams based on teacher-defined constraints using genetic algorithms. It allows teachers to specify the number of questions from each chapter, difficulty levels, and educational objectives, and it uses genetic algorithms to optimize a set of questions that meet those constraints.
 
-**Try** [**demo**](https://exam-designer-system-x5it.vercel.app/about). Use **operating system** course when you try to generate an exam because questions is on this course.
+**👉 Try the [demo](https://exam-designer-system-x5it.vercel.app/about)**  
+
+<div style="margin-top: 15px; padding: 16px; background-color: #FFEBEE; color: #B71C1C; border: 3px solid #D32F2F; border-radius: 8px; font-weight: bold; font-size: 1.1em; line-height: 1.6;">
+🚨 <strong>Important Hint:</strong> For best results, choose the <u>Operating System</u> course when generating an exam. All sample questions are based on this course.
+</div>
+
 
 ## Features
 
@@ -21,4 +26,3 @@ This project is a system for generating exams based on teacher-defined constrain
 - **Swagger**: API documentation and testing interface.
 - **Jest**: For unit and integration testing.
 - **React.js**: For frontend.
-
